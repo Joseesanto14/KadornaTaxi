@@ -46,10 +46,11 @@
             android:id="@+id/btSolicitarTaxi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
             android:layout_gravity="center"
-            android:padding="12dp"
+            android:layout_marginTop="80dp"
             android:backgroundTint="@color/MOSTARDA"
+            android:onClick="irSolicitacaoAcitivity"
+            android:padding="12dp"
             android:text="Solicitação de Taxi"
             android:textColor="@color/black"
             android:textStyle="bold"
@@ -61,31 +62,33 @@
             android:id="@+id/btViagens"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
             android:layout_gravity="center"
-            android:padding="12dp"
+            android:layout_marginTop="34dp"
             android:backgroundTint="@color/MOSTARDA"
+            android:onClick="irViagensAcitivity"
+            android:padding="12dp"
             android:text="Viagens"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:icon="@drawable/ic_viagens"
             app:iconGravity="end"
-            app:iconTint="@color/black"/>
+            app:iconTint="@color/black" />
 
         <Button
             android:id="@+id/btGerarRelatorio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="34dp"
             android:layout_gravity="center"
-            android:padding="12dp"
+            android:layout_marginTop="34dp"
             android:backgroundTint="@color/MOSTARDA"
+            android:onClick="irGerarRelatorioAcitivity"
+            android:padding="12dp"
             android:text="Gerar Relatório"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:icon="@drawable/ic_gerar_relatorio"
             app:iconGravity="end"
-            app:iconTint="@color/black"/>
+            app:iconTint="@color/black" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
