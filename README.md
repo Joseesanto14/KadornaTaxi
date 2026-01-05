@@ -15,3 +15,6 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Android.
 - Java.
 - XML.
+
+## Estado atual do projeto
+Atualmente o projeto conta com navegação funcional entre as telas propostas. Persistência e relatórios ainda em desenvolvimento.
