@@ -27,7 +27,6 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="Solicitação de Taxi"
-        android:textAppearance="@style/titulo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ic_kadorna" />
@@ -54,7 +53,6 @@
         android:layout_marginTop="24dp"
         android:gravity="center_vertical"
         android:text="Origem"
-        android:textAppearance="@style/sobre_campo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linha" />
 
@@ -95,8 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Data"
-                android:textAppearance="@style/sobre_campo" />
+                android:text="Data" />
 
             <EditText
                 android:id="@+id/edDataUm"
@@ -107,9 +104,9 @@
                 android:hint="Ex: Bofete"
                 android:inputType="date"
                 android:textAlignment="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/origem" />
+                app:layout_constraintStart_toStartOf="parent">
 
+            </EditText>
         </LinearLayout>
 
         <LinearLayout
@@ -122,8 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="27dp"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Hora"
-                android:textAppearance="@style/sobre_campo" />
+                android:text="Hora" />
 
             <EditText
                 android:id="@+id/edHoraUm"
@@ -151,7 +147,6 @@
         android:layout_marginTop="24dp"
         android:gravity="center_vertical"
         android:text="Destino"
-        android:textAppearance="@style/sobre_campo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearDataHora" />
 
@@ -168,5 +163,7 @@
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/destino" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
