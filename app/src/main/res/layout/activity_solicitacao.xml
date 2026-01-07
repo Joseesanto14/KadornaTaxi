@@ -13,24 +13,49 @@
         android:layout_width="163dp"
         android:layout_height="135dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="37dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/ic_kadorna"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/txttitulo"
-        android:layout_width="235dp"
-        android:layout_height="30dp"
-        android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="false"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="Solicitação de Taxi"
-        app:layout_constraintEnd_toEndOf="parent"
+    <EditText
+        android:id="@+id/edDestino"
+        android:layout_width="366dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/campo"
+        android:ems="10"
+        android:hint="Ex: Botucatu"
+        android:inputType="text"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ic_kadorna" />
+        app:layout_constraintTop_toBottomOf="@+id/destino" />
+
+    <TextView
+        android:id="@+id/destino"
+        android:layout_width="366dp"
+        android:layout_height="27dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
+        android:gravity="center_vertical"
+        android:text="Destino"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearDataHora" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:onClick="voltarMenu"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_media_rew" />
 
     <View
         android:id="@+id/linha"
@@ -38,48 +63,22 @@
         android:layout_height="2dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="8dp"
         android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txttitulo" />
-
-    <TextView
-        android:id="@+id/origem"
-        android:layout_width="366dp"
-        android:layout_height="27dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:gravity="center_vertical"
-        android:text="Origem"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linha" />
-
-    <EditText
-        android:id="@+id/edOrigem"
-        android:layout_width="366dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="1dp"
-        android:padding="10dp"
-        android:background="@drawable/campo"
-        android:ems="10"
-        android:hint="Ex: Bofete"
-        android:inputType="text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/origem" />
 
     <LinearLayout
         android:id="@+id/linearDataHora"
         android:layout_width="366dp"
         android:layout_height="69dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="24dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edOrigem">
 
@@ -97,7 +96,7 @@
                 android:text="Data" />
 
             <EditText
-                android:id="@+id/edDataUm"
+                android:id="@+id/edDataOrigem"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/campo"
@@ -123,7 +122,7 @@
                 android:text="Hora" />
 
             <EditText
-                android:id="@+id/edHoraUm"
+                android:id="@+id/edHoraOrigem"
                 android:layout_width="match_parent"
                 android:layout_height="42dp"
                 android:background="@drawable/campo"
@@ -139,46 +138,48 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/destino"
+        android:id="@+id/origem"
         android:layout_width="366dp"
         android:layout_height="27dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:gravity="center_vertical"
-        android:text="Destino"
+        android:text="Origem"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearDataHora" />
+        app:layout_constraintTop_toBottomOf="@+id/linha" />
 
     <EditText
-        android:id="@+id/edDestino"
+        android:id="@+id/edOrigem"
         android:layout_width="366dp"
         android:layout_height="42dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="1dp"
-        android:padding="10dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/campo"
         android:ems="10"
-        android:hint="Ex: Botucatu"
+        android:hint="Ex: Bofete"
         android:inputType="text"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/destino" />
+        app:layout_constraintTop_toBottomOf="@+id/origem" />
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="367dp"
-        android:layout_height="87dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="19dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edDestino">
 
         <LinearLayout
             android:layout_width="181dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -188,7 +189,7 @@
                 android:text="Data" />
 
             <EditText
-                android:id="@+id/editTextText2"
+                android:id="@+id/edDataDestino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -198,7 +199,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -208,7 +209,7 @@
                 android:text="Hora" />
 
             <EditText
-                android:id="@+id/editTextText"
+                android:id="@+id/edHoraDestino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -218,14 +219,50 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton2"
+    <TextView
+        android:id="@+id/txttitulo"
+        android:layout_width="235dp"
+        android:layout_height="30dp"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="false"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="Solicitação de Taxi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ic_kadorna" />
+
+    <Button
+        android:id="@+id/btGerarViagem"
+        android:layout_width="193dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginBottom="16dp"
+        android:onClick="gerarViagem"
+        android:text="Gerar Viagem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="voltarMenu"
-        app:srcCompat="@android:drawable/ic_media_rew"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:text="Justificativa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <EditText
+        android:id="@+id/edJustificativa"
+        android:layout_width="370dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="24dp"
+        android:ems="10"
+        android:hint="Ex: Levar funcionário"
+        android:inputType="text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
