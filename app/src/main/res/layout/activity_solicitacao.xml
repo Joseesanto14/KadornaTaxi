@@ -244,7 +244,7 @@
         android:layout_height="52dp"
         android:layout_marginStart="108dp"
         android:layout_marginBottom="16dp"
-        android:onClick="gerarViagem"
+        android:onClick="salvarViagemRepository"
         android:text="Gerar Viagem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
