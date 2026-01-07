@@ -18,7 +18,6 @@ import com.example.kadornataxi.repository.ViagemRepository;
 import java.util.List;
 
 public class ViagensActivity extends AppCompatActivity {
-    List<Viagem> viagens;
     TextView edViagens;
 
     @Override
@@ -34,21 +33,18 @@ public class ViagensActivity extends AppCompatActivity {
         edViagens = findViewById(R.id.edViagens);
         edViagens.setText("");
 
-//        viagens = ViagemRepository.getViagens();
+        exibirViagens();
+    }
+    public void voltarMenu(View view){
+        finish();
+    }
 
-//        for(Viagem viagem : viagens){
-//            edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
-//        }
-
+    private void exibirViagens(){
         for(String mes : ViagemRepository.getViagensPorMes().keySet()) {
             edViagens.setText(edViagens.getText().toString() + mes + ":\n");
             for(Viagem viagem : ViagemRepository.getViagensPorMes().get(mes)) {
                 edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
-                }
+            }
         }
-
-    }
-    public void voltarMenu(View view){
-        finish();
     }
 }

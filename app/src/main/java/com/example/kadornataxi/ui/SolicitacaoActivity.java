@@ -3,6 +3,7 @@ package com.example.kadornataxi.ui;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,27 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        inicializarViews();
+    }
+
+    public void salvarViagemRepository(View view){
+        Viagem viagem = criarViagemObjeto();
+        ViagemRepository.getViagensPorMes()
+                .computeIfAbsent(viagem.getRecorteViagem(), k -> new ArrayList<>());
+        ViagemRepository.getViagensPorMes().get(viagem.getRecorteViagem()).add(viagem);
+        mensagemSucesso("Viagem criada com sucesso!");
+    }
+
+private Viagem criarViagemObjeto(){
+    Viagem viagem = new Viagem(edOrigem.getText().toString(),
+            edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
+            edDestino.getText().toString(), edDataDestino.getText().toString(),
+            edHoraDestino.getText().toString(), edJustificativa.getText().toString());
+
+    return viagem;
+}
+
+    private void inicializarViews(){
         edOrigem = findViewById(R.id.edOrigem);
         edDataOrigem = findViewById(R.id.edDataOrigem);
         edHoraOrigem = findViewById(R.id.edHoraOrigem);
@@ -39,20 +61,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edJustificativa = findViewById(R.id.edJustificativa);
     }
 
-    public void gerarViagem(View view){
-        Viagem viagem = new Viagem(edOrigem.getText().toString(),
-                edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
-                edDestino.getText().toString(), edDataDestino.getText().toString(),
-                edHoraDestino.getText().toString(), edJustificativa.getText().toString());
-//        ViagemRepository.adicionarViagem(viagem);
-//        ViagemRepository.listarViagens();
-
-        String recorte = viagem.getDataDestino().substring(3,10);
-        System.out.println("Recorte: " + recorte);
-        ViagemRepository.getViagensPorMes()
-                .computeIfAbsent(recorte, k -> new ArrayList<>());
-        ViagemRepository.getViagensPorMes().get(recorte).add(viagem);
-        System.out.println("Adicionado viagem: " + viagem);
+    private void mensagemSucesso(String mensagem){
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
     }
 
     public void voltarMenu(View view){
