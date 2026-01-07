@@ -14,6 +14,9 @@ import com.example.kadornataxi.R;
 import com.example.kadornataxi.model.Viagem;
 import com.example.kadornataxi.repository.ViagemRepository;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDataDestino, edHoraDestino, edJustificativa;
 
@@ -34,8 +37,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edDataDestino = findViewById(R.id.edDataDestino);
         edHoraDestino = findViewById(R.id.edHoraDestino);
         edJustificativa = findViewById(R.id.edJustificativa);
-
-        ViagemRepository.listarViagens();
     }
 
     public void gerarViagem(View view){
@@ -43,8 +44,15 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
                 edDestino.getText().toString(), edDataDestino.getText().toString(),
                 edHoraDestino.getText().toString(), edJustificativa.getText().toString());
-        ViagemRepository.adicionarViagem(viagem);
-        ViagemRepository.listarViagens();
+//        ViagemRepository.adicionarViagem(viagem);
+//        ViagemRepository.listarViagens();
+
+        String recorte = viagem.getDataDestino().substring(3,10);
+        System.out.println("Recorte: " + recorte);
+        ViagemRepository.getViagensPorMes()
+                .computeIfAbsent(recorte, k -> new ArrayList<>());
+        ViagemRepository.getViagensPorMes().get(recorte).add(viagem);
+        System.out.println("Adicionado viagem: " + viagem);
     }
 
     public void voltarMenu(View view){

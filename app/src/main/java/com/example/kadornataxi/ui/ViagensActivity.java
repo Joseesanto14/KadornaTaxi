@@ -34,10 +34,17 @@ public class ViagensActivity extends AppCompatActivity {
         edViagens = findViewById(R.id.edViagens);
         edViagens.setText("");
 
-        viagens = ViagemRepository.getViagens();
+//        viagens = ViagemRepository.getViagens();
 
-        for(Viagem viagem : viagens){
-            edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
+//        for(Viagem viagem : viagens){
+//            edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
+//        }
+
+        for(String mes : ViagemRepository.getViagensPorMes().keySet()) {
+            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
+            for(Viagem viagem : ViagemRepository.getViagensPorMes().get(mes)) {
+                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
+                }
         }
 
     }
