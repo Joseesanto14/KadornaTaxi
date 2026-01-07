@@ -16,5 +16,16 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Java.
 - XML.
 
+---
+
 ## Estado atual do projeto
-Atualmente o projeto conta com navegação funcional entre as telas propostas. Persistência e relatórios ainda em desenvolvimento.
+
+### Atualmente o projeto conta com: 
+
+- Navegação funcional entre as telas propostas. 
+- Persistência na memória enquanto o app está aberto.
+- Criação de viagens por meio da SolicitacaoActivity. 
+
+### Em desenvolvimento:
+- Exibição de dados de viagens na tela.
+- Persistência em banco de dados.
