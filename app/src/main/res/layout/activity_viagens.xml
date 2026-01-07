@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ViagensActivity">
+    tools:context=".ui.ViagensActivity">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -42,9 +42,16 @@
         app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent">
 
+        <TextView
+            android:id="@+id/edViagens"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="nada" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="181dp" />
+
     </LinearLayout>
 
     <ImageButton

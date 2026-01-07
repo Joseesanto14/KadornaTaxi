@@ -1,4 +1,4 @@
-package com.example.kadornataxi;
+package com.example.kadornataxi.ui;
 
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.kadornataxi.R;
 import com.example.kadornataxi.model.Viagem;
 import com.example.kadornataxi.repository.ViagemRepository;
 

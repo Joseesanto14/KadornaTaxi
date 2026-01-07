@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KadornaTaxi">
         <activity
-            android:name=".GerarRelatorioActivity"
+            android:name=".ui.GerarRelatorioActivity"
             android:exported="false" />
         <activity
-            android:name=".ViagensActivity"
+            android:name=".ui.ViagensActivity"
             android:exported="false" />
         <activity
-            android:name=".SolicitacaoActivity"
+            android:name=".ui.SolicitacaoActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
