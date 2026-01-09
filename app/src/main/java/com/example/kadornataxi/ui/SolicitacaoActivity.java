@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -43,7 +44,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
         mensagemSucesso("Viagem criada com sucesso!");
     }
 
-private Viagem criarViagemObjeto(){
+    @NonNull
+    private Viagem criarViagemObjeto(){
     Viagem viagem = new Viagem(edOrigem.getText().toString(),
             edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
             edDestino.getText().toString(), edDataDestino.getText().toString(),

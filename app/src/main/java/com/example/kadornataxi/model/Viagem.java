@@ -49,7 +49,7 @@ public class Viagem implements Serializable {
     }
 
     public String getRecorteViagem(){
-        String recorte = this.isViagemSeparada() ? this.dataOrigem.substring(3,10) + " EXTRA" : this.dataOrigem.substring(3,10);
+        String recorte = this.isViagemSeparada() ? this.dataOrigem.substring(3,10) + " TRECHO 2" : this.dataOrigem.substring(3,10);
         return recorte;
 
     }

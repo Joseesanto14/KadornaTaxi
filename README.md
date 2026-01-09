@@ -26,7 +26,8 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Persistência na memória enquanto o app está aberto.
 - Criação de viagens por meio da SolicitacaoActivity.
 - Exibição de todas as viagens num TextView(temporário) separadas por mês/ano.
-- Filtro para visualizar todas as viagens ou somente viagens separadas por critério específico
+- Filtro para visualizar todas as viagens ou somente viagens separadas por critério específico.
 
 ### Em desenvolvimento:
 - Persistência em banco de dados.
+- Criação de relatórios de viagens em pdf.

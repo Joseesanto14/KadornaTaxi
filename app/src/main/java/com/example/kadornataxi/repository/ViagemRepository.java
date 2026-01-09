@@ -29,7 +29,7 @@ public class ViagemRepository {
     public static Map<String, List<Viagem>> getTodasViagensSeparadas(){
         HashMap<String, List<Viagem>> viagensSeparadas = new HashMap<>();
         for(String mes : ViagemRepository.getTodasViagens().keySet()){
-            if(mes.contains("EXTRA")){
+            if(mes.contains("TRECHO 2")){
                 viagensSeparadas.computeIfAbsent(mes, k -> ViagemRepository.getViagensDoMes(mes));
             }
         }
