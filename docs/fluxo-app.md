@@ -36,4 +36,5 @@ botão para gerar relatório.
 
 ## Tela Gerar Relatório (GerarRelatorioActivity)
 Tela possuindo um campo que ao ser clicado mostra uma lista com os meses salvos e com viagens para seleção,
-logo abaixo um botão para gerar relatório com base no mês selecionado.
+logo abaixo um botão para gerar relatório com base no mês selecionado. 
+O relatório é gerado em pdf e poderá ser compartilhado entre apps e salvo no armazenamento do dispositivo.

@@ -35,7 +35,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="374dp"
         android:layout_height="530dp"
-        android:layout_marginBottom="1dp"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,6 +47,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="nada" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btTodasViagens"
+                android:layout_width="179dp"
+                android:layout_height="wrap_content"
+                android:onClick="btExibirTodasViagens"
+                android:text="Todas Viagens" />
+
+            <Button
+                android:id="@+id/btViagensSeparadas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="btViagensSeparadas"
+                android:text="Viagens Separadas" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"

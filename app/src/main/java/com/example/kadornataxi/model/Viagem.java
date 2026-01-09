@@ -3,19 +3,21 @@ package com.example.kadornataxi.model;
 import java.io.Serializable;
 
 public class Viagem implements Serializable {
-    private String origem;
-    private String dataOrigem;
-    private String horaOrigem;
-    private String destino;
-    private String dataDestino;
-    private String horaDestino;
-    private String justificativa;
-    private int valorViagem = 62; //terá mascara que coloca virgula automaticamente igual maquina de cartão.
-    private String motorista = "Marcelo";
-    private float horaEspera = 0;
+    private final String origem;
+    private final String dataOrigem;
+    private final String horaOrigem;
+    private final String destino;
+    private final String dataDestino;
+    private final String horaDestino;
+    private final String justificativa;
+    private final int valorViagem = 62; //terá mascara que coloca virgula automaticamente igual maquina de cartão.
+    private final String motorista = "Marcelo";
+    private final float horaEspera = 0;
+    private final boolean viagemSeparada;
 
 
-    public Viagem(String origem, String dataOrigem, String horaOrigem, String destino, String dataDestino, String horaDestino, String justificativa) {
+    public Viagem(String origem, String dataOrigem, String horaOrigem, String destino,
+                  String dataDestino, String horaDestino, String justificativa, boolean viagemSeparada) {
         this.origem = origem;
         this.dataOrigem = dataOrigem;
         this.horaOrigem = horaOrigem;
@@ -23,6 +25,7 @@ public class Viagem implements Serializable {
         this.dataDestino = dataDestino;
         this.horaDestino = horaDestino;
         this.justificativa = justificativa;
+        this.viagemSeparada = viagemSeparada;
     }
 
     public String getOrigem() {
@@ -46,7 +49,8 @@ public class Viagem implements Serializable {
     }
 
     public String getRecorteViagem(){
-        return this.dataOrigem.substring(3,10);
+        String recorte = this.isViagemSeparada() ? this.dataOrigem.substring(3,10) + " EXTRA" : this.dataOrigem.substring(3,10);
+        return recorte;
 
     }
 
@@ -68,6 +72,10 @@ public class Viagem implements Serializable {
 
     public float getHoraEspera() {
         return horaEspera;
+    }
+
+    public boolean isViagemSeparada() {
+        return viagemSeparada;
     }
 
     @Override

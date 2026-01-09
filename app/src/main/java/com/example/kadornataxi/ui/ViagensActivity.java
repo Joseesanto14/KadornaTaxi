@@ -2,7 +2,6 @@ package com.example.kadornataxi.ui;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +15,8 @@ import com.example.kadornataxi.model.Viagem;
 import com.example.kadornataxi.repository.ViagemRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class ViagensActivity extends AppCompatActivity {
     TextView edViagens;
@@ -40,11 +41,30 @@ public class ViagensActivity extends AppCompatActivity {
     }
 
     private void exibirViagens(){
-        for(String mes : ViagemRepository.getViagensPorMes().keySet()) {
+        edViagens.setText("");
+        for(String mes : ViagemRepository.getTodasViagens().keySet()) {
             edViagens.setText(edViagens.getText().toString() + mes + ":\n");
-            for(Viagem viagem : ViagemRepository.getViagensPorMes().get(mes)) {
+            for(Viagem viagem : Objects.requireNonNull(ViagemRepository.getTodasViagens().get(mes))) {
                 edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
             }
         }
+    }
+
+    private void exibirViagens(Map<String, List<Viagem>> viagens){
+        edViagens.setText("");
+        for(String mes : viagens.keySet()) {
+            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
+            for(Viagem viagem : Objects.requireNonNull(viagens.get(mes))) {
+                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
+            }
+        }
+    }
+    public void btViagensSeparadas(View view){
+        exibirViagens(ViagemRepository.getTodasViagensSeparadas());
+    }
+
+    public void btExibirTodasViagens(View view){
+        exibirViagens();
+
     }
 }

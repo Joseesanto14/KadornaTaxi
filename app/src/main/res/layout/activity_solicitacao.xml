@@ -23,8 +23,8 @@
         android:id="@+id/edDestino"
         android:layout_width="366dp"
         android:layout_height="42dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
         android:background="@drawable/campo"
         android:ems="10"
         android:hint="Ex: Botucatu"
@@ -34,14 +34,94 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/destino" />
 
+    <EditText
+        android:id="@+id/edJustificativa"
+        android:layout_width="370dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="4dp"
+        android:ems="10"
+        android:hint="Ex: Levar funcionário"
+        android:inputType="text"
+        android:text="Levar funcionário"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="367dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="19dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edDestino">
+
+        <LinearLayout
+            android:layout_width="181dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Data" />
+
+            <EditText
+                android:id="@+id/edDataDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="05/01/2026"
+                android:inputType="text"
+                android:text="05/01/2026" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hora" />
+
+            <EditText
+                android:id="@+id/edHoraDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Ex: 12:50"
+                android:inputType="text"
+                android:text="12:50" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:text="Justificativa"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
     <TextView
         android:id="@+id/destino"
         android:layout_width="366dp"
         android:layout_height="27dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="Destino"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,63 +248,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/origem" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="367dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="19dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edDestino">
-
-        <LinearLayout
-            android:layout_width="181dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Data" />
-
-            <EditText
-                android:id="@+id/edDataDestino"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="05/01/2026"
-                android:inputType="text"
-                android:text="05/01/2026" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Hora" />
-
-            <EditText
-                android:id="@+id/edHoraDestino"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Ex: 12:50"
-                android:inputType="text"
-                android:text="12:50" />
-
-        </LinearLayout>
-    </LinearLayout>
-
     <TextView
         android:id="@+id/txttitulo"
         android:layout_width="235dp"
@@ -242,34 +265,22 @@
         android:id="@+id/btGerarViagem"
         android:layout_width="193dp"
         android:layout_height="52dp"
-        android:layout_marginStart="108dp"
+        android:layout_marginStart="192dp"
         android:layout_marginBottom="16dp"
         android:onClick="salvarViagemRepository"
         android:text="Gerar Viagem"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView6"
+    <CheckBox
+        android:id="@+id/checkViagemSeparada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="12dp"
-        android:text="Justificativa"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
-
-    <EditText
-        android:id="@+id/edJustificativa"
-        android:layout_width="370dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="24dp"
-        android:ems="10"
-        android:hint="Ex: Levar funcionário"
-        android:inputType="text"
-        android:text="Levar funcionário"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:text="Viagem Separada"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

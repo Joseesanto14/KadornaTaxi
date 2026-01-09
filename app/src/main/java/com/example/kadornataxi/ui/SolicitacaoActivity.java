@@ -2,6 +2,7 @@ package com.example.kadornataxi.ui;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import java.util.Objects;
 
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDataDestino, edHoraDestino, edJustificativa;
+    CheckBox checkViagemSeparada;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +39,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     public void salvarViagemRepository(View view){
         Viagem viagem = criarViagemObjeto();
-        ViagemRepository.getViagensPorMes()
-                .computeIfAbsent(viagem.getRecorteViagem(), k -> new ArrayList<>());
-        ViagemRepository.getViagensPorMes().get(viagem.getRecorteViagem()).add(viagem);
+        ViagemRepository.addViagem(viagem);
         mensagemSucesso("Viagem criada com sucesso!");
     }
 
@@ -46,7 +47,8 @@ private Viagem criarViagemObjeto(){
     Viagem viagem = new Viagem(edOrigem.getText().toString(),
             edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
             edDestino.getText().toString(), edDataDestino.getText().toString(),
-            edHoraDestino.getText().toString(), edJustificativa.getText().toString());
+            edHoraDestino.getText().toString(), edJustificativa.getText().toString(),
+            checkViagemSeparada.isChecked());
 
     return viagem;
 }
@@ -59,6 +61,7 @@ private Viagem criarViagemObjeto(){
         edDataDestino = findViewById(R.id.edDataDestino);
         edHoraDestino = findViewById(R.id.edHoraDestino);
         edJustificativa = findViewById(R.id.edJustificativa);
+        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
     }
 
     private void mensagemSucesso(String mensagem){
