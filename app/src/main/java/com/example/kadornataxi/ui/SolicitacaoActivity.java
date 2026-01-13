@@ -38,24 +38,24 @@ public class SolicitacaoActivity extends AppCompatActivity {
         inicializarViews();
     }
 
-    public void salvarViagemRepository(View view){
+    public void salvarViagemRepository(View view) {
         Viagem viagem = criarViagemObjeto();
         ViagemRepository.addViagem(viagem);
         mensagemSucesso("Viagem criada com sucesso!");
     }
 
     @NonNull
-    private Viagem criarViagemObjeto(){
-    Viagem viagem = new Viagem(edOrigem.getText().toString(),
-            edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
-            edDestino.getText().toString(), edDataDestino.getText().toString(),
-            edHoraDestino.getText().toString(), edJustificativa.getText().toString(),
-            checkViagemSeparada.isChecked());
+    private Viagem criarViagemObjeto() {
+        Viagem viagem = new Viagem(edOrigem.getText().toString(),
+                edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
+                edDestino.getText().toString(), edDataDestino.getText().toString(),
+                edHoraDestino.getText().toString(), edJustificativa.getText().toString(),
+                checkViagemSeparada.isChecked());
 
-    return viagem;
-}
+        return viagem;
+    }
 
-    private void inicializarViews(){
+    private void inicializarViews() {
         edOrigem = findViewById(R.id.edOrigem);
         edDataOrigem = findViewById(R.id.edDataOrigem);
         edHoraOrigem = findViewById(R.id.edHoraOrigem);
@@ -66,11 +66,11 @@ public class SolicitacaoActivity extends AppCompatActivity {
         checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
     }
 
-    private void mensagemSucesso(String mensagem){
+    private void mensagemSucesso(String mensagem) {
         Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
     }
 
-    public void voltarMenu(View view){
+    public void voltarMenu(View view) {
         finish();
     }
 }

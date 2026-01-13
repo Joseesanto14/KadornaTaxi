@@ -11,6 +11,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
+import com.example.kadornataxi.database.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
     }
     public void irSolicitacaoAcitivity(View view){
         Intent intent = new Intent(this, SolicitacaoActivity.class);
