@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.kadornataxi.database.DatabaseHelper;
 import com.example.kadornataxi.model.Viagem;
@@ -16,11 +17,11 @@ public class ViagemDAO {
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
 
-    public void open() {
+    private void open() {
         database = dbHelper.getWritableDatabase();
     }
 
-    public void close() {
+    private void close() {
         dbHelper.close();
     }
 
@@ -31,7 +32,14 @@ public class ViagemDAO {
 
     // CREATE - Inserir um novo registro (viagem)
 
-    public long insert(Viagem viagem) {
+    public void inserirNoDatabase(Viagem viagem) {
+        open();
+
+        Log.d("ViagemDAO", "Viagem inserida com o ID: " + insert(viagem));
+
+        close();
+    }
+    private long insert(Viagem viagem) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_ORIGEM, viagem.getOrigem());
         values.put(DatabaseHelper.COLUMN_DATA_ORIGEM, viagem.getDataOrigem());

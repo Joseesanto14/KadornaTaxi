@@ -43,10 +43,14 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
         inicializarViews();
 
-        dao.open();
-        dao.close();
+
     }
 
+    public void salvarViagemDb(View view) {
+        Viagem viagem = criarViagemObjeto();
+        dao.inserirNoDatabase(viagem);
+        mensagemSucesso("Viagem criada com sucesso!");
+    }
     public void salvarViagemRepository(View view) {
         Viagem viagem = criarViagemObjeto();
         ViagemRepository.addViagem(viagem);
