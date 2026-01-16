@@ -24,19 +24,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_VIAGEM_SEPARADA = "viagem_separada";
 
     public static final String CREATE_TABLE_VIAGEM = "CREATE TABLE " + TABLE_VIAGEM + "(" +
-            COLUMN_ID + "INTEGER PRIMARY KEY AUTOINCREMENT," +
-            COLUMN_ORIGEM + " TEXT," +
-            COLUMN_DATA_ORIGEM + " TEXT," +
-            COLUMN_HORA_ORIGEM + " TEXT," +
-            COLUMN_DESTINO + " TEXT," +
-            COLUMN_DATA_DESTINO + " TEXT," +
-            COLUMN_HORA_DESTINO + " TEXT," +
-            COLUMN_JUSTIFICATIVA + " TEXT," +
-            COLUMN_VALOR_VIAGEM + " INTEGER," +
-            COLUMN_MOTORISTA + " TEXT," +
-            COLUMN_HORA_ESPERA + " REAL," +
-            COLUMN_VALOR_HORA_ESPERA + " INTEGER," +
-            COLUMN_VIAGEM_SEPARADA + " INTEGER";
+            COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_ORIGEM + " TEXT, " +
+            COLUMN_DATA_ORIGEM + " TEXT, " +
+            COLUMN_HORA_ORIGEM + " TEXT, " +
+            COLUMN_DESTINO + " TEXT, " +
+            COLUMN_DATA_DESTINO + " TEXT, " +
+            COLUMN_HORA_DESTINO + " TEXT, " +
+            COLUMN_JUSTIFICATIVA + " TEXT, " +
+            COLUMN_VALOR_VIAGEM + " INTEGER, " +
+            COLUMN_MOTORISTA + " TEXT, " +
+            COLUMN_HORA_ESPERA + " REAL, " +
+            COLUMN_VALOR_HORA_ESPERA + " INTEGER, " +
+            COLUMN_VIAGEM_SEPARADA + " INTEGER" +
+            ");";
 
 
     public DatabaseHelper(Context context) {

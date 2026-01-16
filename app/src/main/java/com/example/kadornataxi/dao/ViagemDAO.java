@@ -16,11 +16,11 @@ public class ViagemDAO {
     private SQLiteDatabase database;
     private DatabaseHelper dbHelper;
 
-    private void open() {
+    public void open() {
         database = dbHelper.getWritableDatabase();
     }
 
-    private void close() {
+    public void close() {
         dbHelper.close();
     }
 

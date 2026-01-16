@@ -1,5 +1,6 @@
 package com.example.kadornataxi.ui;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -14,6 +15,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
+import com.example.kadornataxi.dao.ViagemDAO;
+import com.example.kadornataxi.database.DatabaseHelper;
 import com.example.kadornataxi.model.Viagem;
 import com.example.kadornataxi.repository.ViagemRepository;
 
@@ -23,6 +26,7 @@ import java.util.Objects;
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDataDestino, edHoraDestino, edJustificativa;
     CheckBox checkViagemSeparada;
+    ViagemDAO dao;
 
 
     @Override
@@ -35,7 +39,12 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        dao = new ViagemDAO(this);
+
         inicializarViews();
+
+        dao.open();
+        dao.close();
     }
 
     public void salvarViagemRepository(View view) {
