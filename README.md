@@ -31,3 +31,6 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 ### Em desenvolvimento:
 - Persistência em banco de dados.
 - Criação de relatórios de viagens em pdf.
+
+### Fluxo do app:
+[Fluxo de Execução](fluxo-app.md)
