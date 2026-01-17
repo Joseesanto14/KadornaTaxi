@@ -33,4 +33,4 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Criação de relatórios de viagens em pdf.
 
 ### Fluxo do app:
-[Fluxo de Execução](fluxo-app.md)
+[Fluxo de Execução](docs/fluxo-app.md)
