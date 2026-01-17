@@ -64,7 +64,7 @@ public class ViagemDAO {
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
                 null, null, null,
-                null, null, null);
+                null, null, DatabaseHelper.COLUMN_DATA_ORIGEM + " DESC");
 
         while (cursor.moveToNext()) {
             lista.add(cursorToViagem(cursor));
@@ -72,6 +72,20 @@ public class ViagemDAO {
         cursor.close();
 
         return lista;
+    }
+
+    public void getAllTest(){
+        open();
+
+        List<Viagem> viagens = getAll();
+
+        Log.d("TESTE_GET_ALL", "Total de viagens: " + viagens.size());
+
+        for (Viagem v : viagens) {
+            Log.d("TESTE_GET_ALL", v.toString());
+        }
+
+        close();
     }
 
     // UPTADE - atualizar os resgistros (viagem)
@@ -89,7 +103,11 @@ public class ViagemDAO {
     // DELETAR TODOS - remover todos os registros do banco de dados
 
     public int deleteAll() {
-        return 0;
+        open();
+        int linhasAfetadas = database.delete(DatabaseHelper.TABLE_VIAGEM, null, null);
+        close();
+
+        return linhasAfetadas;
     }
 
     // CONTAR TODOS OS REGISTROS

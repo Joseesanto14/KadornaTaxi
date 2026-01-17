@@ -43,6 +43,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
         inicializarViews();
 
+        dao.getAllTest();
 
     }
 
@@ -59,13 +60,12 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     @NonNull
     private Viagem criarViagemObjeto() {
-        Viagem viagem = new Viagem(edOrigem.getText().toString(),
-                edDataOrigem.getText().toString(), edHoraOrigem.getText().toString(),
+
+        return new Viagem(edOrigem.getText().toString(),
+                edDataOrigem.getText().toString().replace("/","-"), edHoraOrigem.getText().toString(),
                 edDestino.getText().toString(), edDataDestino.getText().toString(),
                 edHoraDestino.getText().toString(), edJustificativa.getText().toString(),
                 checkViagemSeparada.isChecked());
-
-        return viagem;
     }
 
     private void inicializarViews() {
