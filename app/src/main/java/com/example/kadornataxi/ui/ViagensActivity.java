@@ -32,39 +32,37 @@ public class ViagensActivity extends AppCompatActivity {
             return insets;
         });
         edViagens = findViewById(R.id.edViagens);
-        edViagens.setText("");
 
-        exibirViagens();
     }
     public void voltarMenu(View view){
         finish();
     }
 
-    private void exibirViagens(){
-        edViagens.setText("");
-        for(String mes : ViagemRepository.getTodasViagens().keySet()) {
-            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
-            for(Viagem viagem : Objects.requireNonNull(ViagemRepository.getTodasViagens().get(mes))) {
-                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
-            }
-        }
-    }
-
-    private void exibirViagens(Map<String, List<Viagem>> viagens){
-        edViagens.setText("");
-        for(String mes : viagens.keySet()) {
-            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
-            for(Viagem viagem : Objects.requireNonNull(viagens.get(mes))) {
-                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
-            }
-        }
-    }
-    public void btViagensSeparadas(View view){
-        exibirViagens(ViagemRepository.getTodasViagensSeparadas());
-    }
-
-    public void btExibirTodasViagens(View view){
-        exibirViagens();
-
-    }
+//    private void exibirViagens(){
+//        edViagens.setText("");
+//        for(String mes : ViagemRepository.getTodasViagens().keySet()) {
+//            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
+//            for(Viagem viagem : Objects.requireNonNull(ViagemRepository.getTodasViagens().get(mes))) {
+//                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
+//            }
+//        }
+//    }
+//
+//    private void exibirViagens(Map<String, List<Viagem>> viagens){
+//        edViagens.setText("");
+//        for(String mes : viagens.keySet()) {
+//            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
+//            for(Viagem viagem : Objects.requireNonNull(viagens.get(mes))) {
+//                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
+//            }
+//        }
+//    }
+//
+//    public void btViagensSeparadas(View view){
+//        exibirViagens(ViagemRepository.getTodasViagensSeparadas());
+//    }
+//
+//    public void btExibirTodasViagens(View view){
+//        exibirViagens();
+//    }
 }

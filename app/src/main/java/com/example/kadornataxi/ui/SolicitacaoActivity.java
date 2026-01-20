@@ -1,6 +1,5 @@
 package com.example.kadornataxi.ui;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,12 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.dao.ViagemDAO;
-import com.example.kadornataxi.database.DatabaseHelper;
 import com.example.kadornataxi.model.Viagem;
-import com.example.kadornataxi.repository.ViagemRepository;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDataDestino, edHoraDestino, edJustificativa;
@@ -39,9 +33,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        dao = new ViagemDAO(this);
 
-        inicializarViews();
+        inicializarObjetos();
 
         dao.getAllTest();
 
@@ -50,11 +43,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
     public void salvarViagemDb(View view) {
         Viagem viagem = criarViagemObjeto();
         dao.inserirNoDatabase(viagem);
-        mensagemSucesso("Viagem criada com sucesso!");
-    }
-    public void salvarViagemRepository(View view) {
-        Viagem viagem = criarViagemObjeto();
-        ViagemRepository.addViagem(viagem);
         mensagemSucesso("Viagem criada com sucesso!");
     }
 
@@ -68,7 +56,12 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 checkViagemSeparada.isChecked());
     }
 
-    private void inicializarViews() {
+    private void inicializarObjetos() {
+        viewBinding();
+        dao = new ViagemDAO(this);
+    }
+
+    private void viewBinding() {
         edOrigem = findViewById(R.id.edOrigem);
         edDataOrigem = findViewById(R.id.edDataOrigem);
         edHoraOrigem = findViewById(R.id.edHoraOrigem);
@@ -86,4 +79,11 @@ public class SolicitacaoActivity extends AppCompatActivity {
     public void voltarMenu(View view) {
         finish();
     }
+
+// Usado com o ViagemRepository como cache de viagens.
+//    public void salvarViagemRepository(View view) {
+//        Viagem viagem = criarViagemObjeto();
+//        ViagemRepository.addViagem(viagem);
+//        mensagemSucesso("Viagem criada com sucesso!");
+//    }
 }

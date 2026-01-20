@@ -97,7 +97,13 @@ public class ViagemDAO {
     // DELETE - remover um registro do banco de dados
 
     public int delete(long id) {
-        return 0;
+        open();
+        
+        int linhasAfetadas = database.delete(DatabaseHelper.TABLE_VIAGEM, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+
+        close();
+
+        return linhasAfetadas;
     }
 
     // DELETAR TODOS - remover todos os registros do banco de dados
@@ -157,7 +163,39 @@ public class ViagemDAO {
         return lista;
     }
 
-    private Viagem cursorToViagem(android.database.Cursor cursor) {
+    public List<Viagem> getViagensByPeriodo(String dataInicio, String dataFim) {
+        List<Viagem> lista = new ArrayList<>();
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
+                null, DatabaseHelper.COLUMN_DATA_ORIGEM + " BETWEEN ? AND ?",
+                new String[]{dataInicio, dataFim}, null, null, null);
+
+        while (cursor.moveToNext()) {
+            lista.add(cursorToViagem(cursor));
+        }
+
+        cursor.close();
+
+        return lista;
+    }
+
+    public List<Viagem> getViagensSeparadas(){
+        List<Viagem> lista = new ArrayList<>();
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM, null,
+                DatabaseHelper.COLUMN_VIAGEM_SEPARADA + " = 1", null,
+                null, null, null);
+
+        while (cursor.moveToNext()){
+            lista.add(cursorToViagem(cursor));
+        }
+
+        cursor.close();
+
+        return lista;
+        }
+
+    private Viagem cursorToViagem(Cursor cursor) {
         Viagem viagem = new Viagem();
 
         viagem.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.

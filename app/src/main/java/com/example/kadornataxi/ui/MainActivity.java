@@ -2,6 +2,7 @@ package com.example.kadornataxi.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +13,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.database.DatabaseHelper;
+
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,24 +28,20 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
+            DatabaseHelper dbHelper = new DatabaseHelper(this);
     }
     public void irSolicitacaoAcitivity(View view){
         Intent intent = new Intent(this, SolicitacaoActivity.class);
         startActivity(intent);
-
     }
 
     public void irViagensAcitivity(View view){
         Intent intent = new Intent(this, ViagensActivity.class);
         startActivity(intent);
-
     }
 
     public void irGerarRelatorioAcitivity(View view){
         Intent intent = new Intent(this, GerarRelatorioActivity.class);
         startActivity(intent);
-
     }
 }
