@@ -2,24 +2,30 @@ package com.example.kadornataxi.ui;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kadornataxi.R;
+import com.example.kadornataxi.adapter.MesViagensAdapter;
+import com.example.kadornataxi.dao.ViagemDAO;
+import com.example.kadornataxi.dto.MesViagens;
 import com.example.kadornataxi.model.Viagem;
-import com.example.kadornataxi.repository.ViagemRepository;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ViagensActivity extends AppCompatActivity {
-    TextView edViagens;
+    RecyclerView recyclerMeses;
+    MesViagensAdapter adapter;
+    ViagemDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,38 +37,36 @@ public class ViagensActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        edViagens = findViewById(R.id.edViagens);
+        recyclerMeses = findViewById(R.id.recyclerMeses);
+        recyclerMeses.setLayoutManager(new LinearLayoutManager(this));
 
+        carregarViagens();
+    }
+
+    private void carregarViagens() {
+        dao = new ViagemDAO(this);
+        List<Viagem> todas = dao.getAllOrdenadoPorDataDesc();
+
+        Map<String, List<Viagem>> viagensPorMes = new LinkedHashMap<>();
+
+        for(Viagem viagem : todas) {
+            String mesAno = viagem.getDataOrigem().substring(0, 7);
+
+            viagensPorMes
+                    .computeIfAbsent(mesAno, k -> new ArrayList<>())
+                    .add(viagem);
+        }
+
+        List<MesViagens> listaMeses = new ArrayList<>();
+
+        for (String mes : viagensPorMes.keySet()) {
+            listaMeses.add(new MesViagens(mes, viagensPorMes.get(mes)));
+        }
+
+        adapter = new MesViagensAdapter(listaMeses);
+        recyclerMeses.setAdapter(adapter);
     }
     public void voltarMenu(View view){
         finish();
     }
-
-//    private void exibirViagens(){
-//        edViagens.setText("");
-//        for(String mes : ViagemRepository.getTodasViagens().keySet()) {
-//            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
-//            for(Viagem viagem : Objects.requireNonNull(ViagemRepository.getTodasViagens().get(mes))) {
-//                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
-//            }
-//        }
-//    }
-//
-//    private void exibirViagens(Map<String, List<Viagem>> viagens){
-//        edViagens.setText("");
-//        for(String mes : viagens.keySet()) {
-//            edViagens.setText(edViagens.getText().toString() + mes + ":\n");
-//            for(Viagem viagem : Objects.requireNonNull(viagens.get(mes))) {
-//                edViagens.setText(edViagens.getText().toString() + viagem.toString() + "\n");
-//            }
-//        }
-//    }
-//
-//    public void btViagensSeparadas(View view){
-//        exibirViagens(ViagemRepository.getTodasViagensSeparadas());
-//    }
-//
-//    public void btExibirTodasViagens(View view){
-//        exibirViagens();
-//    }
 }

@@ -1,6 +1,5 @@
 package com.example.kadornataxi.dao;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -59,17 +58,46 @@ public class ViagemDAO {
 
     // READ - Listar todos os registros (viagens)
 
-    public List<Viagem> getAll() {
+    public List<Viagem> getAllOrdenadoPorDataDesc() {
+        open();
+
         List<Viagem> lista = new ArrayList<>();
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
                 null, null, null,
                 null, null, DatabaseHelper.COLUMN_DATA_ORIGEM + " DESC");
 
-        while (cursor.moveToNext()) {
-            lista.add(cursorToViagem(cursor));
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(cursorToViagem(cursor));
+            } while (cursor.moveToNext());
         }
+
         cursor.close();
+
+        close();
+
+        return lista;
+    }
+
+    public List<Viagem> getAll() {
+        open();
+
+        List<Viagem> lista = new ArrayList<>();
+
+        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
+                null, null, null,
+                null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(cursorToViagem(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        close();
 
         return lista;
     }
@@ -77,7 +105,7 @@ public class ViagemDAO {
     public void getAllTest(){
         open();
 
-        List<Viagem> viagens = getAll();
+        List<Viagem> viagens = getAllOrdenadoPorDataDesc();
 
         Log.d("TESTE_GET_ALL", "Total de viagens: " + viagens.size());
 
