@@ -23,14 +23,13 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 ### Atualmente o projeto conta com: 
 
 - Navegação funcional entre as telas propostas. 
-- Persistência na memória enquanto o app está aberto.
-- Criação de viagens por meio da SolicitacaoActivity.
-- Exibição de todas as viagens num TextView(temporário) separadas por mês/ano.
-- Filtro para visualizar todas as viagens ou somente viagens separadas por critério específico.
+- Criação de viagens por meio da Tela de Solicitação de Viagens(SolicitacaoActivity).
+- Persistência em Banco de Dados.
+- Exibição de todas as viagens gravadas separadas por mês/ano.
 
 ### Em desenvolvimento:
-- Persistência em banco de dados.
 - Criação de relatórios de viagens em pdf.
+- Filtragem de viagens para exibição.
 
 ### Fluxo do app:
 [Fluxo de Execução](docs/fluxo-app.md)
