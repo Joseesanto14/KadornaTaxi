@@ -48,12 +48,24 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     @NonNull
     private Viagem criarViagemObjeto() {
-
         return new Viagem(edOrigem.getText().toString(),
-                edDataOrigem.getText().toString().replace("/","-"), edHoraOrigem.getText().toString(),
-                edDestino.getText().toString(), edDataDestino.getText().toString(),
-                edHoraDestino.getText().toString(), edJustificativa.getText().toString(),
+                formatarDataISO8601(edDataOrigem.getText().toString()),
+                edHoraOrigem.getText().toString(),
+                edDestino.getText().toString(),
+                formatarDataISO8601(edDataDestino.getText().toString()),
+                edHoraDestino.getText().toString(),
+                edJustificativa.getText().toString(),
                 checkViagemSeparada.isChecked());
+    }
+
+    private String formatarDataISO8601(String data) {
+        data = edDataOrigem.getText().toString();
+        String[] partes = data.split("/");
+        String dia = partes[0];
+        String mes = partes[1];
+        String ano = partes[2];
+
+        return ano + "-" + mes + "-" + dia;
     }
 
     private void inicializarObjetos() {

@@ -34,19 +34,18 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="374dp"
-        android:layout_height="530dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="400dp"
+        android:layout_marginBottom="76dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintHorizontal_bias="0.486"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:id="@+id/edViagens"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMeses"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="nada" />
+            android:layout_height="350dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -67,10 +66,6 @@
                 android:text="Viagens Separadas" />
 
         </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="181dp" />
 
     </LinearLayout>
 
