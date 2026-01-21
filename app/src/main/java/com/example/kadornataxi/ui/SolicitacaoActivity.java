@@ -35,9 +35,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
         });
 
         inicializarObjetos();
-
-        dao.getAllTest();
-
     }
 
     public void salvarViagemDb(View view) {

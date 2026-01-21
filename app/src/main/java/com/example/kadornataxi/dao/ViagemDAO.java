@@ -102,23 +102,11 @@ public class ViagemDAO {
         return lista;
     }
 
-    public void getAllTest(){
-        open();
-
-        List<Viagem> viagens = getAllOrdenadoPorDataDesc();
-
-        Log.d("TESTE_GET_ALL", "Total de viagens: " + viagens.size());
-
-        for (Viagem v : viagens) {
-            Log.d("TESTE_GET_ALL", v.toString());
-        }
-
-        close();
-    }
-
     // UPTADE - atualizar os resgistros (viagem)
 
     public int update(Viagem viagem) {
+        open();
+        close();
         return 0;
     }
 
@@ -153,10 +141,13 @@ public class ViagemDAO {
     // BUSCAR UM REGISTRO USANDO OUTROS DADOS
 
     public Viagem getViagemById(long id) {
+        open();
+        close();
         return null;
     }
 
     public List<Viagem> getViagemByLocal(String local) {
+        open();
         List<Viagem> lista = new ArrayList<>();
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
@@ -170,11 +161,12 @@ public class ViagemDAO {
         }
 
         cursor.close();
-
+        close();
         return lista;
     }
 
     public List<Viagem> getViagemByDestino(String destino) {
+        open();
         List<Viagem> lista = new ArrayList<>();
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
@@ -187,7 +179,7 @@ public class ViagemDAO {
         }
 
         cursor.close();
-
+        close();
         return lista;
     }
 

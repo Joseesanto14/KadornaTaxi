@@ -54,10 +54,10 @@ public class Viagem implements Serializable {
     public Viagem(String origem, String dataOrigem, String horaOrigem, String destino,
                   String dataDestino, String horaDestino, String justificativa, boolean viagemSeparada) {
         this.origem = origem;
-        this.dataOrigem = dataOrigem.replace("/","-");
+        this.dataOrigem = dataOrigem;
         this.horaOrigem = horaOrigem;
         this.destino = destino;
-        this.dataDestino = dataDestino.replace("/","-");
+        this.dataDestino = dataDestino;
         this.horaDestino = horaDestino;
         this.justificativa = justificativa;
         this.viagemSeparada = viagemSeparada;
