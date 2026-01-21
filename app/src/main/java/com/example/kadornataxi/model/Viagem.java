@@ -14,42 +14,13 @@ public class Viagem implements Serializable {
     private String dataDestino;
     private String horaDestino;
     private String justificativa;
-    private int valorViagem = 62; //terá mascara que coloca virgula automaticamente igual maquina de cartão.
+    private float valorViagem = 6766; //1,99 o km. Terá mascara que coloca virgula automaticamente igual maquina de cartão.
     private String motorista = "Marcelo";
     private float horaEspera = 0;
-    private int valorHoraEspera = 20;
+    private float valorHoraEspera = 2613;
     private boolean viagemSeparada;
 
     public Viagem() {}
-
-    public Viagem(long id, String origem, String dataOrigem, String horaOrigem, String destino, String dataDestino, String horaDestino, String justificativa, int valorViagem, String motorista, float horaEspera, int valorHoraEspera, boolean viagemSeparada) {
-        this.id = id;
-        this.origem = origem;
-        this.dataOrigem = dataOrigem;
-        this.horaOrigem = horaOrigem;
-        this.destino = destino;
-        this.dataDestino = dataDestino;
-        this.horaDestino = horaDestino;
-        this.justificativa = justificativa;
-        this.valorViagem = valorViagem;
-        this.motorista = motorista;
-        this.horaEspera = horaEspera;
-        this.valorHoraEspera = valorHoraEspera;
-        this.viagemSeparada = viagemSeparada;
-    }
-
-    public Viagem(long id, String origem, String dataOrigem, String horaOrigem, String destino,
-                  String dataDestino, String horaDestino, String justificativa, boolean viagemSeparada) {
-        this.id = id;
-        this.origem = origem;
-        this.dataOrigem = dataOrigem;
-        this.horaOrigem = horaOrigem;
-        this.destino = destino;
-        this.dataDestino = dataDestino;
-        this.horaDestino = horaDestino;
-        this.justificativa = justificativa;
-        this.viagemSeparada = viagemSeparada;
-    }
 
     public Viagem(String origem, String dataOrigem, String horaOrigem, String destino,
                   String dataDestino, String horaDestino, String justificativa, boolean viagemSeparada) {
@@ -61,24 +32,6 @@ public class Viagem implements Serializable {
         this.horaDestino = horaDestino;
         this.justificativa = justificativa;
         this.viagemSeparada = viagemSeparada;
-    }
-
-    public String toStringFormatoDataBase() {
-        return "Viagem{" +
-                "id=" + id +
-                ", origem='" + origem + '\'' +
-                ", dataOrigem='" + dataOrigem + '\'' +
-                ", horaOrigem='" + horaOrigem + '\'' +
-                ", destino='" + destino + '\'' +
-                ", dataDestino='" + dataDestino + '\'' +
-                ", horaDestino='" + horaDestino + '\'' +
-                ", justificativa='" + justificativa + '\'' +
-                ", valorViagem=" + valorViagem +
-                ", motorista='" + motorista + '\'' +
-                ", horaEspera=" + horaEspera +
-                ", valorHoraEspera=" + valorHoraEspera +
-                ", viagemSeparada=" + viagemSeparada +
-                '}';
     }
 
     @NonNull
@@ -126,7 +79,7 @@ public class Viagem implements Serializable {
         return horaDestino;
     }
 
-    public int getValorViagem() {
+    public float getValorViagem() {
         return valorViagem;
     }
 
@@ -138,7 +91,7 @@ public class Viagem implements Serializable {
         return horaEspera;
     }
 
-    public int getValorHoraEspera() {
+    public float getValorHoraEspera() {
         return valorHoraEspera;
     }
 
@@ -179,7 +132,7 @@ public class Viagem implements Serializable {
         this.justificativa = justificativa;
     }
 
-    public void setValorViagem(int valorViagem) {
+    public void setValorViagem(float valorViagem) {
         this.valorViagem = valorViagem;
     }
 
@@ -195,7 +148,7 @@ public class Viagem implements Serializable {
         this.viagemSeparada = viagemSeparada;
     }
 
-    public void setValorHoraEspera(int valorHoraEspera) {
+    public void setValorHoraEspera(float valorHoraEspera) {
         this.valorHoraEspera = valorHoraEspera;
     }
 }
