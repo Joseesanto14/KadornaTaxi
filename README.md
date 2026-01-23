@@ -11,10 +11,11 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Visualizar dados de viagens.
 - Gerar relatórios de viagens mensais.
 
-## Tecnologias
+## Tecnologias utilizadas
 - Android.
 - Java.
 - XML.
+- SQLite.
 
 ---
 
