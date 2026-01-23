@@ -1,0 +1,143 @@
+package com.example.kadornataxi.dao;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.kadornataxi.database.DatabaseHelper;
+import com.example.kadornataxi.model.Configuracao;
+
+public class ConfiguracaoDAO {
+    private SQLiteDatabase db;
+    private final DatabaseHelper dbHelper;
+    private final String TAG = "ConfiguracaoDAO";
+
+    public ConfiguracaoDAO(Context context) {
+        dbHelper = new DatabaseHelper(context);
+    }
+
+    private void open() {
+        db = dbHelper.getWritableDatabase();
+    }
+
+    private void close() {
+        dbHelper.close();
+    }
+
+    private long insert(Configuracao configuracao) {
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.CONFIG_COLUMN_ID,
+                1);
+        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
+                configuracao.getValorKmRodado());
+        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
+                configuracao.getValorHoraEspera());
+        values.put(DatabaseHelper.CONFIG_COLUMN_MOTORISTA,
+                configuracao.getMotorista());
+
+        return db.insert(DatabaseHelper.TABLE_CONFIGURACAO,
+                null, values);
+    }
+
+    private long update(Configuracao configuracao) {
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
+                configuracao.getValorKmRodado());
+        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
+                configuracao.getValorHoraEspera());
+        values.put(DatabaseHelper.CONFIG_COLUMN_MOTORISTA,
+                configuracao.getMotorista());
+
+        return db.update(
+                DatabaseHelper.TABLE_CONFIGURACAO,
+                values,
+                DatabaseHelper.CONFIG_COLUMN_ID + " = ?",
+                new String[]{String.valueOf(configuracao.getId())});
+    }
+    public void setConfiguracaoPadrao() {
+        open();
+
+        Log.d(TAG, "Configuração padrão gerada com o ID: " +
+                insert(new Configuracao(
+                        1, 1.99f, 20f, "Marcelo")));
+
+        close();
+    }
+
+    public void configurar(Configuracao configuracao, Context context) {
+        if (configExiste()) {
+            updateConfiguracao(configuracao);
+            Toast.makeText(context, "Configurações atualizadas", Toast.LENGTH_SHORT).show();
+        } else {
+            setConfiguracao(configuracao);
+            Toast.makeText(context, "Configurações salvas", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setConfiguracao(Configuracao configuracao) {
+        open();
+
+        Log.d(TAG,
+                "Configuração salva com o ID: " + insert(configuracao));
+
+        close();
+    }
+
+    private void updateConfiguracao(Configuracao configuracao) {
+        open();
+
+        Log.d (TAG ,
+                "Configuração atualizada, linhas alteradas: " + update(configuracao));
+
+
+        close();
+    }
+
+    public Configuracao getConfiguracao() {
+        open();
+
+        Cursor cursor = db.query(
+                DatabaseHelper.TABLE_CONFIGURACAO,
+                null,
+                DatabaseHelper.COLUMN_ID + " = ?",
+                new String[]{"1"} ,
+                null, null, null);
+
+        Configuracao configuracao = null;
+
+        if (cursor.moveToFirst()) {
+            configuracao = cursorToConfiguracao(cursor);
+        }
+
+        cursor.close();
+        close();
+
+        return configuracao;
+    }
+
+    private Configuracao cursorToConfiguracao(Cursor cursor) {
+
+        return new Configuracao(
+                cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_MOTORISTA))
+        );
+    }
+
+    public boolean configExiste() {
+        open();
+        Cursor cursor = db.query(
+                DatabaseHelper.TABLE_CONFIGURACAO,
+                null, null, null, null, null, null);
+        boolean existe = cursor.getCount() > 0;
+        cursor.close();
+        close();
+        return existe;
+    }
+}

@@ -1,9 +1,12 @@
 package com.example.kadornataxi.ui;
 
+import static android.widget.Toast.LENGTH_LONG;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,9 +15,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
+import com.example.kadornataxi.dao.ConfiguracaoDAO;
 import com.example.kadornataxi.database.DatabaseHelper;
-
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +30,16 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-            DatabaseHelper dbHelper = new DatabaseHelper(this);
     }
+
     public void irSolicitacaoAcitivity(View view){
-        Intent intent = new Intent(this, SolicitacaoActivity.class);
-        startActivity(intent);
+        ConfiguracaoDAO dao = new ConfiguracaoDAO(this);
+        if (dao.configExiste()) {
+            Intent intent = new Intent(this, SolicitacaoActivity.class);
+            startActivity(intent);
+        } else {
+            startActivity(new Intent(this, ConfiguracaoActivity.class));
+        }
     }
 
     public void irViagensAcitivity(View view){
@@ -43,5 +50,9 @@ public class MainActivity extends AppCompatActivity {
     public void irGerarRelatorioAcitivity(View view){
         Intent intent = new Intent(this, GerarRelatorioActivity.class);
         startActivity(intent);
+    }
+
+    public void irConfigActivity(View view) {
+        startActivity(new Intent(this, ConfiguracaoActivity.class));
     }
 }

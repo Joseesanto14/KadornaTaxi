@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KadornaTaxi">
         <activity
+            android:name=".ui.ConfiguracaoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.GerarRelatorioActivity"
             android:exported="false" />
         <activity

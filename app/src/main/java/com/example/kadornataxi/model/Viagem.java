@@ -14,7 +14,7 @@ public class Viagem implements Serializable {
     private String dataDestino;
     private String horaDestino;
     private String justificativa;
-    private float valorViagem = 6766; //1,99 o km. Terá mascara que coloca virgula automaticamente igual maquina de cartão.
+    private float kmsRodados = 6766; //1,99 o km. Terá mascara que coloca virgula automaticamente igual maquina de cartão.
     private String motorista = "Marcelo";
     private float horaEspera = 0;
     private float valorHoraEspera = 2613;
@@ -39,7 +39,7 @@ public class Viagem implements Serializable {
     public String toString() {
         return String.format(Locale.getDefault(), "| %s | %s | %s | %s | %s | %d | %s | %.2f | %s |",
                 getDataOrigem(), getHoraOrigem(), getOrigem(), getDestino(), getJustificativa(),
-                getValorViagem(), getMotorista(), getHoraEspera(), getHoraEspera() * 20);
+                getKmsRodados(), getMotorista(), getHoraEspera(), getHoraEspera() * 20);
     }
 
     public String getRecorteViagem() {
@@ -79,8 +79,8 @@ public class Viagem implements Serializable {
         return horaDestino;
     }
 
-    public float getValorViagem() {
-        return valorViagem;
+    public float getKmsRodados() {
+        return kmsRodados;
     }
 
     public String getMotorista() {
@@ -132,8 +132,8 @@ public class Viagem implements Serializable {
         this.justificativa = justificativa;
     }
 
-    public void setValorViagem(float valorViagem) {
-        this.valorViagem = valorViagem;
+    public void setKmsRodados(float kmsRodados) {
+        this.kmsRodados = kmsRodados;
     }
 
     public void setMotorista(String motorista) {
