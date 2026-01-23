@@ -26,7 +26,7 @@
             android:background="@drawable/ic_kadorna" />
 
         <TextView
-            android:id="@+id/txttitulo"
+            android:id="@+id/SolicitaçãodeTaxi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -89,6 +89,22 @@
             app:icon="@drawable/ic_gerar_relatorio"
             app:iconGravity="end"
             app:iconTint="@color/black" />
+
+        <ImageButton
+            android:id="@+id/btConfig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="46dp"
+            android:onClick="irConfigActivity"
+            app:srcCompat="@android:drawable/ic_menu_manage" />
+
+        <TextView
+            android:id="@+id/config"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Configurações" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
