@@ -39,7 +39,7 @@ public class Viagem implements Serializable {
     @NonNull
     @Override
     public String toString() {
-        return String.format(Locale.getDefault(), "| %s | %s | %s | %s | %s | %d | %s | %.2f | %s |",
+        return String.format(Locale.getDefault(), "| %s | %s | %s | %s | %s | %f | %s | %.2f | %s |",
                 getDataOrigem(), getHoraOrigem(), getOrigem(), getDestino(), getJustificativa(),
                 getKmsRodados(), getMotorista(), getHoraEspera(), getHoraEspera() * 20);
     }
@@ -167,5 +167,14 @@ public class Viagem implements Serializable {
             total += v.getValorViagem();
         }
         return total;
+    }
+
+    public static String formatarDataISO8601(String data) {
+        String[] partes = data.split("/");
+        String dia = partes[0];
+        String mes = partes[1];
+        String ano = partes[2];
+
+        return ano + "-" + mes + "-" + dia;
     }
 }

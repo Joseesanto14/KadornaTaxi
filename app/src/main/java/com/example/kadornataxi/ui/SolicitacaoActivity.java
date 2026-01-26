@@ -1,5 +1,7 @@
 package com.example.kadornataxi.ui;
 
+import static com.example.kadornataxi.model.Viagem.formatarDataISO8601;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -40,7 +42,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
     public void salvarViagemDb(View view) {
         Viagem viagem = criarViagemObjeto();
         dao.inserirNoDatabase(viagem);
-        mensagemSucesso("Viagem criada com sucesso!");
+        mensagemSucesso();
     }
 
     @NonNull
@@ -53,16 +55,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 edHoraDestino.getText().toString(),
                 edJustificativa.getText().toString(),
                 checkViagemSeparada.isChecked());
-    }
-
-    private String formatarDataISO8601(String data) {
-        data = edDataOrigem.getText().toString();
-        String[] partes = data.split("/");
-        String dia = partes[0];
-        String mes = partes[1];
-        String ano = partes[2];
-
-        return ano + "-" + mes + "-" + dia;
     }
 
     private void inicializarObjetos() {
@@ -81,8 +73,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
         checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
     }
 
-    private void mensagemSucesso(String mensagem) {
-        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show();
+    private void mensagemSucesso() {
+        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
     }
 
     public void voltarMenu(View view) {

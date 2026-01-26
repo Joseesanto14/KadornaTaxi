@@ -10,7 +10,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
-import com.example.kadornataxi.report.RelatorioPdfGenerator;
 
 public class GerarRelatorioActivity extends AppCompatActivity {
 
