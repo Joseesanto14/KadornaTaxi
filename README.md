@@ -27,9 +27,11 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Criação de viagens por meio da Tela de Solicitação de Viagens(SolicitacaoActivity).
 - Persistência em Banco de Dados.
 - Exibição de todas as viagens gravadas separadas por mês/ano.
+- Criação de relatórios de viagens em pdf (fase inicial).
+
 
 ### Em desenvolvimento:
-- Criação de relatórios de viagens em pdf.
+- Criação de relatórios detalhados em pdf.
 - Filtragem de viagens para exibição.
 
 ### Fluxo do app:
