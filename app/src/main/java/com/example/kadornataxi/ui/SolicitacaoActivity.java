@@ -88,11 +88,4 @@ public class SolicitacaoActivity extends AppCompatActivity {
     public void voltarMenu(View view) {
         finish();
     }
-
-// Usado com o ViagemRepository como cache de viagens.
-//    public void salvarViagemRepository(View view) {
-//        Viagem viagem = criarViagemObjeto();
-//        ViagemRepository.addViagem(viagem);
-//        mensagemSucesso("Viagem criada com sucesso!");
-//    }
 }

@@ -3,6 +3,7 @@ package com.example.kadornataxi.model;
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 
 public class Viagem implements Serializable {
@@ -18,6 +19,7 @@ public class Viagem implements Serializable {
     private String motorista = "Marcelo";
     private float horaEspera = 0;
     private float valorHoraEspera = 2613;
+    private float valorViagem;
     private boolean viagemSeparada;
 
     public Viagem() {}
@@ -95,6 +97,10 @@ public class Viagem implements Serializable {
         return valorHoraEspera;
     }
 
+    public float getValorViagem() {
+        return valorViagem;
+    }
+
     public boolean isViagemSeparada() {
         return viagemSeparada;
     }
@@ -147,8 +153,19 @@ public class Viagem implements Serializable {
     public void setViagemSeparada(boolean viagemSeparada) {
         this.viagemSeparada = viagemSeparada;
     }
+    public void setValorViagem(float valorViagem) {
+        this.valorViagem = valorViagem;
+    }
 
     public void setValorHoraEspera(float valorHoraEspera) {
         this.valorHoraEspera = valorHoraEspera;
+    }
+
+    public static float getValorTotalViagens(List<Viagem> viagens) {
+        float total = 0;
+        for (Viagem v : viagens) {
+            total += v.getValorViagem();
+        }
+        return total;
     }
 }

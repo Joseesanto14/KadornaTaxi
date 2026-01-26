@@ -1,7 +1,9 @@
 package com.example.kadornataxi.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,9 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.adapter.MesViagensAdapter;
+import com.example.kadornataxi.dao.ConfiguracaoDAO;
 import com.example.kadornataxi.dao.ViagemDAO;
 import com.example.kadornataxi.dto.MesViagens;
+import com.example.kadornataxi.model.Configuracao;
 import com.example.kadornataxi.model.Viagem;
+import com.example.kadornataxi.report.RelatorioPdfGenerator;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -25,7 +30,6 @@ import java.util.Map;
 public class ViagensActivity extends AppCompatActivity {
     RecyclerView recyclerMeses;
     MesViagensAdapter adapter;
-    ViagemDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,7 @@ public class ViagensActivity extends AppCompatActivity {
     }
 
     private void carregarViagens() {
-        dao = new ViagemDAO(this);
+        ViagemDAO dao = new ViagemDAO(this);
         List<Viagem> todas = dao.getAllOrdenadoPorDataDesc();
 
         Map<String, List<Viagem>> viagensPorMes = new LinkedHashMap<>();
@@ -66,6 +70,24 @@ public class ViagensActivity extends AppCompatActivity {
         adapter = new MesViagensAdapter(listaMeses);
         recyclerMeses.setAdapter(adapter);
     }
+
+    public void gerarRelatorio(View view){
+        ConfiguracaoDAO configuracaoDAO = new ConfiguracaoDAO(this);
+        Configuracao configuracao = configuracaoDAO.getConfiguracao();
+
+        ViagemDAO viagemDAO = new ViagemDAO(this);
+        List<Viagem> viagens = viagemDAO.getViagemByPeriodo("2026-01");
+
+        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
+
+        String caminho = gerador.gerarRelatorioMensal("2026-01", viagens, configuracao).toString();
+
+        Log.d("Relatorio", "Caminho: " + caminho);
+        Toast.makeText(this, "Caminho: " +
+                caminho,
+                Toast.LENGTH_LONG).show();
+    }
+
     public void voltarMenu(View view){
         finish();
     }

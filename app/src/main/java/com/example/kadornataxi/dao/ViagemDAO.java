@@ -183,7 +183,30 @@ public class ViagemDAO {
         return lista;
     }
 
-    public List<Viagem> getViagensByPeriodo(String dataInicio, String dataFim) {
+    public List<Viagem> getViagemByPeriodo(String anoMes) {
+        open();
+        List<Viagem> lista = new ArrayList<>();
+
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_VIAGEM,
+                null,
+                DatabaseHelper.COLUMN_DATA_ORIGEM + " LIKE ?",
+                new String[]{anoMes + "%"},
+                null, null,
+                DatabaseHelper.COLUMN_DATA_ORIGEM + " ASC");
+
+        if (cursor.moveToFirst()) {
+            do {
+                lista.add(cursorToViagem(cursor));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        close();
+        return lista;
+    }
+
+    public List<Viagem> getViagensByIntervalo(String dataInicio, String dataFim) {
         List<Viagem> lista = new ArrayList<>();
 
         Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
