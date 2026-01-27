@@ -41,10 +41,10 @@ public class ViagemDAO {
     private long insert(Viagem viagem) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_ORIGEM, viagem.getOrigem());
-        values.put(DatabaseHelper.COLUMN_DATA_ORIGEM, viagem.getDataOrigem());
+        values.put(DatabaseHelper.COLUMN_DATA_ORIGEM, Viagem.formatarDataISO8601(viagem.getDataOrigem()));
         values.put(DatabaseHelper.COLUMN_HORA_ORIGEM, viagem.getHoraOrigem());
         values.put(DatabaseHelper.COLUMN_DESTINO, viagem.getDestino());
-        values.put(DatabaseHelper.COLUMN_DATA_DESTINO, viagem.getDataDestino());
+        values.put(DatabaseHelper.COLUMN_DATA_DESTINO, Viagem.formatarDataISO8601(viagem.getDataDestino()));
         values.put(DatabaseHelper.COLUMN_HORA_DESTINO, viagem.getHoraDestino());
         values.put(DatabaseHelper.COLUMN_JUSTIFICATIVA, viagem.getJustificativa());
         values.put(DatabaseHelper.COLUMN_VALOR_VIAGEM, viagem.getKmsRodados());

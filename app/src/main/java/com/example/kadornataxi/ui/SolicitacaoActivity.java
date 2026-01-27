@@ -1,7 +1,5 @@
 package com.example.kadornataxi.ui;
 
-import static com.example.kadornataxi.model.Viagem.formatarDataISO8601;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -35,31 +33,25 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        inicializarObjetos();
+        viewBinding();
     }
 
     public void salvarViagemDb(View view) {
         Viagem viagem = criarViagemObjeto();
-        dao.inserirNoDatabase(viagem);
-        mensagemSucesso();
+        new ViagemDAO(this).inserirNoDatabase(viagem);
+        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
     }
 
     @NonNull
     private Viagem criarViagemObjeto() {
         return new Viagem(edOrigem.getText().toString(),
-                formatarDataISO8601(edDataOrigem.getText().toString()),
+                edDataOrigem.getText().toString(),
                 edHoraOrigem.getText().toString(),
                 edDestino.getText().toString(),
-                formatarDataISO8601(edDataDestino.getText().toString()),
+                edDataDestino.getText().toString(),
                 edHoraDestino.getText().toString(),
                 edJustificativa.getText().toString(),
                 checkViagemSeparada.isChecked());
-    }
-
-    private void inicializarObjetos() {
-        viewBinding();
-        dao = new ViagemDAO(this);
     }
 
     private void viewBinding() {
@@ -71,10 +63,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edHoraDestino = findViewById(R.id.edHoraDestino);
         edJustificativa = findViewById(R.id.edJustificativa);
         checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
-    }
-
-    private void mensagemSucesso() {
-        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
     }
 
     public void voltarMenu(View view) {
