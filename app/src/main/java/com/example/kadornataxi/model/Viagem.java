@@ -15,10 +15,10 @@ public class Viagem implements Serializable {
     private String dataDestino;
     private String horaDestino;
     private String justificativa;
-    private float kmsRodados = 6766; //1,99 o km. Terá mascara que coloca virgula automaticamente igual maquina de cartão.
-    private String motorista = "Marcelo";
-    private float horaEspera = 0;
-    private float valorHoraEspera = 2613;
+    private float kmsRodados;
+    private String motorista;
+    private float horaEspera;
+    private float valorHoraEspera;
     private float valorViagem;
     private boolean viagemSeparada;
 
@@ -104,7 +104,6 @@ public class Viagem implements Serializable {
     public boolean isViagemSeparada() {
         return viagemSeparada;
     }
-
 
     public void setId(long id) {
         this.id = id;
