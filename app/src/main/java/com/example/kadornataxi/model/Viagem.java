@@ -176,4 +176,13 @@ public class Viagem implements Serializable {
 
         return ano + "-" + mes + "-" + dia;
     }
+
+    public String getDiaMes() {
+        /*
+        * Receive a Date in ISO 8601 format (YYYY-MM-DD) and return the day and month in the format DD/MM (Brazilian legibility)
+         */
+
+        String[] partes = dataOrigem.split("-");
+        return partes[2] + "/" + partes[1];
+    }
 }
