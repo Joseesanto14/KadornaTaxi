@@ -21,7 +21,6 @@ import com.example.kadornataxi.dto.MesViagens;
 import com.example.kadornataxi.model.Configuracao;
 import com.example.kadornataxi.model.Viagem;
 import com.example.kadornataxi.report.RelatorioPdfGenerator;
-import com.example.kadornataxi.report.RelatorioPdfGeneratorJava;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
