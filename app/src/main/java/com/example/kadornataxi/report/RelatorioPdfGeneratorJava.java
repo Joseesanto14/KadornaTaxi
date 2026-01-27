@@ -16,10 +16,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
-public class RelatorioPdfGenerator {
+public class RelatorioPdfGeneratorJava {
     private final Context context;
 
-    public RelatorioPdfGenerator(Context context) {
+    public RelatorioPdfGeneratorJava(Context context) {
         this.context = context;
     }
 
