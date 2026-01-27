@@ -52,7 +52,7 @@ class RelatorioPdfGenerator(private val context: Context) {
             canvas.drawText(v.horaOrigem, 100f, y.toFloat(), paint)
             canvas.drawText(v.origem, 140f, y.toFloat(), paint)
             canvas.drawText(v.destino, 280f, y.toFloat(), paint)
-            canvas.drawText(v.justificativa, 420f, y.toFloat(), paint)
+            canvas.drawText(v.descricao, 420f, y.toFloat(), paint)
             canvas.drawText(v.kmsRodados.toString(), 460f, y.toFloat(), paint)
             canvas.drawText(v.valorViagem.toString(), 500f, y.toFloat(), paint)
             canvas.drawText(v.motorista, 540f, y.toFloat(), paint)

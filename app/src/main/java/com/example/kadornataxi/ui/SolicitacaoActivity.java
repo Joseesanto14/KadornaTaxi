@@ -18,9 +18,8 @@ import com.example.kadornataxi.dao.ViagemDAO;
 import com.example.kadornataxi.model.Viagem;
 
 public class SolicitacaoActivity extends AppCompatActivity {
-    EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDataDestino, edHoraDestino, edJustificativa;
+    EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edJustificativa;
     CheckBox checkViagemSeparada;
-    ViagemDAO dao;
 
 
     @Override
@@ -48,8 +47,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 edDataOrigem.getText().toString(),
                 edHoraOrigem.getText().toString(),
                 edDestino.getText().toString(),
-                edDataDestino.getText().toString(),
-                edHoraDestino.getText().toString(),
                 edJustificativa.getText().toString(),
                 checkViagemSeparada.isChecked());
     }
@@ -59,9 +56,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edDataOrigem = findViewById(R.id.edDataOrigem);
         edHoraOrigem = findViewById(R.id.edHoraOrigem);
         edDestino = findViewById(R.id.edDestino);
-        edDataDestino = findViewById(R.id.edDataDestino);
-        edHoraDestino = findViewById(R.id.edHoraDestino);
-        edJustificativa = findViewById(R.id.edJustificativa);
+        edJustificativa = findViewById(R.id.edDescricao);
         checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
     }
 

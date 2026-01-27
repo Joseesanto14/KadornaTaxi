@@ -44,9 +44,7 @@ public class ViagemDAO {
         values.put(DatabaseHelper.COLUMN_DATA_ORIGEM, Viagem.formatarDataISO8601(viagem.getDataOrigem()));
         values.put(DatabaseHelper.COLUMN_HORA_ORIGEM, viagem.getHoraOrigem());
         values.put(DatabaseHelper.COLUMN_DESTINO, viagem.getDestino());
-        values.put(DatabaseHelper.COLUMN_DATA_DESTINO, Viagem.formatarDataISO8601(viagem.getDataDestino()));
-        values.put(DatabaseHelper.COLUMN_HORA_DESTINO, viagem.getHoraDestino());
-        values.put(DatabaseHelper.COLUMN_JUSTIFICATIVA, viagem.getJustificativa());
+        values.put(DatabaseHelper.COLUMN_JUSTIFICATIVA, viagem.getDescricao());
         values.put(DatabaseHelper.COLUMN_VALOR_VIAGEM, viagem.getKmsRodados());
         values.put(DatabaseHelper.COLUMN_MOTORISTA, viagem.getMotorista());
         values.put(DatabaseHelper.COLUMN_HORA_ESPERA, viagem.getHoraEspera());
@@ -251,11 +249,7 @@ public class ViagemDAO {
                 COLUMN_HORA_ORIGEM)));
         viagem.setDestino(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
                 COLUMN_DESTINO)));
-        viagem.setDataDestino(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_DATA_DESTINO)));
-        viagem.setHoraDestino(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_HORA_DESTINO)));
-        viagem.setJustificativa(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
+        viagem.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
                 COLUMN_JUSTIFICATIVA)));
         viagem.setKmsRodados(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.
                 COLUMN_VALOR_VIAGEM)));
