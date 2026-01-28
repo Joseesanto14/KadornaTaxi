@@ -48,6 +48,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
                 edMotorista.getText().toString());
 
         dao.configurar(configuracao,this);
+        finish();
     }
 
     private void iniciarViews() {

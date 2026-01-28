@@ -12,27 +12,23 @@ public class Viagem implements Serializable {
     private String dataOrigem;
     private String horaOrigem;
     private String destino;
-    private String dataDestino;
-    private String horaDestino;
-    private String justificativa;
-    private float kmsRodados = 6766; //1,99 o km. Terá mascara que coloca virgula automaticamente igual maquina de cartão.
-    private String motorista = "Marcelo";
-    private float horaEspera = 0;
-    private float valorHoraEspera = 2613;
+    private String descricao;
+    private float kmsRodados;
     private float valorViagem;
+    private String motorista;
+    private float horaEspera;
+    private float valorHoraEspera;
     private boolean viagemSeparada;
 
     public Viagem() {}
 
     public Viagem(String origem, String dataOrigem, String horaOrigem, String destino,
-                  String dataDestino, String horaDestino, String justificativa, boolean viagemSeparada) {
+                  String descricao, boolean viagemSeparada) {
         this.origem = origem;
         this.dataOrigem = dataOrigem;
         this.horaOrigem = horaOrigem;
         this.destino = destino;
-        this.dataDestino = dataDestino;
-        this.horaDestino = horaDestino;
-        this.justificativa = justificativa;
+        this.descricao = descricao;
         this.viagemSeparada = viagemSeparada;
     }
 
@@ -40,7 +36,7 @@ public class Viagem implements Serializable {
     @Override
     public String toString() {
         return String.format(Locale.getDefault(), "| %s | %s | %s | %s | %s | %f | %s | %.2f | %s |",
-                getDataOrigem(), getHoraOrigem(), getOrigem(), getDestino(), getJustificativa(),
+                getDataOrigem(), getHoraOrigem(), getOrigem(), getDestino(), getDescricao(),
                 getKmsRodados(), getMotorista(), getHoraEspera(), getHoraEspera() * 20);
     }
 
@@ -69,16 +65,8 @@ public class Viagem implements Serializable {
         return destino;
     }
 
-    public String getJustificativa() {
-        return justificativa;
-    }
-
-    public String getDataDestino() {
-        return dataDestino;
-    }
-
-    public String getHoraDestino() {
-        return horaDestino;
+    public String getDescricao() {
+        return descricao;
     }
 
     public float getKmsRodados() {
@@ -105,7 +93,6 @@ public class Viagem implements Serializable {
         return viagemSeparada;
     }
 
-
     public void setId(long id) {
         this.id = id;
     }
@@ -126,16 +113,8 @@ public class Viagem implements Serializable {
         this.destino = destino;
     }
 
-    public void setDataDestino(String dataDestino) {
-        this.dataDestino = dataDestino;
-    }
-
-    public void setHoraDestino(String horaDestino) {
-        this.horaDestino = horaDestino;
-    }
-
-    public void setJustificativa(String justificativa) {
-        this.justificativa = justificativa;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public void setKmsRodados(float kmsRodados) {
@@ -176,5 +155,14 @@ public class Viagem implements Serializable {
         String ano = partes[2];
 
         return ano + "-" + mes + "-" + dia;
+    }
+
+    public String getDiaMes() {
+        /*
+        * Receive a Date in ISO 8601 format (YYYY-MM-DD) and return the day and month in the format DD/MM (Brazilian legibility)
+         */
+
+        String[] partes = dataOrigem.split("-");
+        return partes[2] + "/" + partes[1];
     }
 }

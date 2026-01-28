@@ -72,11 +72,9 @@ public class ViagensActivity extends AppCompatActivity {
     }
 
     public void gerarRelatorio(View view){
-        ConfiguracaoDAO configuracaoDAO = new ConfiguracaoDAO(this);
-        Configuracao configuracao = configuracaoDAO.getConfiguracao();
+        Configuracao configuracao = new ConfiguracaoDAO(this).getConfiguracao();
 
-        ViagemDAO viagemDAO = new ViagemDAO(this);
-        List<Viagem> viagens = viagemDAO.getViagemByPeriodo("2026-01");
+        List<Viagem> viagens = new ViagemDAO(this).getViagemByPeriodo("2026-01");
 
         RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
 
