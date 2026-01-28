@@ -14,6 +14,7 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 ## Tecnologias utilizadas
 - Android.
 - Java.
+- Kotlin
 - XML.
 - SQLite.
 
@@ -28,9 +29,11 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Persistência em Banco de Dados.
 - Exibição de todas as viagens gravadas separadas por mês/ano.
 - Criação de relatórios de viagens em pdf (fase inicial).
+- Máscara de dados para cálculo de preço baseado em quilometragem e horas esperadas.
 
 
 ### Em desenvolvimento:
+- Máscara de dados para todos os campos que envolvam horário e dinheiro.
 - Criação de relatórios detalhados em pdf.
 - Filtragem de viagens para exibição.
 
