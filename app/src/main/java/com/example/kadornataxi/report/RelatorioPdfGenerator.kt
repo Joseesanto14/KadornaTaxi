@@ -98,9 +98,9 @@ class RelatorioPdfGenerator(private val context: Context) {
     }
 
     private fun desenharCabecalho(canvas: Canvas, paint: Paint, y: Int) {
-        canvas.drawText("Denilce da Silva Muniz do Espirito Santo - CNPJ 51.320.583/0001-79", 40f, y.toFloat(),paint)
-        canvas.drawText("Kadorna Transportes - Tel. (14) 991521402 - 991367695", 40f, (y + 20).toFloat(), paint)
-        canvas.drawText("E-mail: maes.adriano@hotmail.com", 40f, (y + 40).toFloat(), paint)
+        canvas.drawText("Kadorna da Silva Santos de Almeida Filho - CNPJ 09.990.900/0009-09", 40f, y.toFloat(),paint)
+        canvas.drawText("Kadorna Transportes - Tel. (14) 990990009 - 990999090", 40f, (y + 20).toFloat(), paint)
+        canvas.drawText("E-mail: kado.transporte@hotmail.com", 40f, (y + 40).toFloat(), paint)
         canvas.drawText("Relação de Solicitação de Taxi - Mês: Janeiro 2026", 40f, (y + 80).toFloat(),paint)
 
 
