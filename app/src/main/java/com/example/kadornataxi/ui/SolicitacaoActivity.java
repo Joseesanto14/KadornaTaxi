@@ -20,6 +20,9 @@ import com.example.kadornataxi.dao.ConfiguracaoDAO;
 import com.example.kadornataxi.dao.ViagemDAO;
 import com.example.kadornataxi.model.Viagem;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Locale;
 
 public class SolicitacaoActivity extends AppCompatActivity {
@@ -38,11 +41,148 @@ public class SolicitacaoActivity extends AppCompatActivity {
             return insets;
         });
         configurarListeners();
+        preencherCampos();
+    }
+
+    public void voltarMenu(View view) {
+        finish();
+    }
+
+    public void salvarViagemDb(View view) {
+        Viagem viagem = criarViagemObjeto();
+        new ViagemDAO(this).inserirNoDatabase(viagem);
+        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
+    }
+
+    @NonNull
+    private Viagem criarViagemObjeto() {
+        return new Viagem(edOrigem.getText().toString(),
+                edDataOrigem.getText().toString(),
+                edHoraOrigem.getText().toString(),
+                edDestino.getText().toString(),
+                edDescricao.getText().toString(),
+                checkViagemSeparada.isChecked());
+    }
+
+    private void preencherCampos() {
+        receberDataHoraDoSistema();
+        edMotorista.setText(new ConfiguracaoDAO(this).getConfiguracao().getMotorista());
+    }
+
+    private void receberDataHoraDoSistema() {
+        LocalDate data = LocalDateTime.now().toLocalDate();
+        LocalTime hora = LocalDateTime.now().toLocalTime();
+
+        String horaStr = hora.toString().replaceAll(":", "").substring(0,4);
+        String[] partesData = data.toString().split("-");
+        String dataStr = partesData[2] + partesData[1] + partesData[0];
+
+        edHoraOrigem.setText(horaStr);
+        edDataOrigem.setText(dataStr);
     }
 
     private void configurarListeners() {
         viewBinding();
 
+        listenerData();
+        listenerHora();
+
+        listenerKmsRodados();
+
+        listenerHoraEspera();
+    }
+
+    private void listenerHora() {
+        edHoraOrigem.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isUpdating) { return;}
+                isUpdating = true;
+
+                String clean = s.toString().replaceAll("[^\\d]", "");
+
+                if (clean.isEmpty()) {
+                    edHoraOrigem.setText("");
+                    isUpdating = false;
+                    return;
+                }
+
+                if (clean.length() > 4) {
+                    clean = clean.substring(clean.length() - 4);
+                } else {
+                    clean = String.format(Locale.getDefault(), "%04d", Long.parseLong(clean));
+                }
+
+                String horas = clean.substring(0,2);
+                String minutos = clean.substring(2,4);
+
+                String formatado = horas + ":" + minutos;
+
+                edHoraOrigem.setText(formatado);
+                edHoraOrigem.setSelection(formatado.length());
+
+                isUpdating = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+    }
+
+    private void listenerData() {
+        edDataOrigem.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isUpdating) { return;}
+                isUpdating = true;
+
+                String clean = s.toString().replaceAll("[^\\d]", "");
+
+                if (clean.isEmpty()) {
+                    edDataOrigem.setText("");
+                    isUpdating = false;
+                    return;
+                }
+
+                if (clean.length() > 8) {
+                    clean = clean.substring(clean.length() - 8);
+                } else {
+                    clean = String.format(Locale.getDefault(), "%08d", Long.parseLong(clean));
+                }
+
+                String dia = clean.substring(0,2);
+                String mes = clean.substring(2,4);
+                String ano = clean.substring(4,8);
+
+                String formatado = dia + "/" + mes + "/" + ano;
+
+                edDataOrigem.setText(formatado);
+                edDataOrigem.setSelection(formatado.length());
+                isUpdating = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+    }
+
+    private void listenerKmsRodados(){
         edKmsRodados.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -56,7 +196,23 @@ public class SolicitacaoActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
+    }
 
+    private void calcularValorKm(String kmStr, EditText output) {
+        if (kmStr.isEmpty()) {
+            output.setText("0,00");
+            return;
+        }
+        try {
+            float km = Float.parseFloat(kmStr.replace(",", "."));
+            float total = km * (new ConfiguracaoDAO(this).getConfiguracao().getValorKmRodado());
+            output.setText(String.format(Locale.getDefault(), "%.2f", total));
+        } catch (NumberFormatException e) {
+            output.setText("0,00");
+        }
+    }
+
+    private void listenerHoraEspera(){
         edHoraEspera.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
             @Override
@@ -109,50 +265,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
         });
     }
 
-    public void salvarViagemDb(View view) {
-        Viagem viagem = criarViagemObjeto();
-        new ViagemDAO(this).inserirNoDatabase(viagem);
-        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
-    }
-
-    @NonNull
-    private Viagem criarViagemObjeto() {
-        return new Viagem(edOrigem.getText().toString(),
-                edDataOrigem.getText().toString(),
-                edHoraOrigem.getText().toString(),
-                edDestino.getText().toString(),
-                edDescricao.getText().toString(),
-                checkViagemSeparada.isChecked());
-    }
-
-    private void viewBinding() {
-        edOrigem = findViewById(R.id.edOrigem);
-        edDataOrigem = findViewById(R.id.edDataOrigem);
-        edHoraOrigem = findViewById(R.id.edHoraOrigem);
-        edDestino = findViewById(R.id.edDestino);
-        edDescricao = findViewById(R.id.edDescricao);
-        edKmsRodados = findViewById(R.id.edKmRodados);
-        edValorViagem = findViewById(R.id.edValorViagem);
-        edHoraEspera = findViewById(R.id.edHoraEspera);
-        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
-        edMotorista = findViewById(R.id.edMotorista);
-        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
-    }
-
-    private void calcularValorKm(String kmStr, EditText output) {
-        if (kmStr.isEmpty()) {
-            output.setText("0,00");
-            return;
-        }
-        try {
-            float km = Float.parseFloat(kmStr.replace(",", "."));
-            float total = km * (new ConfiguracaoDAO(this).getConfiguracao().getValorKmRodado());
-            output.setText(String.format(Locale.getDefault(), "%.2f", total));
-        } catch (NumberFormatException e) {
-            output.setText("0,00");
-        }
-    }
-
     private void calcularValorEspera(String timeClean, EditText output) {
         if (timeClean.length() < 4) {
             output.setText("0,00");
@@ -171,7 +283,18 @@ public class SolicitacaoActivity extends AppCompatActivity {
             output.setText("0,00");
         }
     }
-    public void voltarMenu(View view) {
-        finish();
+
+    private void viewBinding() {
+        edOrigem = findViewById(R.id.edOrigem);
+        edDataOrigem = findViewById(R.id.edDataOrigem);
+        edHoraOrigem = findViewById(R.id.edHoraOrigem);
+        edDestino = findViewById(R.id.edDestino);
+        edDescricao = findViewById(R.id.edDescricao);
+        edKmsRodados = findViewById(R.id.edKmRodados);
+        edValorViagem = findViewById(R.id.edValorViagem);
+        edHoraEspera = findViewById(R.id.edHoraEspera);
+        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
+        edMotorista = findViewById(R.id.edMotorista);
+        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
     }
 }
