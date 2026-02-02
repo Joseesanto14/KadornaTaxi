@@ -94,6 +94,10 @@ public class Viagem implements Serializable {
         for(Viagem viagem : todas) {
             String mesAno = viagem.getData().substring(0, 7);
 
+            if (viagem.isNaoComum()) {
+                mesAno = " " + viagem.getClassificacao();
+            }
+
             viagensPorMes
                     .computeIfAbsent(mesAno, k -> new ArrayList<>())
                     .add(viagem);
@@ -105,6 +109,10 @@ public class Viagem implements Serializable {
             listaMeses.add(new MesViagens(mes, viagensPorMes.get(mes)));
         }
         return listaMeses;
+    }
+
+    public boolean isNaoComum() {
+        return getClassificacao().equals("Comum");
     }
 
     // --------------- getters e setters ---------------
