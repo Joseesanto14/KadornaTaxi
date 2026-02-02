@@ -26,9 +26,23 @@ public class ConfiguracaoDAO {
     private void close() {
         dbHelper.close();
     }
+    private ContentValues valuesPut(Configuracao configuracao) {
+        ContentValues values = new ContentValues();
+
+        values.put(DbHelper.Configuracao.VALOR_KM_RODADO,
+                configuracao.getValorKmRodado());
+        values.put(DbHelper.Configuracao.VALOR_HORA_ESPERA,
+                configuracao.getValorHoraEspera());
+        values.put(DbHelper.Configuracao.MOTORISTA,
+                configuracao.getMotorista());
+        values.put(DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA,
+                configuracao.getClassificacaoViagemSeparada());
+
+        return values;
+    }
 
     private long insert(Configuracao configuracao) {
-        ContentValues values = new ContentValues();
+        ContentValues values = valuesPut(configuracao);
 
         values.put(DbHelper.CONFIG_COLUMN_ID,
                 1);
@@ -44,7 +58,7 @@ public class ConfiguracaoDAO {
     }
 
     private long update(Configuracao configuracao) {
-        ContentValues values = new ContentValues();
+        ContentValues values = valuesPut(configuracao);
 
         values.put(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
                 configuracao.getValorKmRodado());
