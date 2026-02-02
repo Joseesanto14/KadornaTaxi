@@ -245,6 +245,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
                 // 6. Calcula o valor financeiro
                 calcularValorEspera(clean, edValorHoraEspera);
+                atualizarValorTotal();
 
                 isUpdating = false;
             }
@@ -280,6 +281,16 @@ public class SolicitacaoActivity extends AppCompatActivity {
         }
     }
 
+    private void atualizarValorTotal(){
+        try {
+            float valorViagem = Float.parseFloat(edValorViagem.getText().toString().replace(",", "."));
+            float valorEspera = Float.parseFloat(edValorHoraEspera.getText().toString().replace(",", "."));
+            float valorTotal = valorViagem + valorEspera;
+            edValorTotal.setText(String.format(Locale.getDefault(), "%.2f", valorTotal));
+        } catch (NumberFormatException e) {
+            edValorTotal.setText("0,00");
+        }
+    }
     private void viewBinding() {
 
     }
