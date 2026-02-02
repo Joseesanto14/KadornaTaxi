@@ -55,7 +55,11 @@ public class Viagem implements Serializable {
         destino = edDestino.getText().toString();
         descricao = edDescricao.getText().toString();
         kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
-        horaEspera = Float.parseFloat(edHoraEspera.getText().toString());
+
+        float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
+        float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
+        horaEspera = horas + (minutos / 60f);
+
         motorista = edMotorista.getText().toString();
 
         Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
