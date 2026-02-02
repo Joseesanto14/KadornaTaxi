@@ -8,6 +8,14 @@ public class Configuracao {
     private String motorista;
     private String classificacaoViagemSeparada;
 
+    public Configuracao(long id, float valorKmRodado, float valorHoraEspera, String motorista, String classificacaoViagemSeparada) {
+        this.id = id;
+        this.valorKmRodado = valorKmRodado;
+        this.valorHoraEspera = valorHoraEspera;
+        this.motorista = motorista;
+        this.classificacaoViagemSeparada = classificacaoViagemSeparada;
+    }
+
     public long getId() {
         return id;
     }
