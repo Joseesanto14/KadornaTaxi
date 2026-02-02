@@ -74,5 +74,4 @@ public class DbHelper extends SQLiteOpenHelper {
                 CLASSIFICACAO_VIAGEM_SEPARADA + " TEXT NOT NULL " +
                 ");";
     }
-
 }
