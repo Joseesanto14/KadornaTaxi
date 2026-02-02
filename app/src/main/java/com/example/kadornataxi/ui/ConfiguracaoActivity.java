@@ -19,7 +19,6 @@ import com.example.kadornataxi.model.Configuracao;
 
 public class ConfiguracaoActivity extends AppCompatActivity {
     EditText edValorKmRodado, edValorHoraEsperada, edMotorista, edClassificacaoViagemSeparada;
-    ConfiguracaoDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,8 @@ public class ConfiguracaoActivity extends AppCompatActivity {
                 edMotorista.getText().toString(),
                 edClassificacaoViagemSeparada.getText().toString());
 
-        dao.configurar(configuracao,this);
+        new ConfiguracaoDAO(getApplicationContext())
+                .configurar(configuracao,this);
         finish();
     }
 
@@ -58,7 +58,7 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     }
 
     private void carregarConfigs() {
-        dao = new ConfiguracaoDAO(this);
+        ConfiguracaoDAO dao = new ConfiguracaoDAO(this);
 
         if (dao.configExiste()) {
             Configuracao configuracao = dao.getConfiguracao();
