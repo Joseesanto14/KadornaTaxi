@@ -25,7 +25,6 @@ public class ViagemDAO {
         dbHelper.close();
     }
 
-    // construtor padrão (vazio)
     public ViagemDAO(Context context) {
         dbHelper = new DbHelper(context);
     }

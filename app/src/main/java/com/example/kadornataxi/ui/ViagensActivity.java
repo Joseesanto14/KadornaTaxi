@@ -22,10 +22,7 @@ import com.example.kadornataxi.model.Configuracao;
 import com.example.kadornataxi.model.Viagem;
 import com.example.kadornataxi.report.RelatorioPdfGenerator;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ViagensActivity extends AppCompatActivity {
     RecyclerView recyclerMeses;
@@ -48,24 +45,10 @@ public class ViagensActivity extends AppCompatActivity {
     }
 
     private void carregarViagens() {
-        ViagemDAO dao = new ViagemDAO(this);
-        List<Viagem> todas = dao.getAllOrdenadoPorDataDesc();
+        List<Viagem> todas = new ViagemDAO(this)
+                .getAllOrdenadoPorDataDesc();
 
-        Map<String, List<Viagem>> viagensPorMes = new LinkedHashMap<>();
-
-        for(Viagem viagem : todas) {
-            String mesAno = viagem.getDataOrigem().substring(0, 7);
-
-            viagensPorMes
-                    .computeIfAbsent(mesAno, k -> new ArrayList<>())
-                    .add(viagem);
-        }
-
-        List<MesViagens> listaMeses = new ArrayList<>();
-
-        for (String mes : viagensPorMes.keySet()) {
-            listaMeses.add(new MesViagens(mes, viagensPorMes.get(mes)));
-        }
+        List<MesViagens> listaMeses = Viagem.gerarListaDeMeses(todas, getApplicationContext());
 
         adapter = new MesViagensAdapter(listaMeses);
         recyclerMeses.setAdapter(adapter);
