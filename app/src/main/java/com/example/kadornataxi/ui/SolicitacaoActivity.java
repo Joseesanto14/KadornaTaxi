@@ -1,12 +1,12 @@
 package com.example.kadornataxi.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -25,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 
+@SuppressLint("SetTextI18n")
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera;
     EditText edValorKm, edValorHoraEspera, edValorTotal;
@@ -258,6 +259,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
 
     // --------------- Sessão Cálculos ---------------
+
 
     private void calcularValorKm(String kmStr, EditText output) {
         if (kmStr.isEmpty()) {
