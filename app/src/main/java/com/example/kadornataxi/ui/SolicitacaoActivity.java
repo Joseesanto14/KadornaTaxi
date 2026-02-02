@@ -57,7 +57,18 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     @NonNull
     private Viagem criarViagemObjeto() {
-
+        return new Viagem(
+                edOrigem,
+                edData,
+                edHora,
+                edDestino,
+                edDescricao,
+                edKmsRodados,
+                edHoraEspera,
+                edMotorista,
+                checkViagemSeparada,
+                getApplicationContext()
+        );
     }
 
     private void preencherCampos() {
@@ -293,6 +304,17 @@ public class SolicitacaoActivity extends AppCompatActivity {
         }
     }
     private void viewBinding() {
-
+        edOrigem = findViewById(R.id.edOrigem);
+        edData = findViewById(R.id.edData);
+        edHora = findViewById(R.id.edHora);
+        edDestino = findViewById(R.id.edDestino);
+        edDescricao = findViewById(R.id.edDescricao);
+        edKmsRodados = findViewById(R.id.edKmRodados);
+        edValorKm = findViewById(R.id.edValorKm);
+        edHoraEspera = findViewById(R.id.edHoraEspera);
+        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
+        edMotorista = findViewById(R.id.edMotorista);
+        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
+        edValorTotal = findViewById(R.id.edValorTotal);
     }
 }
