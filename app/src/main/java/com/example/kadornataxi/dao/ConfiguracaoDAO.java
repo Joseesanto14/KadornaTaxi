@@ -44,41 +44,26 @@ public class ConfiguracaoDAO {
     private long insert(Configuracao configuracao) {
         ContentValues values = valuesPut(configuracao);
 
-        values.put(DbHelper.CONFIG_COLUMN_ID,
-                1);
-        values.put(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
-                configuracao.getValorKmRodado());
-        values.put(DbHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
-                configuracao.getValorHoraEspera());
-        values.put(DbHelper.CONFIG_COLUMN_MOTORISTA,
-                configuracao.getMotorista());
+        values.put(DbHelper.Configuracao.ID, 1);
 
-        return db.insert(DbHelper.TABLE_CONFIGURACAO,
+        return db.insert(DbHelper.Configuracao.NOME_TABELA,
                 null, values);
     }
 
     private long update(Configuracao configuracao) {
         ContentValues values = valuesPut(configuracao);
 
-        values.put(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
-                configuracao.getValorKmRodado());
-        values.put(DbHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
-                configuracao.getValorHoraEspera());
-        values.put(DbHelper.CONFIG_COLUMN_MOTORISTA,
-                configuracao.getMotorista());
-
-        return db.update(
-                DbHelper.TABLE_CONFIGURACAO,
+        return db.update(DbHelper.Configuracao.NOME_TABELA,
                 values,
-                DbHelper.CONFIG_COLUMN_ID + " = ?",
+                DbHelper.Configuracao.ID + " = ?",
                 new String[]{String.valueOf(configuracao.getId())});
     }
     public void setConfiguracaoPadrao() {
         open();
 
-        Log.d(TAG, "Configuração padrão gerada com o ID: " +
-                insert(new Configuracao(
-                        1, 1.99f, 20f, "Marcelo")));
+        Log.d(TAG, "Configuração padrão gerada com o ID: " + insert(
+                new Configuracao(1, 1.99f, 20f,
+                        "Marcelo", "Trecho 2")));
 
         close();
     }
@@ -108,7 +93,6 @@ public class ConfiguracaoDAO {
         Log.d (TAG ,
                 "Configuração atualizada, linhas alteradas: " + update(configuracao));
 
-
         close();
     }
 
@@ -116,9 +100,9 @@ public class ConfiguracaoDAO {
         open();
 
         Cursor cursor = db.query(
-                DbHelper.TABLE_CONFIGURACAO,
+                DbHelper.Configuracao.NOME_TABELA,
                 null,
-                DbHelper.COLUMN_ID + " = ?",
+                DbHelper.Configuracao.ID + " = ?",
                 new String[]{"1"} ,
                 null, null, null);
 
@@ -137,21 +121,32 @@ public class ConfiguracaoDAO {
     private Configuracao cursorToConfiguracao(Cursor cursor) {
 
         return new Configuracao(
-                cursor.getLong(cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ID)),
-                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO)),
-                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA)),
-                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.CONFIG_COLUMN_MOTORISTA))
+                cursor.getLong(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.ID)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.VALOR_KM_RODADO)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.VALOR_HORA_ESPERA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.MOTORISTA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA))
         );
     }
 
     public boolean configExiste() {
         open();
+
         Cursor cursor = db.query(
-                DbHelper.TABLE_CONFIGURACAO,
-                null, null, null, null, null, null);
+                DbHelper.Configuracao.NOME_TABELA,
+                null, null, null,
+                null, null, null);
+
         boolean existe = cursor.getCount() > 0;
+
         cursor.close();
         close();
+
         return existe;
     }
 }
