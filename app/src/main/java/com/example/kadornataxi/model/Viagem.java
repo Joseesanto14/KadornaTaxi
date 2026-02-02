@@ -5,8 +5,13 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.kadornataxi.dao.ConfiguracaoDAO;
+import com.example.kadornataxi.dto.MesViagens;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Viagem implements Serializable {
     private long id;
@@ -22,6 +27,8 @@ public class Viagem implements Serializable {
     private float valorHoraEspera;
     private String classificacao;
     private float valorTotal;
+
+    // --------------- construtores ---------------
 
     public Viagem() {}
 
@@ -60,6 +67,8 @@ public class Viagem implements Serializable {
                 config.getClassificacaoViagemSeparada() : "Comum";
     }
 
+    // --------------- úteis ---------------
+
     public static String formatarDataISO8601(String data) {
         String[] partes = data.split("/");
 
@@ -74,6 +83,27 @@ public class Viagem implements Serializable {
         String[] partes = getData().split("-");
         return partes[2] + "/" + partes[1];
     }
+
+    public static List<MesViagens> gerarListaDeMeses(List<Viagem> todas, Context context) {
+        Map<String, List<Viagem>> viagensPorMes = new LinkedHashMap<>();
+
+        for(Viagem viagem : todas) {
+            String mesAno = viagem.getData().substring(0, 7);
+
+            viagensPorMes
+                    .computeIfAbsent(mesAno, k -> new ArrayList<>())
+                    .add(viagem);
+        }
+
+        List<MesViagens> listaMeses = new ArrayList<>();
+
+        for (String mes : viagensPorMes.keySet()) {
+            listaMeses.add(new MesViagens(mes, viagensPorMes.get(mes)));
+        }
+        return listaMeses;
+    }
+
+    // --------------- getters e setters ---------------
 
     public long getId() {
         return id;
