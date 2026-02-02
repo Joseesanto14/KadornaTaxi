@@ -112,7 +112,7 @@ public class Viagem implements Serializable {
     }
 
     public boolean isNaoComum() {
-        return getClassificacao().equals("Comum");
+        return !getClassificacao().equals("Comum");
     }
 
     // --------------- getters e setters ---------------
