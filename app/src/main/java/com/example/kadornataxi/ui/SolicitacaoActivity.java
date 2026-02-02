@@ -1,12 +1,12 @@
 package com.example.kadornataxi.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -25,8 +25,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Locale;
 
+@SuppressLint("SetTextI18n")
 public class SolicitacaoActivity extends AppCompatActivity {
-    EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDescricao, edKmsRodados, edValorViagem, edHoraEspera, edValorHoraEspera, edMotorista;
+    EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera;
+    EditText edValorKm, edValorHoraEspera, edValorTotal;
     CheckBox checkViagemSeparada;
 
 
@@ -40,36 +42,39 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        viewBinding();
         configurarListeners();
         preencherCampos();
     }
 
+    // --------------- Sessão UI ---------------
     public void voltarMenu(View view) {
         finish();
     }
 
-    public void salvarViagemDb(View view) {
-        Viagem viagem = criarViagemObjeto();
-        new ViagemDAO(this).inserirNoDatabase(viagem);
-        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
-    }
-
-    @NonNull
-    private Viagem criarViagemObjeto() {
-        return new Viagem(edOrigem.getText().toString(),
-                edDataOrigem.getText().toString(),
-                edHoraOrigem.getText().toString(),
-                edDestino.getText().toString(),
-                edDescricao.getText().toString(),
-                checkViagemSeparada.isChecked());
+    private void viewBinding() {
+        edOrigem = findViewById(R.id.edOrigem);
+        edData = findViewById(R.id.edData);
+        edHora = findViewById(R.id.edHora);
+        edDestino = findViewById(R.id.edDestino);
+        edDescricao = findViewById(R.id.edDescricao);
+        edKmsRodados = findViewById(R.id.edKmRodados);
+        edValorKm = findViewById(R.id.edValorKm);
+        edHoraEspera = findViewById(R.id.edHoraEspera);
+        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
+        edMotorista = findViewById(R.id.edMotorista);
+        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
+        edValorTotal = findViewById(R.id.edValorTotal);
     }
 
     private void preencherCampos() {
-        receberDataHoraDoSistema();
+        String[] dataHora = receberDataHoraDoSistema();
+        edData.setText(dataHora[0]);
+        edHora.setText(dataHora[1]);
         edMotorista.setText(new ConfiguracaoDAO(this).getConfiguracao().getMotorista());
     }
 
-    private void receberDataHoraDoSistema() {
+    private String[] receberDataHoraDoSistema() {
         LocalDate data = LocalDateTime.now().toLocalDate();
         LocalTime hora = LocalDateTime.now().toLocalTime();
 
@@ -77,68 +82,22 @@ public class SolicitacaoActivity extends AppCompatActivity {
         String[] partesData = data.toString().split("-");
         String dataStr = partesData[2] + partesData[1] + partesData[0];
 
-        edHoraOrigem.setText(horaStr);
-        edDataOrigem.setText(dataStr);
+        return new String[] {dataStr, horaStr};
     }
 
-    private void configurarListeners() {
-        viewBinding();
 
+    // --------------- Sessão Listeners ---------------
+
+    private void configurarListeners() {
         listenerData();
         listenerHora();
 
         listenerKmsRodados();
-
         listenerHoraEspera();
     }
 
-    private void listenerHora() {
-        edHoraOrigem.addTextChangedListener(new TextWatcher() {
-            private boolean isUpdating = false;
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (isUpdating) { return;}
-                isUpdating = true;
-
-                String clean = s.toString().replaceAll("[^\\d]", "");
-
-                if (clean.isEmpty()) {
-                    edHoraOrigem.setText("");
-                    isUpdating = false;
-                    return;
-                }
-
-                if (clean.length() > 4) {
-                    clean = clean.substring(clean.length() - 4);
-                } else {
-                    clean = String.format(Locale.getDefault(), "%04d", Long.parseLong(clean));
-                }
-
-                String horas = clean.substring(0,2);
-                String minutos = clean.substring(2,4);
-
-                String formatado = horas + ":" + minutos;
-
-                edHoraOrigem.setText(formatado);
-                edHoraOrigem.setSelection(formatado.length());
-
-                isUpdating = false;
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-        });
-    }
-
     private void listenerData() {
-        edDataOrigem.addTextChangedListener(new TextWatcher() {
+        edData.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
             @Override
             public void afterTextChanged(Editable s) {
@@ -148,7 +107,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 String clean = s.toString().replaceAll("[^\\d]", "");
 
                 if (clean.isEmpty()) {
-                    edDataOrigem.setText("");
+                    edData.setText("");
                     isUpdating = false;
                     return;
                 }
@@ -165,8 +124,53 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
                 String formatado = dia + "/" + mes + "/" + ano;
 
-                edDataOrigem.setText(formatado);
-                edDataOrigem.setSelection(formatado.length());
+                edData.setText(formatado);
+                edData.setSelection(formatado.length());
+                isUpdating = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+    }
+
+    private void listenerHora() {
+        edHora.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isUpdating) { return;}
+                isUpdating = true;
+
+                String clean = s.toString().replaceAll("[^\\d]", "");
+
+                if (clean.isEmpty()) {
+                    edHora.setText("");
+                    isUpdating = false;
+                    return;
+                }
+
+                if (clean.length() > 4) {
+                    clean = clean.substring(clean.length() - 4);
+                } else {
+                    clean = String.format(Locale.getDefault(), "%04d", Long.parseLong(clean));
+                }
+
+                String horas = clean.substring(0,2);
+                String minutos = clean.substring(2,4);
+
+                String formatado = horas + ":" + minutos;
+
+                edHora.setText(formatado);
+                edHora.setSelection(formatado.length());
+
                 isUpdating = false;
             }
 
@@ -186,7 +190,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edKmsRodados.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                calcularValorKm(s.toString(), edValorViagem);
+                calcularValorKm(s.toString(), edValorKm);
+                atualizarValorTotal();
             }
 
             @Override
@@ -196,20 +201,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-    }
-
-    private void calcularValorKm(String kmStr, EditText output) {
-        if (kmStr.isEmpty()) {
-            output.setText("0,00");
-            return;
-        }
-        try {
-            float km = Float.parseFloat(kmStr.replace(",", "."));
-            float total = km * (new ConfiguracaoDAO(this).getConfiguracao().getValorKmRodado());
-            output.setText(String.format(Locale.getDefault(), "%.2f", total));
-        } catch (NumberFormatException e) {
-            output.setText("0,00");
-        }
     }
 
     private void listenerHoraEspera(){
@@ -249,6 +240,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
                 // 6. Calcula o valor financeiro
                 calcularValorEspera(clean, edValorHoraEspera);
+                atualizarValorTotal();
 
                 isUpdating = false;
             }
@@ -263,6 +255,24 @@ public class SolicitacaoActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+
+    // --------------- Sessão Cálculos ---------------
+
+
+    private void calcularValorKm(String kmStr, EditText output) {
+        if (kmStr.isEmpty()) {
+            output.setText("0,00");
+            return;
+        }
+        try {
+            float km = Float.parseFloat(kmStr.replace(",", "."));
+            float total = km * (new ConfiguracaoDAO(this).getConfiguracao().getValorKmRodado());
+            output.setText(String.format(Locale.getDefault(), "%.2f", total));
+        } catch (NumberFormatException e) {
+            output.setText("0,00");
+        }
     }
 
     private void calcularValorEspera(String timeClean, EditText output) {
@@ -284,17 +294,39 @@ public class SolicitacaoActivity extends AppCompatActivity {
         }
     }
 
-    private void viewBinding() {
-        edOrigem = findViewById(R.id.edOrigem);
-        edDataOrigem = findViewById(R.id.edDataOrigem);
-        edHoraOrigem = findViewById(R.id.edHoraOrigem);
-        edDestino = findViewById(R.id.edDestino);
-        edDescricao = findViewById(R.id.edDescricao);
-        edKmsRodados = findViewById(R.id.edKmRodados);
-        edValorViagem = findViewById(R.id.edValorViagem);
-        edHoraEspera = findViewById(R.id.edHoraEspera);
-        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
-        edMotorista = findViewById(R.id.edMotorista);
-        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
+    private void atualizarValorTotal(){
+        try {
+            float valorViagem = Float.parseFloat(edValorKm.getText().toString().replace(",", "."));
+            float valorEspera = Float.parseFloat(edValorHoraEspera.getText().toString().replace(",", "."));
+            float valorTotal = valorViagem + valorEspera;
+            edValorTotal.setText(String.format(Locale.getDefault(), "%.2f", valorTotal));
+        } catch (NumberFormatException e) {
+            edValorTotal.setText("0,00");
+        }
+    }
+
+
+    // --------------- Sessão Database ---------------
+
+    public void salvarViagemDb(View view) {
+        Viagem viagem = criarViagemObjeto();
+        new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
+        finish();
+    }
+
+    @NonNull
+    private Viagem criarViagemObjeto() {
+        return new Viagem(
+                edOrigem,
+                edData,
+                edHora,
+                edDestino,
+                edDescricao,
+                edKmsRodados,
+                edHoraEspera,
+                edMotorista,
+                checkViagemSeparada,
+                getApplicationContext()
+        );
     }
 }

@@ -31,7 +31,7 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position) {
         Viagem v = viagens.get(position);
         holder.txtResumo.setText(
-                v.getDataOrigem() + " - " + v.getOrigem() + " -> " + v.getDestino()
+                v.getDiaMes() + " - " + v.getOrigem() + " -> " + v.getDestino()
         );
     }
 

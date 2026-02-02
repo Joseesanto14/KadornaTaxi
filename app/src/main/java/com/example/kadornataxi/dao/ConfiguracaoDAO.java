@@ -7,16 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.kadornataxi.database.DatabaseHelper;
+import com.example.kadornataxi.database.DbHelper;
 import com.example.kadornataxi.model.Configuracao;
 
 public class ConfiguracaoDAO {
     private SQLiteDatabase db;
-    private final DatabaseHelper dbHelper;
+    private final DbHelper dbHelper;
     private final String TAG = "ConfiguracaoDAO";
 
     public ConfiguracaoDAO(Context context) {
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = new DbHelper(context);
     }
 
     private void open() {
@@ -26,45 +26,44 @@ public class ConfiguracaoDAO {
     private void close() {
         dbHelper.close();
     }
-
-    private long insert(Configuracao configuracao) {
+    private ContentValues valuesPut(Configuracao configuracao) {
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.CONFIG_COLUMN_ID,
-                1);
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
+        values.put(DbHelper.Configuracao.VALOR_KM_RODADO,
                 configuracao.getValorKmRodado());
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
+        values.put(DbHelper.Configuracao.VALOR_HORA_ESPERA,
                 configuracao.getValorHoraEspera());
-        values.put(DatabaseHelper.CONFIG_COLUMN_MOTORISTA,
+        values.put(DbHelper.Configuracao.MOTORISTA,
                 configuracao.getMotorista());
+        values.put(DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA,
+                configuracao.getClassificacaoViagemSeparada());
 
-        return db.insert(DatabaseHelper.TABLE_CONFIGURACAO,
+        return values;
+    }
+
+    private long insert(Configuracao configuracao) {
+        ContentValues values = valuesPut(configuracao);
+
+        values.put(DbHelper.Configuracao.ID, 1);
+
+        return db.insert(DbHelper.Configuracao.NOME_TABELA,
                 null, values);
     }
 
     private long update(Configuracao configuracao) {
-        ContentValues values = new ContentValues();
+        ContentValues values = valuesPut(configuracao);
 
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
-                configuracao.getValorKmRodado());
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
-                configuracao.getValorHoraEspera());
-        values.put(DatabaseHelper.CONFIG_COLUMN_MOTORISTA,
-                configuracao.getMotorista());
-
-        return db.update(
-                DatabaseHelper.TABLE_CONFIGURACAO,
+        return db.update(DbHelper.Configuracao.NOME_TABELA,
                 values,
-                DatabaseHelper.CONFIG_COLUMN_ID + " = ?",
+                DbHelper.Configuracao.ID + " = ?",
                 new String[]{String.valueOf(configuracao.getId())});
     }
     public void setConfiguracaoPadrao() {
         open();
 
-        Log.d(TAG, "Configuração padrão gerada com o ID: " +
-                insert(new Configuracao(
-                        1, 1.99f, 20f, "Marcelo")));
+        Log.d(TAG, "Configuração padrão gerada com o ID: " + insert(
+                new Configuracao(1, 1.99f, 20f,
+                        "Marcelo", "Trecho 2")));
 
         close();
     }
@@ -94,7 +93,6 @@ public class ConfiguracaoDAO {
         Log.d (TAG ,
                 "Configuração atualizada, linhas alteradas: " + update(configuracao));
 
-
         close();
     }
 
@@ -102,9 +100,9 @@ public class ConfiguracaoDAO {
         open();
 
         Cursor cursor = db.query(
-                DatabaseHelper.TABLE_CONFIGURACAO,
+                DbHelper.Configuracao.NOME_TABELA,
                 null,
-                DatabaseHelper.COLUMN_ID + " = ?",
+                DbHelper.Configuracao.ID + " = ?",
                 new String[]{"1"} ,
                 null, null, null);
 
@@ -123,21 +121,32 @@ public class ConfiguracaoDAO {
     private Configuracao cursorToConfiguracao(Cursor cursor) {
 
         return new Configuracao(
-                cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)),
-                cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO)),
-                cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA)),
-                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_MOTORISTA))
+                cursor.getLong(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.ID)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.VALOR_KM_RODADO)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.VALOR_HORA_ESPERA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.MOTORISTA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA))
         );
     }
 
     public boolean configExiste() {
         open();
+
         Cursor cursor = db.query(
-                DatabaseHelper.TABLE_CONFIGURACAO,
-                null, null, null, null, null, null);
+                DbHelper.Configuracao.NOME_TABELA,
+                null, null, null,
+                null, null, null);
+
         boolean existe = cursor.getCount() > 0;
+
         cursor.close();
         close();
+
         return existe;
     }
 }

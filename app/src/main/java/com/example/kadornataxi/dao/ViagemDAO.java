@@ -5,8 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.example.kadornataxi.database.DatabaseHelper;
+import com.example.kadornataxi.database.DbHelper;
 import com.example.kadornataxi.model.Viagem;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class ViagemDAO {
     private SQLiteDatabase database;
-    private DatabaseHelper dbHelper;
+    private DbHelper dbHelper;
 
     private void open() {
         database = dbHelper.getWritableDatabase();
@@ -24,34 +25,49 @@ public class ViagemDAO {
         dbHelper.close();
     }
 
-    // construtor padrão (vazio)
     public ViagemDAO(Context context) {
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = new DbHelper(context);
     }
 
     // CREATE - Inserir um novo registro (viagem)
 
-    public void inserirNoDatabase(Viagem viagem) {
+    public void inserirNoDatabase(Viagem viagem, Context context) {
         open();
 
         Log.d("ViagemDAO", "Viagem inserida com o ID: " + insert(viagem));
+        Toast.makeText(context, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
 
         close();
     }
     private long insert(Viagem viagem) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.COLUMN_ORIGEM, viagem.getOrigem());
-        values.put(DatabaseHelper.COLUMN_DATA_ORIGEM, Viagem.formatarDataISO8601(viagem.getDataOrigem()));
-        values.put(DatabaseHelper.COLUMN_HORA_ORIGEM, viagem.getHoraOrigem());
-        values.put(DatabaseHelper.COLUMN_DESTINO, viagem.getDestino());
-        values.put(DatabaseHelper.COLUMN_JUSTIFICATIVA, viagem.getDescricao());
-        values.put(DatabaseHelper.COLUMN_VALOR_VIAGEM, viagem.getKmsRodados());
-        values.put(DatabaseHelper.COLUMN_MOTORISTA, viagem.getMotorista());
-        values.put(DatabaseHelper.COLUMN_HORA_ESPERA, viagem.getHoraEspera());
-        values.put(DatabaseHelper.COLUMN_VALOR_HORA_ESPERA, viagem.getValorHoraEspera());
-        values.put(DatabaseHelper.COLUMN_VIAGEM_SEPARADA, viagem.isViagemSeparada() ? 1 : 0);
+        
+        values.put(DbHelper.Viagem.ORIGEM, 
+                viagem.getOrigem());
+        values.put(DbHelper.Viagem.DATA, 
+                Viagem.formatarDataISO8601(viagem.getData()));
+        values.put(DbHelper.Viagem.HORA, 
+                viagem.getHora());
+        values.put(DbHelper.Viagem.DESTINO, 
+                viagem.getDestino());
+        values.put(DbHelper.Viagem.DESCRICAO, 
+                viagem.getDescricao());
+        values.put(DbHelper.Viagem.KMS_RODADOS, 
+                viagem.getKmsRodados());
+        values.put(DbHelper.Viagem.VALOR_KM,
+                viagem.getValorKms());
+        values.put(DbHelper.Viagem.MOTORISTA, 
+                viagem.getMotorista());
+        values.put(DbHelper.Viagem.HORA_ESPERA, 
+                viagem.getHoraEspera());
+        values.put(DbHelper.Viagem.VALOR_HORA_ESPERA, 
+                viagem.getValorHoraEspera());
+        values.put(DbHelper.Viagem.CLASSIFICACAO,
+                viagem.getClassificacao());
+        values.put(DbHelper.Viagem.VALOR_TOTAL,
+                viagem.getValorTotal());
 
-        return database.insert(DatabaseHelper.TABLE_VIAGEM, null, values);
+        return database.insert(DbHelper.Viagem.NOME_TABELA, null, values);
     }
 
     // READ - Listar todos os registros (viagens)
@@ -61,9 +77,9 @@ public class ViagemDAO {
 
         List<Viagem> lista = new ArrayList<>();
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
+        Cursor cursor = database.query(DbHelper.Viagem.NOME_TABELA,
                 null, null, null,
-                null, null, DatabaseHelper.COLUMN_DATA_ORIGEM + " DESC");
+                null, null, DbHelper.Viagem.DATA + " DESC");
 
         if (cursor.moveToFirst()) {
             do {
@@ -83,7 +99,7 @@ public class ViagemDAO {
 
         List<Viagem> lista = new ArrayList<>();
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
+        Cursor cursor = database.query(DbHelper.Viagem.NOME_TABELA,
                 null, null, null,
                 null, null, null);
 
@@ -113,7 +129,8 @@ public class ViagemDAO {
     public int delete(long id) {
         open();
         
-        int linhasAfetadas = database.delete(DatabaseHelper.TABLE_VIAGEM, DatabaseHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        int linhasAfetadas = database.delete(DbHelper.Viagem.NOME_TABELA,
+                DbHelper.Viagem.ID + " = ?", new String[]{String.valueOf(id)});
 
         close();
 
@@ -124,7 +141,8 @@ public class ViagemDAO {
 
     public int deleteAll() {
         open();
-        int linhasAfetadas = database.delete(DatabaseHelper.TABLE_VIAGEM, null, null);
+        int linhasAfetadas = database.delete(DbHelper.Viagem.NOME_TABELA,
+                null, null);
         close();
 
         return linhasAfetadas;
@@ -148,10 +166,10 @@ public class ViagemDAO {
         open();
         List<Viagem> lista = new ArrayList<>();
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
+        Cursor cursor = database.query(DbHelper.Viagem.NOME_TABELA,
                 null,
-                DatabaseHelper.COLUMN_ORIGEM + " = ? OR " +
-                        DatabaseHelper.COLUMN_DESTINO + " = ?",
+                DbHelper.Viagem.ORIGEM + " = ? OR " +
+                        DbHelper.Viagem.DESTINO + " = ?",
                 new String[]{local, local}, null, null, null);
 
         while (cursor.moveToNext()) {
@@ -167,8 +185,8 @@ public class ViagemDAO {
         open();
         List<Viagem> lista = new ArrayList<>();
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
-                null, DatabaseHelper.COLUMN_DESTINO +
+        Cursor cursor = database.query(DbHelper.Viagem.NOME_TABELA,
+                null, DbHelper.Viagem.DESTINO +
                         " = ?", new String[]{destino}, null,
                 null, null);
 
@@ -186,12 +204,12 @@ public class ViagemDAO {
         List<Viagem> lista = new ArrayList<>();
 
         Cursor cursor = database.query(
-                DatabaseHelper.TABLE_VIAGEM,
+                DbHelper.Viagem.NOME_TABELA,
                 null,
-                DatabaseHelper.COLUMN_DATA_ORIGEM + " LIKE ?",
+                DbHelper.Viagem.DATA + " LIKE ?",
                 new String[]{anoMes + "%"},
                 null, null,
-                DatabaseHelper.COLUMN_DATA_ORIGEM + " ASC");
+                DbHelper.Viagem.DATA + " ASC");
 
         if (cursor.moveToFirst()) {
             do {
@@ -207,8 +225,8 @@ public class ViagemDAO {
     public List<Viagem> getViagensByIntervalo(String dataInicio, String dataFim) {
         List<Viagem> lista = new ArrayList<>();
 
-        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM,
-                null, DatabaseHelper.COLUMN_DATA_ORIGEM + " BETWEEN ? AND ?",
+        Cursor cursor = database.query(DbHelper.Viagem.NOME_TABELA,
+                null, DbHelper.Viagem.DATA + " BETWEEN ? AND ?",
                 new String[]{dataInicio, dataFim}, null, null, null);
 
         while (cursor.moveToNext()) {
@@ -220,48 +238,22 @@ public class ViagemDAO {
         return lista;
     }
 
-    public List<Viagem> getViagensSeparadas(){
-        List<Viagem> lista = new ArrayList<>();
-
-        Cursor cursor = database.query(DatabaseHelper.TABLE_VIAGEM, null,
-                DatabaseHelper.COLUMN_VIAGEM_SEPARADA + " = 1", null,
-                null, null, null);
-
-        while (cursor.moveToNext()){
-            lista.add(cursorToViagem(cursor));
-        }
-
-        cursor.close();
-
-        return lista;
-        }
-
     private Viagem cursorToViagem(Cursor cursor) {
-        Viagem viagem = new Viagem();
 
-        viagem.setId(cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_ID)));
-        viagem.setOrigem(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_ORIGEM)));
-        viagem.setDataOrigem(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_DATA_ORIGEM)));
-        viagem.setHoraOrigem(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_HORA_ORIGEM)));
-        viagem.setDestino(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_DESTINO)));
-        viagem.setDescricao(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_JUSTIFICATIVA)));
-        viagem.setKmsRodados(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_VALOR_VIAGEM)));
-        viagem.setMotorista(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_MOTORISTA)));
-        viagem.setHoraEspera(cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_HORA_ESPERA)));
-        viagem.setValorHoraEspera(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_VALOR_HORA_ESPERA)));
-        viagem.setViagemSeparada(cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.
-                COLUMN_VIAGEM_SEPARADA)) == 1);
-
-        return viagem;
+        return new Viagem(
+                cursor.getLong(cursor.getColumnIndexOrThrow(DbHelper.Viagem.ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.ORIGEM)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.DATA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.HORA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.DESTINO)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.DESCRICAO)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.KMS_RODADOS)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.VALOR_KM)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.MOTORISTA)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.HORA_ESPERA)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.VALOR_HORA_ESPERA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.CLASSIFICACAO)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.VALOR_TOTAL))
+        );
     }
 }

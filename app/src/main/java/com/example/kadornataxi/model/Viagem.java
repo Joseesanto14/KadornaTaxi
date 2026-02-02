@@ -1,160 +1,82 @@
 package com.example.kadornataxi.model;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+import android.widget.CheckBox;
+import android.widget.EditText;
+
+import com.example.kadornataxi.dao.ConfiguracaoDAO;
+import com.example.kadornataxi.dto.MesViagens;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 
 public class Viagem implements Serializable {
     private long id;
     private String origem;
-    private String dataOrigem;
-    private String horaOrigem;
+    private String data;
+    private String hora;
     private String destino;
     private String descricao;
     private float kmsRodados;
-    private float valorViagem;
+    private float valorKms;
     private String motorista;
     private float horaEspera;
     private float valorHoraEspera;
-    private boolean viagemSeparada;
+    private String classificacao;
+    private float valorTotal;
+
+    // --------------- construtores ---------------
 
     public Viagem() {}
 
-    public Viagem(String origem, String dataOrigem, String horaOrigem, String destino,
-                  String descricao, boolean viagemSeparada) {
-        this.origem = origem;
-        this.dataOrigem = dataOrigem;
-        this.horaOrigem = horaOrigem;
-        this.destino = destino;
-        this.descricao = descricao;
-        this.viagemSeparada = viagemSeparada;
-    }
-
-    @NonNull
-    @Override
-    public String toString() {
-        return String.format(Locale.getDefault(), "| %s | %s | %s | %s | %s | %f | %s | %.2f | %s |",
-                getDataOrigem(), getHoraOrigem(), getOrigem(), getDestino(), getDescricao(),
-                getKmsRodados(), getMotorista(), getHoraEspera(), getHoraEspera() * 20);
-    }
-
-    public String getRecorteViagem() {
-        return this.isViagemSeparada() ? this.dataOrigem.substring(3, 10) + " TRECHO 2" : this.dataOrigem.substring(3, 10);
-
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getOrigem() {
-        return origem;
-    }
-
-    public String getDataOrigem() {
-        return dataOrigem;
-    }
-
-    public String getHoraOrigem() {
-        return horaOrigem;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public float getKmsRodados() {
-        return kmsRodados;
-    }
-
-    public String getMotorista() {
-        return motorista;
-    }
-
-    public float getHoraEspera() {
-        return horaEspera;
-    }
-
-    public float getValorHoraEspera() {
-        return valorHoraEspera;
-    }
-
-    public float getValorViagem() {
-        return valorViagem;
-    }
-
-    public boolean isViagemSeparada() {
-        return viagemSeparada;
-    }
-
-    public void setId(long id) {
+    public Viagem(long id, String origem, String data, String hora, String destino, String descricao, float kmsRodados, float valorKms, String motorista, float horaEspera, float valorHoraEspera, String classificacao, float valorTotal) {
         this.id = id;
-    }
-
-    public void setOrigem(String origem) {
         this.origem = origem;
-    }
-
-    public void setDataOrigem(String dataOrigem) {
-        this.dataOrigem = dataOrigem;
-    }
-
-    public void setHoraOrigem(String horaOrigem) {
-        this.horaOrigem = horaOrigem;
-    }
-
-    public void setDestino(String destino) {
+        this.data = data;
+        this.hora = hora;
         this.destino = destino;
-    }
-
-    public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public void setKmsRodados(float kmsRodados) {
         this.kmsRodados = kmsRodados;
-    }
-
-    public void setMotorista(String motorista) {
+        this.valorKms = valorKms;
         this.motorista = motorista;
-    }
-
-    public void setHoraEspera(float horaEspera) {
         this.horaEspera = horaEspera;
-    }
-
-    public void setViagemSeparada(boolean viagemSeparada) {
-        this.viagemSeparada = viagemSeparada;
-    }
-    public void setValorViagem(float valorViagem) {
-        this.valorViagem = valorViagem;
-    }
-
-    public void setValorHoraEspera(float valorHoraEspera) {
         this.valorHoraEspera = valorHoraEspera;
+        this.classificacao = classificacao;
+        this.valorTotal = valorTotal;
     }
 
-    public static float getValorTotalViagens(List<Viagem> viagens) {
-        float total = 0;
-        for (Viagem v : viagens) {
-            total += v.getValorViagem();
-        }
-        return total;
+    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, CheckBox checkViagemSeparada, Context context) {
+        origem = edOrigem.getText().toString();
+        data = edData.getText().toString();
+        hora = edHora.getText().toString();
+        destino = edDestino.getText().toString();
+        descricao = edDescricao.getText().toString();
+        kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
+
+        float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
+        float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
+        horaEspera = horas + (minutos / 60f);
+
+        motorista = edMotorista.getText().toString();
+
+        Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
+        valorKms = kmsRodados * config.getValorKmRodado();
+        valorHoraEspera = horaEspera * config.getValorHoraEspera();
+        valorTotal = getValorTotal();
+
+        classificacao = checkViagemSeparada.isChecked() ?
+                config.getClassificacaoViagemSeparada() : "Comum";
     }
+
+    // --------------- úteis ---------------
 
     public static String formatarDataISO8601(String data) {
         String[] partes = data.split("/");
-        String dia = partes[0];
-        String mes = partes[1];
-        String ano = partes[2];
 
-        return ano + "-" + mes + "-" + dia;
+        return partes[2] + "-" + partes[1] + "-" + partes[0];
     }
 
     public String getDiaMes() {
@@ -162,7 +84,142 @@ public class Viagem implements Serializable {
         * Receive a Date in ISO 8601 format (YYYY-MM-DD) and return the day and month in the format DD/MM (Brazilian legibility)
          */
 
-        String[] partes = dataOrigem.split("-");
+        String[] partes = getData().split("-");
         return partes[2] + "/" + partes[1];
     }
+
+    public static List<MesViagens> gerarListaDeMeses(List<Viagem> todas, Context context) {
+        Map<String, List<Viagem>> viagensPorMes = new LinkedHashMap<>();
+
+        for(Viagem viagem : todas) {
+            String mesAno = viagem.getData().substring(0, 7);
+
+            if (viagem.isNaoComum()) {
+                mesAno += " " + viagem.getClassificacao();
+            }
+
+            viagensPorMes
+                    .computeIfAbsent(mesAno, k -> new ArrayList<>())
+                    .add(viagem);
+        }
+
+        List<MesViagens> listaMeses = new ArrayList<>();
+
+        for (String mes : viagensPorMes.keySet()) {
+            listaMeses.add(new MesViagens(mes, viagensPorMes.get(mes)));
+        }
+        return listaMeses;
+    }
+
+    public boolean isNaoComum() {
+        return !getClassificacao().equals("Comum");
+    }
+
+    // --------------- getters e setters ---------------
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public void setOrigem(String origem) {
+        this.origem = origem;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getHora() {
+        return hora;
+    }
+
+    public void setHora(String hora) {
+        this.hora = hora;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
+        this.destino = destino;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public float getKmsRodados() {
+        return kmsRodados;
+    }
+
+    public void setKmsRodados(float kmsRodados) {
+        this.kmsRodados = kmsRodados;
+    }
+
+    public float getValorKms() {
+        return valorKms;
+    }
+
+    public void setValorKms(float valorKms) {
+        this.valorKms = valorKms;
+    }
+
+    public String getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(String motorista) {
+        this.motorista = motorista;
+    }
+
+    public float getHoraEspera() {
+        return horaEspera;
+    }
+
+    public void setHoraEspera(float horaEspera) {
+        this.horaEspera = horaEspera;
+    }
+
+    public float getValorHoraEspera() {
+        return valorHoraEspera;
+    }
+
+    public void setValorHoraEspera(float valorHoraEspera) {
+        this.valorHoraEspera = valorHoraEspera;
+    }
+
+    public String getClassificacao() {
+        return classificacao;
+    }
+
+    public void setClassificacao(String classificacao) {
+        this.classificacao = classificacao;
+    }
+
+    public float getValorTotal() {
+        return getValorKms() + getValorHoraEspera();
+    }
+
+    public void setValorTotal(float valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 }
+
+

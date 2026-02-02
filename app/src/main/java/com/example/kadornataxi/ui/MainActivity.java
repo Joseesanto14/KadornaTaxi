@@ -1,12 +1,8 @@
 package com.example.kadornataxi.ui;
 
-import static android.widget.Toast.LENGTH_LONG;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +12,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.dao.ConfiguracaoDAO;
-import com.example.kadornataxi.database.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,7 +1,7 @@
 # KadornaTaxi
 ***
 ## Objetivos
-Projeto para registrar corridas, valores, horários e justificativas para controle simples de viagens de táxi da empresa Kadorna Transportes.
+Projeto para registrar corridas, valores, horários e descrições para controle simples de viagens de táxi.
 
 ## Usuários
 - Motorista (uso individual).
@@ -29,12 +29,12 @@ Projeto para registrar corridas, valores, horários e justificativas para contro
 - Persistência em Banco de Dados.
 - Exibição de todas as viagens gravadas separadas por mês/ano.
 - Criação de relatórios de viagens em pdf (fase inicial).
-- Máscara de dados para cálculo de preço baseado em quilometragem e horas esperadas.
-- Utiliza data e hora do sistema para preencher campos na Solicitação de Viagem.
+- Preenchimento automático de data e hora na criação de solicitações de táxi.
+- Preview dos valores por quilometragem, por hora esperada e total da viagem.
 
 
 ### Em desenvolvimento:
-- Máscara de dados para todos os campos que envolvam horário e dinheiro.
+- Salvar formulário não finalizado em cache para recuperação.
 - Criação de relatórios detalhados em pdf.
 - Filtragem de viagens para exibição.
 
