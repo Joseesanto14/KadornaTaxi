@@ -1,5 +1,11 @@
 package com.example.kadornataxi.model;
 
+import android.content.Context;
+import android.widget.CheckBox;
+import android.widget.EditText;
+
+import com.example.kadornataxi.dao.ConfiguracaoDAO;
+
 import java.io.Serializable;
 
 public class Viagem implements Serializable {
@@ -33,6 +39,25 @@ public class Viagem implements Serializable {
         this.valorHoraEspera = valorHoraEspera;
         this.classificacao = classificacao;
         this.valorTotal = valorTotal;
+    }
+
+    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, CheckBox checkViagemSeparada, Context context) {
+        origem = edOrigem.getText().toString();
+        data = edData.getText().toString();
+        hora = edHora.getText().toString();
+        destino = edDestino.getText().toString();
+        descricao = edDescricao.getText().toString();
+        kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
+        horaEspera = Float.parseFloat(edHoraEspera.getText().toString());
+        motorista = edMotorista.getText().toString();
+
+        Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
+        valorKms = kmsRodados * config.getValorKmRodado();
+        valorHoraEspera = horaEspera * config.getValorHoraEspera();
+        valorTotal = getValorTotal();
+
+        classificacao = checkViagemSeparada.isChecked() ?
+                config.getClassificacaoViagemSeparada() : "Comum";
     }
 
     public static String formatarDataISO8601(String data) {
@@ -147,7 +172,7 @@ public class Viagem implements Serializable {
     }
 
     public float getValorTotal() {
-        return valorTotal;
+        return getValorKms() + getValorHoraEspera();
     }
 
     public void setValorTotal(float valorTotal) {
