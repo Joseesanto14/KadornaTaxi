@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.kadornataxi.database.DbHelper;
 import com.example.kadornataxi.model.Viagem;
@@ -31,10 +32,11 @@ public class ViagemDAO {
 
     // CREATE - Inserir um novo registro (viagem)
 
-    public void inserirNoDatabase(Viagem viagem) {
+    public void inserirNoDatabase(Viagem viagem, Context context) {
         open();
 
         Log.d("ViagemDAO", "Viagem inserida com o ID: " + insert(viagem));
+        Toast.makeText(context, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
 
         close();
     }
