@@ -7,16 +7,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.kadornataxi.database.DatabaseHelper;
+import com.example.kadornataxi.database.DbHelper;
 import com.example.kadornataxi.model.Configuracao;
 
 public class ConfiguracaoDAO {
     private SQLiteDatabase db;
-    private final DatabaseHelper dbHelper;
+    private final DbHelper dbHelper;
     private final String TAG = "ConfiguracaoDAO";
 
     public ConfiguracaoDAO(Context context) {
-        dbHelper = new DatabaseHelper(context);
+        dbHelper = new DbHelper(context);
     }
 
     private void open() {
@@ -30,33 +30,33 @@ public class ConfiguracaoDAO {
     private long insert(Configuracao configuracao) {
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.CONFIG_COLUMN_ID,
+        values.put(DbHelper.CONFIG_COLUMN_ID,
                 1);
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
+        values.put(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
                 configuracao.getValorKmRodado());
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
+        values.put(DbHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
                 configuracao.getValorHoraEspera());
-        values.put(DatabaseHelper.CONFIG_COLUMN_MOTORISTA,
+        values.put(DbHelper.CONFIG_COLUMN_MOTORISTA,
                 configuracao.getMotorista());
 
-        return db.insert(DatabaseHelper.TABLE_CONFIGURACAO,
+        return db.insert(DbHelper.TABLE_CONFIGURACAO,
                 null, values);
     }
 
     private long update(Configuracao configuracao) {
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
+        values.put(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO,
                 configuracao.getValorKmRodado());
-        values.put(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
+        values.put(DbHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA,
                 configuracao.getValorHoraEspera());
-        values.put(DatabaseHelper.CONFIG_COLUMN_MOTORISTA,
+        values.put(DbHelper.CONFIG_COLUMN_MOTORISTA,
                 configuracao.getMotorista());
 
         return db.update(
-                DatabaseHelper.TABLE_CONFIGURACAO,
+                DbHelper.TABLE_CONFIGURACAO,
                 values,
-                DatabaseHelper.CONFIG_COLUMN_ID + " = ?",
+                DbHelper.CONFIG_COLUMN_ID + " = ?",
                 new String[]{String.valueOf(configuracao.getId())});
     }
     public void setConfiguracaoPadrao() {
@@ -102,9 +102,9 @@ public class ConfiguracaoDAO {
         open();
 
         Cursor cursor = db.query(
-                DatabaseHelper.TABLE_CONFIGURACAO,
+                DbHelper.TABLE_CONFIGURACAO,
                 null,
-                DatabaseHelper.COLUMN_ID + " = ?",
+                DbHelper.COLUMN_ID + " = ?",
                 new String[]{"1"} ,
                 null, null, null);
 
@@ -123,17 +123,17 @@ public class ConfiguracaoDAO {
     private Configuracao cursorToConfiguracao(Cursor cursor) {
 
         return new Configuracao(
-                cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_ID)),
-                cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_VALOR_KM_RODADO)),
-                cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA)),
-                cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.CONFIG_COLUMN_MOTORISTA))
+                cursor.getLong(cursor.getColumnIndexOrThrow(DbHelper.COLUMN_ID)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.CONFIG_COLUMN_VALOR_KM_RODADO)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.CONFIG_COLUMN_VALOR_HORA_ESPERA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.CONFIG_COLUMN_MOTORISTA))
         );
     }
 
     public boolean configExiste() {
         open();
         Cursor cursor = db.query(
-                DatabaseHelper.TABLE_CONFIGURACAO,
+                DbHelper.TABLE_CONFIGURACAO,
                 null, null, null, null, null, null);
         boolean existe = cursor.getCount() > 0;
         cursor.close();
