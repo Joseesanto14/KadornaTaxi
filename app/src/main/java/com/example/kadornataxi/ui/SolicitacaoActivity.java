@@ -26,7 +26,7 @@ import java.time.LocalTime;
 import java.util.Locale;
 
 public class SolicitacaoActivity extends AppCompatActivity {
-    EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDescricao, edKmsRodados, edValorViagem, edHoraEspera, edValorHoraEspera, edMotorista;
+    EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDescricao, edKmsRodados, edValorViagem, edHoraEspera, edValorHoraEspera, edMotorista, edValorTotal;
     CheckBox checkViagemSeparada;
 
 
@@ -56,12 +56,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     @NonNull
     private Viagem criarViagemObjeto() {
-        return new Viagem(edOrigem.getText().toString(),
-                edDataOrigem.getText().toString(),
-                edHoraOrigem.getText().toString(),
-                edDestino.getText().toString(),
-                edDescricao.getText().toString(),
-                checkViagemSeparada.isChecked());
+
     }
 
     private void preencherCampos() {
@@ -187,6 +182,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 calcularValorKm(s.toString(), edValorViagem);
+                atualizarValorTotal();
             }
 
             @Override
@@ -285,16 +281,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
     }
 
     private void viewBinding() {
-        edOrigem = findViewById(R.id.edOrigem);
-        edDataOrigem = findViewById(R.id.edDataOrigem);
-        edHoraOrigem = findViewById(R.id.edHoraOrigem);
-        edDestino = findViewById(R.id.edDestino);
-        edDescricao = findViewById(R.id.edDescricao);
-        edKmsRodados = findViewById(R.id.edKmRodados);
-        edValorViagem = findViewById(R.id.edValorViagem);
-        edHoraEspera = findViewById(R.id.edHoraEspera);
-        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
-        edMotorista = findViewById(R.id.edMotorista);
-        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
+
     }
 }

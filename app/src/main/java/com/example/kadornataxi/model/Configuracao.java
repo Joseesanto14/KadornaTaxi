@@ -6,27 +6,7 @@ public class Configuracao {
     private float valorKmRodado;
     private float valorHoraEspera;
     private String motorista;
+    private String classificacaoViagemSeparada;
 
-    public Configuracao(long id, float valorKmRodado, float valorHoraEspera, String motorista) {
-        this.id = id;
-        this.valorKmRodado = valorKmRodado;
-        this.valorHoraEspera = valorHoraEspera;
-        this.motorista = motorista;
-    }
 
-    public long getId() {
-        return id;
-    }
-
-    public float getValorKmRodado() {
-        return valorKmRodado;
-    }
-
-    public float getValorHoraEspera() {
-        return valorHoraEspera;
-    }
-
-    public String getMotorista() {
-        return motorista;
-    }
 }
