@@ -26,7 +26,8 @@ import java.time.LocalTime;
 import java.util.Locale;
 
 public class SolicitacaoActivity extends AppCompatActivity {
-    EditText edOrigem, edDataOrigem, edHoraOrigem, edDestino, edDescricao, edKmsRodados, edValorViagem, edHoraEspera, edValorHoraEspera, edMotorista, edValorTotal;
+    EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera;
+    EditText edValorKm, edValorHoraEspera, edValorTotal;
     CheckBox checkViagemSeparada;
 
 
@@ -72,8 +73,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
         String[] partesData = data.toString().split("-");
         String dataStr = partesData[2] + partesData[1] + partesData[0];
 
-        edHoraOrigem.setText(horaStr);
-        edDataOrigem.setText(dataStr);
+        edHora.setText(horaStr);
+        edData.setText(dataStr);
     }
 
     private void configurarListeners() {
@@ -88,7 +89,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
     }
 
     private void listenerHora() {
-        edHoraOrigem.addTextChangedListener(new TextWatcher() {
+        edHora.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
             @Override
             public void afterTextChanged(Editable s) {
@@ -98,7 +99,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 String clean = s.toString().replaceAll("[^\\d]", "");
 
                 if (clean.isEmpty()) {
-                    edHoraOrigem.setText("");
+                    edHora.setText("");
                     isUpdating = false;
                     return;
                 }
@@ -114,8 +115,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
                 String formatado = horas + ":" + minutos;
 
-                edHoraOrigem.setText(formatado);
-                edHoraOrigem.setSelection(formatado.length());
+                edHora.setText(formatado);
+                edHora.setSelection(formatado.length());
 
                 isUpdating = false;
             }
@@ -133,7 +134,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
     }
 
     private void listenerData() {
-        edDataOrigem.addTextChangedListener(new TextWatcher() {
+        edData.addTextChangedListener(new TextWatcher() {
             private boolean isUpdating = false;
             @Override
             public void afterTextChanged(Editable s) {
@@ -143,7 +144,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 String clean = s.toString().replaceAll("[^\\d]", "");
 
                 if (clean.isEmpty()) {
-                    edDataOrigem.setText("");
+                    edData.setText("");
                     isUpdating = false;
                     return;
                 }
@@ -160,8 +161,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
                 String formatado = dia + "/" + mes + "/" + ano;
 
-                edDataOrigem.setText(formatado);
-                edDataOrigem.setSelection(formatado.length());
+                edData.setText(formatado);
+                edData.setSelection(formatado.length());
                 isUpdating = false;
             }
 
@@ -181,7 +182,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edKmsRodados.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                calcularValorKm(s.toString(), edValorViagem);
+                calcularValorKm(s.toString(), edValorKm);
                 atualizarValorTotal();
             }
 
@@ -283,7 +284,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     private void atualizarValorTotal(){
         try {
-            float valorViagem = Float.parseFloat(edValorViagem.getText().toString().replace(",", "."));
+            float valorViagem = Float.parseFloat(edValorKm.getText().toString().replace(",", "."));
             float valorEspera = Float.parseFloat(edValorHoraEspera.getText().toString().replace(",", "."));
             float valorTotal = valorViagem + valorEspera;
             edValorTotal.setText(String.format(Locale.getDefault(), "%.2f", valorTotal));
