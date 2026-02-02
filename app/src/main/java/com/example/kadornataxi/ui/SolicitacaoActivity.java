@@ -41,42 +41,39 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        viewBinding();
         configurarListeners();
         preencherCampos();
     }
 
+    // --------------- Sessão UI ---------------
     public void voltarMenu(View view) {
         finish();
     }
 
-    public void salvarViagemDb(View view) {
-        Viagem viagem = criarViagemObjeto();
-        new ViagemDAO(this).inserirNoDatabase(viagem);
-        Toast.makeText(this, "Viagem criada com sucesso!", Toast.LENGTH_SHORT).show();
-    }
-
-    @NonNull
-    private Viagem criarViagemObjeto() {
-        return new Viagem(
-                edOrigem,
-                edData,
-                edHora,
-                edDestino,
-                edDescricao,
-                edKmsRodados,
-                edHoraEspera,
-                edMotorista,
-                checkViagemSeparada,
-                getApplicationContext()
-        );
+    private void viewBinding() {
+        edOrigem = findViewById(R.id.edOrigem);
+        edData = findViewById(R.id.edData);
+        edHora = findViewById(R.id.edHora);
+        edDestino = findViewById(R.id.edDestino);
+        edDescricao = findViewById(R.id.edDescricao);
+        edKmsRodados = findViewById(R.id.edKmRodados);
+        edValorKm = findViewById(R.id.edValorKm);
+        edHoraEspera = findViewById(R.id.edHoraEspera);
+        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
+        edMotorista = findViewById(R.id.edMotorista);
+        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
+        edValorTotal = findViewById(R.id.edValorTotal);
     }
 
     private void preencherCampos() {
-        receberDataHoraDoSistema();
+        String[] dataHora = receberDataHoraDoSistema();
+        edData.setText(dataHora[0]);
+        edHora.setText(dataHora[1]);
         edMotorista.setText(new ConfiguracaoDAO(this).getConfiguracao().getMotorista());
     }
 
-    private void receberDataHoraDoSistema() {
+    private String[] receberDataHoraDoSistema() {
         LocalDate data = LocalDateTime.now().toLocalDate();
         LocalTime hora = LocalDateTime.now().toLocalTime();
 
@@ -84,64 +81,18 @@ public class SolicitacaoActivity extends AppCompatActivity {
         String[] partesData = data.toString().split("-");
         String dataStr = partesData[2] + partesData[1] + partesData[0];
 
-        edHora.setText(horaStr);
-        edData.setText(dataStr);
+        return new String[] {dataStr, horaStr};
     }
 
-    private void configurarListeners() {
-        viewBinding();
 
+    // --------------- Sessão Listeners ---------------
+
+    private void configurarListeners() {
         listenerData();
         listenerHora();
 
         listenerKmsRodados();
-
         listenerHoraEspera();
-    }
-
-    private void listenerHora() {
-        edHora.addTextChangedListener(new TextWatcher() {
-            private boolean isUpdating = false;
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (isUpdating) { return;}
-                isUpdating = true;
-
-                String clean = s.toString().replaceAll("[^\\d]", "");
-
-                if (clean.isEmpty()) {
-                    edHora.setText("");
-                    isUpdating = false;
-                    return;
-                }
-
-                if (clean.length() > 4) {
-                    clean = clean.substring(clean.length() - 4);
-                } else {
-                    clean = String.format(Locale.getDefault(), "%04d", Long.parseLong(clean));
-                }
-
-                String horas = clean.substring(0,2);
-                String minutos = clean.substring(2,4);
-
-                String formatado = horas + ":" + minutos;
-
-                edHora.setText(formatado);
-                edHora.setSelection(formatado.length());
-
-                isUpdating = false;
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-        });
     }
 
     private void listenerData() {
@@ -189,6 +140,51 @@ public class SolicitacaoActivity extends AppCompatActivity {
         });
     }
 
+    private void listenerHora() {
+        edHora.addTextChangedListener(new TextWatcher() {
+            private boolean isUpdating = false;
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isUpdating) { return;}
+                isUpdating = true;
+
+                String clean = s.toString().replaceAll("[^\\d]", "");
+
+                if (clean.isEmpty()) {
+                    edHora.setText("");
+                    isUpdating = false;
+                    return;
+                }
+
+                if (clean.length() > 4) {
+                    clean = clean.substring(clean.length() - 4);
+                } else {
+                    clean = String.format(Locale.getDefault(), "%04d", Long.parseLong(clean));
+                }
+
+                String horas = clean.substring(0,2);
+                String minutos = clean.substring(2,4);
+
+                String formatado = horas + ":" + minutos;
+
+                edHora.setText(formatado);
+                edHora.setSelection(formatado.length());
+
+                isUpdating = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+    }
+
     private void listenerKmsRodados(){
         edKmsRodados.addTextChangedListener(new TextWatcher() {
             @Override
@@ -204,20 +200,6 @@ public class SolicitacaoActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
         });
-    }
-
-    private void calcularValorKm(String kmStr, EditText output) {
-        if (kmStr.isEmpty()) {
-            output.setText("0,00");
-            return;
-        }
-        try {
-            float km = Float.parseFloat(kmStr.replace(",", "."));
-            float total = km * (new ConfiguracaoDAO(this).getConfiguracao().getValorKmRodado());
-            output.setText(String.format(Locale.getDefault(), "%.2f", total));
-        } catch (NumberFormatException e) {
-            output.setText("0,00");
-        }
     }
 
     private void listenerHoraEspera(){
@@ -274,6 +256,23 @@ public class SolicitacaoActivity extends AppCompatActivity {
         });
     }
 
+
+    // --------------- Sessão Cálculos ---------------
+
+    private void calcularValorKm(String kmStr, EditText output) {
+        if (kmStr.isEmpty()) {
+            output.setText("0,00");
+            return;
+        }
+        try {
+            float km = Float.parseFloat(kmStr.replace(",", "."));
+            float total = km * (new ConfiguracaoDAO(this).getConfiguracao().getValorKmRodado());
+            output.setText(String.format(Locale.getDefault(), "%.2f", total));
+        } catch (NumberFormatException e) {
+            output.setText("0,00");
+        }
+    }
+
     private void calcularValorEspera(String timeClean, EditText output) {
         if (timeClean.length() < 4) {
             output.setText("0,00");
@@ -303,18 +302,29 @@ public class SolicitacaoActivity extends AppCompatActivity {
             edValorTotal.setText("0,00");
         }
     }
-    private void viewBinding() {
-        edOrigem = findViewById(R.id.edOrigem);
-        edData = findViewById(R.id.edData);
-        edHora = findViewById(R.id.edHora);
-        edDestino = findViewById(R.id.edDestino);
-        edDescricao = findViewById(R.id.edDescricao);
-        edKmsRodados = findViewById(R.id.edKmRodados);
-        edValorKm = findViewById(R.id.edValorKm);
-        edHoraEspera = findViewById(R.id.edHoraEspera);
-        edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
-        edMotorista = findViewById(R.id.edMotorista);
-        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
-        edValorTotal = findViewById(R.id.edValorTotal);
+
+
+    // --------------- Sessão Database ---------------
+
+    public void salvarViagemDb(View view) {
+        Viagem viagem = criarViagemObjeto();
+        new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
+        finish();
+    }
+
+    @NonNull
+    private Viagem criarViagemObjeto() {
+        return new Viagem(
+                edOrigem,
+                edData,
+                edHora,
+                edDestino,
+                edDescricao,
+                edKmsRodados,
+                edHoraEspera,
+                edMotorista,
+                checkViagemSeparada,
+                getApplicationContext()
+        );
     }
 }
