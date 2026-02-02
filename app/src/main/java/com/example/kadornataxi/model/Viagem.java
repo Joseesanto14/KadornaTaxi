@@ -95,7 +95,7 @@ public class Viagem implements Serializable {
             String mesAno = viagem.getData().substring(0, 7);
 
             if (viagem.isNaoComum()) {
-                mesAno = " " + viagem.getClassificacao();
+                mesAno += " " + viagem.getClassificacao();
             }
 
             viagensPorMes
