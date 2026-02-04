@@ -1,5 +1,6 @@
 package com.example.kadornataxi.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,12 @@ public class ViagensActivity extends AppCompatActivity {
         carregarViagens();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregarViagens();
+    }
+
     private void carregarViagens() {
         List<Viagem> todas = new ViagemDAO(this)
                 .getAllOrdenadoPorDataDesc();
@@ -61,22 +68,16 @@ public class ViagensActivity extends AppCompatActivity {
         recyclerMeses.setAdapter(adapter);
     }
 
-    public void gerarRelatorio(View view){
-        Configuracao configuracao = new ConfiguracaoDAO(this).getConfiguracao();
-
-        List<Viagem> viagens = new ViagemDAO(this).getViagemByPeriodo("2026-01");
-
-        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
-
-        String caminho = gerador.gerarRelatorioMensal("2026-01", viagens, configuracao).toString();
-
-        Log.d("Relatorio", "Caminho: " + caminho);
-        Toast.makeText(this, "Caminho: " +
-                caminho,
-                Toast.LENGTH_LONG).show();
+    public void irSolicitacaoActivity(View view) {
+        ConfiguracaoDAO dao = new ConfiguracaoDAO(this);
+        if (dao.configExiste()) {
+            startActivity(new Intent(this, SolicitacaoActivity.class));
+        } else {
+            Toast.makeText(this, "Configure o app primeiro!", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, ConfiguracaoActivity.class));
+        }
     }
-
-    public void voltarMenu(View view){
-        finish();
+    public void irConfigActivity(View view) {
+        startActivity(new Intent(this, ConfiguracaoActivity.class));
     }
 }
