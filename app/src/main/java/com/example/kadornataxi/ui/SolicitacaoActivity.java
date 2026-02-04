@@ -72,6 +72,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edData.setText(dataHora[0]);
         edHora.setText(dataHora[1]);
         edMotorista.setText(new ConfiguracaoDAO(this).getConfiguracao().getMotorista());
+        checkViagemSeparada.setText(new ConfiguracaoDAO(this).getConfiguracao().getClassificacaoViagemSeparada());
     }
 
     private String[] receberDataHoraDoSistema() {
