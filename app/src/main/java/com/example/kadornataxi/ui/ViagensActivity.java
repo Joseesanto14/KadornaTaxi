@@ -48,9 +48,16 @@ public class ViagensActivity extends AppCompatActivity {
         List<Viagem> todas = new ViagemDAO(this)
                 .getAllOrdenadoPorDataDesc();
 
-        List<MesViagens> listaMeses = Viagem.gerarListaDeMeses(todas, getApplicationContext());
+        List<MesViagens> listaMeses = Viagem.gerarListaDeMeses(todas);
 
-        adapter = new MesViagensAdapter(listaMeses);
+        adapter = new MesViagensAdapter(listaMeses, (mesAno, viagensDoMes) -> {
+            Configuracao configuracao = new ConfiguracaoDAO(this).getConfiguracao();
+            RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
+
+            String nomeArquivo = mesAno.replace("/", "-");
+
+            gerador.gerarRelatorioMensal(nomeArquivo, viagensDoMes, configuracao);
+        });
         recyclerMeses.setAdapter(adapter);
     }
 

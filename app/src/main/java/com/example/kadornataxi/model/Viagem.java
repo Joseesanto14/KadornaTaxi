@@ -88,7 +88,7 @@ public class Viagem implements Serializable {
         return partes[2] + "/" + partes[1];
     }
 
-    public static List<MesViagens> gerarListaDeMeses(List<Viagem> todas, Context context) {
+    public static List<MesViagens> gerarListaDeMeses(List<Viagem> todas) {
         Map<String, List<Viagem>> viagensPorMes = new LinkedHashMap<>();
 
         for(Viagem viagem : todas) {

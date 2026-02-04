@@ -3,6 +3,7 @@ package com.example.kadornataxi.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,15 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.dto.MesViagens;
+import com.example.kadornataxi.interfaces.OnGerarRelatorioListener;
 
 import java.util.List;
 
 public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.ViewHolder> {
 
     private List<MesViagens> meses;
+    private OnGerarRelatorioListener listener;
+    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
-    public MesViagensAdapter(List<MesViagens> meses) {
+    public MesViagensAdapter(List<MesViagens> meses, OnGerarRelatorioListener listener) {
         this.meses = meses;
+        this.listener = listener;
     }
 
     @NonNull
@@ -34,6 +39,8 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MesViagens mes = meses.get(position);
 
+        holder.recyclerViagens.setRecycledViewPool(viewPool);
+
         holder.txtMes.setText(mes.getMesAno());
         holder.txtQuantidade.setText(mes.getViagens().size() + " viagens");
 
@@ -46,6 +53,10 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
         holder.recyclerViagens.setVisibility(
                 mes.isExpandido() ? View.VISIBLE : View.GONE);
 
+        holder.btGerarRelatorio.setVisibility(
+                mes.isExpandido() ? View.VISIBLE : View.GONE
+        );
+
         holder.itemView.setOnClickListener(v -> {
             mes.setExpandido(!mes.isExpandido());
             notifyItemChanged(position);
@@ -54,6 +65,10 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
         holder.txtArrow.setText(
                 mes.isExpandido() ? "▼" : "▶"
         );
+
+        holder.btGerarRelatorio.setOnClickListener(v -> {
+            listener.onGerarRelatorio(mes.getMesAno(), mes.getViagens());
+        });
 
     }
 
@@ -65,6 +80,7 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView txtMes, txtQuantidade, txtArrow;
+        Button btGerarRelatorio;
         RecyclerView recyclerViagens;
 
         public ViewHolder(@NonNull View itemView) {
@@ -73,6 +89,7 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
             txtQuantidade = itemView.findViewById(R.id.txtQuantidade);
             txtArrow = itemView.findViewById(R.id.txtArrow);
             recyclerViagens = itemView.findViewById(R.id.recyclerViagens);
+            btGerarRelatorio = itemView.findViewById(R.id.btGerarRelatorio);
         }
     }
 }
