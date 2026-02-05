@@ -312,6 +312,35 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Valor Serviço (R$)"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/edValorServico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/campo"
+                android:hint="0,00"
+                android:inputType="numberDecimal"
+                android:padding="12dp"
+                android:textColor="@android:color/holo_green_dark"
+                android:textStyle="bold"
+                android:textAlignment="center" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/txtMotoristaLabel"
             android:layout_width="wrap_content"

@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -28,7 +29,7 @@ import java.util.Locale;
 @SuppressLint("SetTextI18n")
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera;
-    EditText edValorKm, edValorHoraEspera, edValorTotal;
+    EditText edValorKm, edValorHoraEspera, edValorTotal, edValorServico;
     CheckBox checkViagemSeparada;
 
 
@@ -42,6 +43,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         viewBinding();
         configurarListeners();
         preencherCampos();
@@ -65,6 +67,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edMotorista = findViewById(R.id.edMotorista);
         checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
         edValorTotal = findViewById(R.id.edValorTotal);
+        edValorServico = findViewById(R.id.edValorServico);
     }
 
     private void preencherCampos() {
@@ -95,6 +98,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
         listenerKmsRodados();
         listenerHoraEspera();
+        listenerValorServico();
     }
 
     private void listenerData() {
@@ -258,6 +262,50 @@ public class SolicitacaoActivity extends AppCompatActivity {
         });
     }
 
+    private void listenerValorServico() {
+        edValorServico.addTextChangedListener(new TextWatcher() {
+            private boolean estaAtualizando = false;
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (estaAtualizando) return;
+                estaAtualizando = true;
+
+                String valorLimpo = edValorServico.getText().toString().replaceAll("[^\\d]", "");
+
+                if (valorLimpo.isEmpty()) {
+                    edValorServico.setText("");
+                    estaAtualizando = false;
+                    return;
+                } else if (valorLimpo.length() < 3){
+                    valorLimpo = (String.format(Locale.getDefault(), "%03d", Long.parseLong(valorLimpo)));
+
+                } else if (valorLimpo.length() > 12) {
+                    valorLimpo = valorLimpo.substring(1, valorLimpo.length() - 1);
+                }
+
+                String real = String.valueOf(Integer.parseInt(valorLimpo.substring(0,valorLimpo.length()-2)));
+                String centavos = valorLimpo.substring(valorLimpo.length()-2);
+
+                String formatado = real + "," + centavos;
+
+                edValorServico.setText(formatado);
+                edValorServico.setSelection(formatado.length());
+                atualizarValorTotal();
+                estaAtualizando = false;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
+    }
+
 
     // --------------- Sessão Cálculos ---------------
 
@@ -297,9 +345,14 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     private void atualizarValorTotal(){
         try {
-            float valorViagem = Float.parseFloat(edValorKm.getText().toString().replace(",", "."));
-            float valorEspera = Float.parseFloat(edValorHoraEspera.getText().toString().replace(",", "."));
-            float valorTotal = valorViagem + valorEspera;
+            float valorViagem = edValorKm.getText().toString().isEmpty() ? 0f
+                    : Float.parseFloat(edValorKm.getText().toString().replace(",", "."));
+            float valorEspera = edValorHoraEspera.getText().toString().isEmpty() ? 0f
+                    : Float.parseFloat(edValorHoraEspera.getText().toString().replace(",", "."));
+            float valorServico = edValorServico.getText().toString().isEmpty() ? 0f
+                    : Float.parseFloat(edValorServico.getText().toString().replace(",", "."));
+
+            float valorTotal = valorViagem + valorEspera + valorServico;
             edValorTotal.setText(String.format(Locale.getDefault(), "%.2f", valorTotal));
         } catch (NumberFormatException e) {
             edValorTotal.setText("0,00");
@@ -310,9 +363,29 @@ public class SolicitacaoActivity extends AppCompatActivity {
     // --------------- Sessão Database ---------------
 
     public void salvarViagemDb(View view) {
-        Viagem viagem = criarViagemObjeto();
-        new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
-        finish();
+        if(todosCamposPreenchidos()) {
+            Viagem viagem = criarViagemObjeto();
+            new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
+            finish();
+        }
+    }
+
+    private boolean todosCamposPreenchidos() {
+        if (edOrigem.getText().toString().isEmpty() ||
+        edData.getText().toString().isEmpty() ||
+        edHora.getText().toString().isEmpty() ||
+        edDestino.getText().toString().isEmpty() ||
+        edDescricao.getText().toString().isEmpty() ||
+        edKmsRodados.getText().toString().isEmpty() ||
+        edHoraEspera.getText().toString().isEmpty() ||
+        edMotorista.getText().toString().isEmpty() ||
+        edValorServico.getText().toString().isEmpty()) {
+
+            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @NonNull
@@ -327,7 +400,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 edHoraEspera,
                 edMotorista,
                 checkViagemSeparada,
-                getApplicationContext()
+                getApplicationContext(),
+                edValorServico
         );
     }
 }
