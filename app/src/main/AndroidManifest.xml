@@ -15,20 +15,13 @@
             android:name=".ui.ConfiguracaoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.GerarRelatorioActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.ViagensActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.SolicitacaoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
+            android:name=".ui.ViagensActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

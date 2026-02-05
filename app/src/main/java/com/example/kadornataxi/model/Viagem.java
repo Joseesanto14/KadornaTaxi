@@ -48,7 +48,7 @@ public class Viagem implements Serializable {
         this.valorTotal = valorTotal;
     }
 
-    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, CheckBox checkViagemSeparada, Context context) {
+    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, CheckBox checkViagemSeparada, Context context, EditText edValorServico) {
         origem = edOrigem.getText().toString();
         data = edData.getText().toString();
         hora = edHora.getText().toString();
@@ -65,7 +65,10 @@ public class Viagem implements Serializable {
         Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
         valorKms = kmsRodados * config.getValorKmRodado();
         valorHoraEspera = horaEspera * config.getValorHoraEspera();
-        valorTotal = getValorTotal();
+
+        float valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
+
+        valorTotal = valorKms + valorHoraEspera + valorServico;
 
         classificacao = checkViagemSeparada.isChecked() ?
                 config.getClassificacaoViagemSeparada() : "Comum";
@@ -214,7 +217,7 @@ public class Viagem implements Serializable {
     }
 
     public float getValorTotal() {
-        return getValorKms() + getValorHoraEspera();
+        return valorTotal;
     }
 
     public void setValorTotal(float valorTotal) {

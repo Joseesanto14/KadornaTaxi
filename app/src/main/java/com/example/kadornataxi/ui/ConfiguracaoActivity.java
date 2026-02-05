@@ -67,12 +67,6 @@ public class ConfiguracaoActivity extends AppCompatActivity {
             edValorHoraEsperada.setText(String.valueOf(configuracao.getValorHoraEspera()));
             edMotorista.setText(configuracao.getMotorista());
             edClassificacaoViagemSeparada.setText(configuracao.getClassificacaoViagemSeparada());
-
-        } else {
-            Toast.makeText(
-                    this,
-                    "Configure os preços antes de prosseguir",
-                    LENGTH_LONG).show();
         }
     }
 }
