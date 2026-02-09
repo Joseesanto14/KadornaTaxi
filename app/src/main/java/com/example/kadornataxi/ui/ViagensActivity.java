@@ -153,13 +153,10 @@ public class ViagensActivity extends AppCompatActivity {
             return;
         }
 
-        Configuracao config = dao.getConfiguracao();
         RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
 
-        String nomeArquivo = "Relatorio_" + mesAno.replace("/", "-");
-
         try {
-            gerador.gerarRelatorioMensal(nomeArquivo, viagensDoMes, config);
+            gerador.gerarRelatorioMensal(mesAno, viagensDoMes);
             Toast.makeText(this, "PDF salvo em Downloads!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao gerar PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();

@@ -95,5 +95,12 @@
             android:onClick="salvarConfiguracoes"
             android:text="Salvar Configurações" />
 
+        <Button
+            android:id="@+id/btTeste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="Test"
+            android:text="Button" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

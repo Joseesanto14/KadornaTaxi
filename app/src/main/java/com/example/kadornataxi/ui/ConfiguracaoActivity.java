@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.dao.ConfiguracaoDAO;
 import com.example.kadornataxi.model.Configuracao;
+import com.example.kadornataxi.report.RelatorioPdfGenerator;
 
 public class ConfiguracaoActivity extends AppCompatActivity {
     EditText edValorKmRodado, edValorHoraEsperada, edMotorista, edClassificacaoViagemSeparada;
@@ -68,5 +69,10 @@ public class ConfiguracaoActivity extends AppCompatActivity {
             edMotorista.setText(configuracao.getMotorista());
             edClassificacaoViagemSeparada.setText(configuracao.getClassificacaoViagemSeparada());
         }
+    }
+
+    public void Test(View view) {
+        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
+        gerador.test();
     }
 }

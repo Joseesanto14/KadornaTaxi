@@ -62,13 +62,13 @@ public class Viagem implements Serializable {
 
         motorista = edMotorista.getText().toString();
 
-        Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
-        valorKms = kmsRodados * config.getValorKmRodado();
-        valorHoraEspera = horaEspera * config.getValorHoraEspera();
-
         float valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
 
-        valorTotal = valorKms + valorHoraEspera + valorServico;
+        Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
+        valorKms = (kmsRodados * config.getValorKmRodado()) + valorServico;
+        valorHoraEspera = horaEspera * config.getValorHoraEspera();
+
+        valorTotal = valorKms + valorHoraEspera;
 
         classificacao = checkViagemSeparada.isChecked() ?
                 config.getClassificacaoViagemSeparada() : "Comum";
