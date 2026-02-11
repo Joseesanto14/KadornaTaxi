@@ -90,6 +90,64 @@ public class SolicitacaoActivity extends AppCompatActivity {
         return new String[] {dataStr, horaStr};
     }
 
+    private boolean todosCamposPreenchidos() {
+        if (edOrigem.getText().toString().isEmpty() ||
+                edData.getText().toString().isEmpty() ||
+                edHora.getText().toString().isEmpty() ||
+                edDestino.getText().toString().isEmpty() ||
+                edDescricao.getText().toString().isEmpty() ||
+                edMotorista.getText().toString().isEmpty() ||
+                edCliente.getText().toString().isEmpty() ||
+                !marcouValor())
+        {
+
+            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private boolean marcouValor() {
+        boolean marcouKm = !edKmsRodados.getText().toString().isEmpty();
+        boolean marcouValorServico = !edValorServico.getText().toString().isEmpty();
+        return Boolean.logicalOr(marcouKm, marcouValorServico);
+    }
+
+    @NonNull
+    private Viagem criarViagemObjeto() {
+        float horaEspera = 0f;
+        if (!edHoraEspera.getText().toString().isEmpty()) {
+            float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
+            float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
+            horaEspera = horas + (minutos / 60f);
+        }
+
+        float valorServico = 0f;
+        if (!edValorServico.getText().toString().isEmpty()) {
+            valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
+        }
+
+        float kmsRodados = 0f;
+        if (!edKmsRodados.getText().toString().isEmpty()) {
+            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
+        }
+
+        return new Viagem(
+                edOrigem.getText().toString(),
+                edData.getText().toString(),
+                edHora.getText().toString(),
+                edDestino.getText().toString(),
+                edDescricao.getText().toString(),
+                kmsRodados, //calc valor kms
+                horaEspera, //calc valor hora espera
+                edMotorista.getText().toString(),
+                edCliente.getText().toString(),
+                getApplicationContext(),
+                valorServico
+        );
+    }
+
 
     // --------------- Sessão Listeners ---------------
 
@@ -369,63 +427,5 @@ public class SolicitacaoActivity extends AppCompatActivity {
             new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
             finish();
         }
-    }
-
-    private boolean todosCamposPreenchidos() {
-        if (edOrigem.getText().toString().isEmpty() ||
-        edData.getText().toString().isEmpty() ||
-        edHora.getText().toString().isEmpty() ||
-        edDestino.getText().toString().isEmpty() ||
-        edDescricao.getText().toString().isEmpty() ||
-        edMotorista.getText().toString().isEmpty() ||
-        edCliente.getText().toString().isEmpty() ||
-        !marcouValor())
-        {
-
-            Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private boolean marcouValor() {
-        boolean marcouKm = !edKmsRodados.getText().toString().isEmpty();
-        boolean marcouValorServico = !edValorServico.getText().toString().isEmpty();
-        return Boolean.logicalOr(marcouKm, marcouValorServico);
-    }
-
-    @NonNull
-    private Viagem criarViagemObjeto() {
-        float horaEspera = 0f;
-        if (!edHoraEspera.getText().toString().isEmpty()) {
-            float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
-            float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
-            horaEspera = horas + (minutos / 60f);
-        }
-
-        float valorServico = 0f;
-        if (!edValorServico.getText().toString().isEmpty()) {
-            valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
-        }
-
-        float kmsRodados = 0f;
-        if (!edKmsRodados.getText().toString().isEmpty()) {
-            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
-        }
-
-        return new Viagem(
-                edOrigem.getText().toString(),
-                edData.getText().toString(),
-                edHora.getText().toString(),
-                edDestino.getText().toString(),
-                edDescricao.getText().toString(),
-                kmsRodados, //calc valor kms
-                horaEspera, //calc valor hora espera
-                edMotorista.getText().toString(),
-                edCliente.getText().toString(),
-                getApplicationContext(),
-                valorServico
-        );
     }
 }
