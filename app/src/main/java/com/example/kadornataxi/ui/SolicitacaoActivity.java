@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.kadornataxi.R;
 import com.example.kadornataxi.dao.ConfiguracaoDAO;
 import com.example.kadornataxi.dao.ViagemDAO;
+import com.example.kadornataxi.model.Configuracao;
 import com.example.kadornataxi.model.Viagem;
 
 import java.time.LocalDate;
@@ -396,18 +397,35 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
     @NonNull
     private Viagem criarViagemObjeto() {
+        float horaEspera = 0f;
+        if (!edHoraEspera.getText().toString().isEmpty()) {
+            float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
+            float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
+            horaEspera = horas + (minutos / 60f);
+        }
+
+        float valorServico = 0f;
+        if (!edValorServico.getText().toString().isEmpty()) {
+            valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
+        }
+
+        float kmsRodados = 0f;
+        if (!edKmsRodados.getText().toString().isEmpty()) {
+            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
+        }
+
         return new Viagem(
-                edOrigem,
-                edData,
-                edHora,
-                edDestino,
-                edDescricao,
-                edKmsRodados,
-                edHoraEspera,
-                edMotorista,
-                edCliente,
+                edOrigem.getText().toString(),
+                edData.getText().toString(),
+                edHora.getText().toString(),
+                edDestino.getText().toString(),
+                edDescricao.getText().toString(),
+                kmsRodados, //calc valor kms
+                horaEspera, //calc valor hora espera
+                edMotorista.getText().toString(),
+                edCliente.getText().toString(),
                 getApplicationContext(),
-                edValorServico
+                valorServico
         );
     }
 }

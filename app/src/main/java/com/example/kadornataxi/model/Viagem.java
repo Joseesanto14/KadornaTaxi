@@ -47,39 +47,21 @@ public class Viagem implements Serializable {
         this.valorTotal = valorTotal;
     }
 
-    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, EditText edCliente, Context context, EditText edValorServico) {
-        origem = edOrigem.getText().toString();
-        data = edData.getText().toString();
-        hora = edHora.getText().toString();
-        destino = edDestino.getText().toString();
-        descricao = edDescricao.getText().toString();
-        motorista = edMotorista.getText().toString();
-
-        if (edHoraEspera.getText().toString().isEmpty()) {
-            horaEspera = 0f;
-        } else {
-            float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
-            float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
-            horaEspera = horas + (minutos / 60f);
-        }
-
-        float valorServico = 0f;
-        if (!edValorServico.getText().toString().isEmpty()) {
-            valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
-        }
-
-        kmsRodados = 0f;
-        if (!edKmsRodados.getText().toString().isEmpty()) {
-            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
-        }
+    public Viagem(String origem, String data, String hora, String destino, String descricao, float kmsRodados, float horaEspera, String motorista, String cliente, Context context, float valorServico) {
+        this.origem = origem;
+        this.data = data;
+        this.hora = hora;
+        this.destino = destino;
+        this.descricao = descricao;
+        this.kmsRodados = kmsRodados;
+        this.motorista = motorista;
+        this.horaEspera = horaEspera;
+        this.classificacao = cliente;
 
         Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
         valorKms = (kmsRodados * config.getValorKmRodado()) + valorServico;
         valorHoraEspera = horaEspera * config.getValorHoraEspera();
-
         valorTotal = valorKms + valorHoraEspera;
-
-        classificacao = edCliente.getText().toString();
     }
 
     // --------------- úteis ---------------
