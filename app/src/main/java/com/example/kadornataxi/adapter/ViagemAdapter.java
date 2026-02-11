@@ -45,7 +45,7 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtResumo = itemView.findViewById(R.id.txtResumo);
+//            txtResumo = itemView.findViewById(R.id.txtResumo); // todo: adaptar os novos elementos da UI do item_resumo_viagens
         }
     }
 }
