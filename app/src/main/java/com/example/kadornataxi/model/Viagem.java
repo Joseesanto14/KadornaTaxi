@@ -1,7 +1,6 @@
 package com.example.kadornataxi.model;
 
 import android.content.Context;
-import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.example.kadornataxi.dao.ConfiguracaoDAO;
@@ -48,21 +47,31 @@ public class Viagem implements Serializable {
         this.valorTotal = valorTotal;
     }
 
-    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, CheckBox checkViagemSeparada, Context context, EditText edValorServico) {
+    public Viagem(EditText edOrigem, EditText edData, EditText edHora, EditText edDestino, EditText edDescricao, EditText edKmsRodados, EditText edHoraEspera, EditText edMotorista, EditText edCliente, Context context, EditText edValorServico) {
         origem = edOrigem.getText().toString();
         data = edData.getText().toString();
         hora = edHora.getText().toString();
         destino = edDestino.getText().toString();
         descricao = edDescricao.getText().toString();
-        kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
-
-        float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
-        float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
-        horaEspera = horas + (minutos / 60f);
-
         motorista = edMotorista.getText().toString();
 
-        float valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
+        if (edHoraEspera.getText().toString().isEmpty()) {
+            horaEspera = 0f;
+        } else {
+            float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
+            float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
+            horaEspera = horas + (minutos / 60f);
+        }
+
+        float valorServico = 0f;
+        if (!edValorServico.getText().toString().isEmpty()) {
+            valorServico = Float.parseFloat(edValorServico.getText().toString().replace(",","."));
+        }
+
+        kmsRodados = 0f;
+        if (!edKmsRodados.getText().toString().isEmpty()) {
+            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
+        }
 
         Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
         valorKms = (kmsRodados * config.getValorKmRodado()) + valorServico;
@@ -70,8 +79,7 @@ public class Viagem implements Serializable {
 
         valorTotal = valorKms + valorHoraEspera;
 
-        classificacao = checkViagemSeparada.isChecked() ?
-                config.getClassificacaoViagemSeparada() : "Comum";
+        classificacao = edCliente.getText().toString();
     }
 
     // --------------- úteis ---------------

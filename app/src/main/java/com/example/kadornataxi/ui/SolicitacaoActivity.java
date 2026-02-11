@@ -28,7 +28,7 @@ import java.util.Locale;
 
 @SuppressLint("SetTextI18n")
 public class SolicitacaoActivity extends AppCompatActivity {
-    EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera;
+    EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera, edCliente;
     EditText edValorKm, edValorHoraEspera, edValorTotal, edValorServico;
     CheckBox checkViagemSeparada;
 
@@ -65,7 +65,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edHoraEspera = findViewById(R.id.edHoraEspera);
         edValorHoraEspera = findViewById(R.id.edValorHoraEspera);
         edMotorista = findViewById(R.id.edMotorista);
-        checkViagemSeparada = findViewById(R.id.checkViagemSeparada);
+        edCliente = findViewById(R.id.edSeparadoCliente);
         edValorTotal = findViewById(R.id.edValorTotal);
         edValorServico = findViewById(R.id.edValorServico);
     }
@@ -75,7 +75,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edData.setText(dataHora[0]);
         edHora.setText(dataHora[1]);
         edMotorista.setText(new ConfiguracaoDAO(this).getConfiguracao().getMotorista());
-        checkViagemSeparada.setText(new ConfiguracaoDAO(this).getConfiguracao().getClassificacaoViagemSeparada());
+        edCliente.setText(new ConfiguracaoDAO(this).getConfiguracao().getClassificacaoViagemSeparada());
     }
 
     private String[] receberDataHoraDoSistema() {
@@ -376,16 +376,22 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edHora.getText().toString().isEmpty() ||
         edDestino.getText().toString().isEmpty() ||
         edDescricao.getText().toString().isEmpty() ||
-        edKmsRodados.getText().toString().isEmpty() ||
-        edHoraEspera.getText().toString().isEmpty() ||
         edMotorista.getText().toString().isEmpty() ||
-        edValorServico.getText().toString().isEmpty()) {
+        edCliente.getText().toString().isEmpty() ||
+        !marcouValor())
+        {
 
             Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
             return false;
         } else {
             return true;
         }
+    }
+
+    private boolean marcouValor() {
+        boolean marcouKm = !edKmsRodados.getText().toString().isEmpty();
+        boolean marcouValorServico = !edValorServico.getText().toString().isEmpty();
+        return Boolean.logicalOr(marcouKm, marcouValorServico);
     }
 
     @NonNull
@@ -399,7 +405,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
                 edKmsRodados,
                 edHoraEspera,
                 edMotorista,
-                checkViagemSeparada,
+                edCliente,
                 getApplicationContext(),
                 edValorServico
         );
