@@ -113,7 +113,8 @@ public class ViagensActivity extends AppCompatActivity {
                         data.contains(textoBusca) ||
                         descricao.contains(textoBusca) ||
                         motorista.contains(textoBusca) ||
-                        v.getClassificacao().contains(textoBusca))
+                        classificacao.contains(textoBusca)
+                )
                 {
                     matchesBusca = true;
                 }
