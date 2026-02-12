@@ -121,7 +121,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Identificador de Viagem Separada"
+                android:text="Empresa que mais presa serviço"
                 android:textColor="@android:color/black"
                 android:textStyle="bold" />
 
@@ -129,7 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="Este nome separará as viagens por empresa ou cliente que você está prestando o serviço. Se você não divide viagens por empresas, deixe este campo como &quot;Comum&quot;"
+                android:text="Este nome separará as viagens por empresa ou cliente que você está prestando o serviço. Se você não separas as viagens por empresas, ou não presta serviços para empresas, deixe este campo como &quot;Comum&quot;"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="12sp" />
 
@@ -143,6 +143,7 @@
                 android:hint="Ex: Trecho 2"
                 android:inputType="text"
                 android:padding="12dp"
+                android:text="Comum"
                 android:textColor="@android:color/black" />
 
             <androidx.appcompat.widget.AppCompatButton
