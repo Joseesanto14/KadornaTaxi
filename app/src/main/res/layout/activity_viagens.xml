@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_kadorna" />
+        app:srcCompat="@drawable/ic_kadorna_verde" />
 
     <TextView
         android:id="@+id/txtTitulo"
@@ -86,11 +86,11 @@
                 style="@style/Widget.MaterialComponents.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Viagens Separadas"
                 android:checkable="true"
+                android:text="Somente Clientes/Empresas"
                 app:chipBackgroundColor="@color/white"
                 app:chipStrokeColor="@color/black"
-                app:chipStrokeWidth="1dp"/>
+                app:chipStrokeWidth="1dp" />
 
         </com.google.android.material.chip.ChipGroup>
 

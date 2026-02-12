@@ -4,9 +4,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,10 +43,10 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         MesViagens mes = meses.get(position);
 
-        holder.recyclerViagens.setRecycledViewPool(viewPool);
-
-        holder.txtMes.setText(mes.getMesAno());
-        holder.txtQuantidade.setText(mes.getViagens().size() + " viagens");
+        holder.layoutHeader.setOnClickListener(v -> {
+            mes.setExpandido(!mes.isExpandido());
+            notifyItemChanged(position);
+        });
 
         holder.recyclerViagens.setLayoutManager(
                 new LinearLayoutManager(holder.itemView.getContext()));
@@ -50,21 +54,17 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
         holder.recyclerViagens.setAdapter(
                 new ViagemAdapter(mes.getViagens()));
 
-        holder.recyclerViagens.setVisibility(
-                mes.isExpandido() ? View.VISIBLE : View.GONE);
+        holder.recyclerViagens.setRecycledViewPool(viewPool);
 
-        holder.btGerarRelatorio.setVisibility(
-                mes.isExpandido() ? View.VISIBLE : View.GONE
-        );
+        holder.txtMes.setText(mes.getMesAno());
 
-        holder.itemView.setOnClickListener(v -> {
-            mes.setExpandido(!mes.isExpandido());
-            notifyItemChanged(position);
-        });
+        String numeroViagens = mes.getViagens().size() + " viagens";
+        holder.txtQuantidade.setText(numeroViagens);
 
-        holder.txtArrow.setText(
-                mes.isExpandido() ? "▼" : "▶"
-        );
+        holder.imgArrow.setRotation(mes.isExpandido() ? 180f : 0f);
+
+        holder.dividerContent.setVisibility(mes.isExpandido() ? View.VISIBLE : View.GONE);
+        holder.containerExpansivel.setVisibility(mes.isExpandido() ? View.VISIBLE : View.GONE);
 
         holder.btGerarRelatorio.setOnClickListener(v -> {
             listener.onGerarRelatorio(mes.getMesAno(), mes.getViagens());
@@ -79,15 +79,22 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtMes, txtQuantidade, txtArrow;
-        Button btGerarRelatorio;
+        ConstraintLayout layoutHeader;
+        TextView txtMes, txtQuantidade;
+        ImageView imgArrow;
+        View dividerContent;
+        LinearLayout containerExpansivel;
         RecyclerView recyclerViagens;
+        Button btGerarRelatorio;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            layoutHeader = itemView.findViewById(R.id.layoutHeader);
             txtMes = itemView.findViewById(R.id.txtMes);
             txtQuantidade = itemView.findViewById(R.id.txtQuantidade);
-            txtArrow = itemView.findViewById(R.id.txtArrow);
+            imgArrow = itemView.findViewById(R.id.imgArrow);
+            dividerContent = itemView.findViewById(R.id.dividerContent);
+            containerExpansivel = itemView.findViewById(R.id.containerExpansivel);
             recyclerViagens = itemView.findViewById(R.id.recyclerViagens);
             btGerarRelatorio = itemView.findViewById(R.id.btGerarRelatorio);
         }
