@@ -11,6 +11,7 @@ import com.example.kadornataxi.R;
 import com.example.kadornataxi.model.Viagem;
 
 import java.util.List;
+import java.util.Locale;
 
 public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder> {
 
@@ -30,9 +31,22 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Viagem v = viagens.get(position);
-        holder.txtResumo.setText(
-                v.getDiaMes() + " - " + v.getOrigem() + " -> " + v.getDestino()
-        );
+
+        String dataHora = v.getDiaMes() + " • " + v.getHora();
+        holder.txtDataHora.setText(dataHora);
+
+        String valorTotal = "R$ " + String.format(Locale.getDefault(),
+                "%.2f", v.getValorTotal());
+        holder.txtValorTotal.setText(valorTotal);
+
+        holder.txtOrigem.setText(v.getOrigem());
+
+        holder.txtDestino.setText(v.getDestino());
+
+        String kmsRodados = v.getKmsRodados() + " km";
+        holder.txtKmsRodados.setText(kmsRodados);
+
+        holder.txtDescricao.setText(v.getDescricao());
     }
 
     @Override
@@ -41,11 +55,16 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtResumo;
+        TextView txtDataHora, txtValorTotal, txtOrigem, txtDestino, txtKmsRodados, txtDescricao;
 
         ViewHolder(View itemView) {
             super(itemView);
-            txtResumo = itemView.findViewById(R.id.txtResumo);
+            txtDataHora = itemView.findViewById(R.id.txtDataHora);
+            txtValorTotal = itemView.findViewById(R.id.txtValorTotal);
+            txtOrigem = itemView.findViewById(R.id.txtOrigem);
+            txtDestino = itemView.findViewById(R.id.txtDestino);
+            txtKmsRodados = itemView.findViewById(R.id.txtKmsRodados);
+            txtDescricao = itemView.findViewById(R.id.txtDescricao);
         }
     }
 }

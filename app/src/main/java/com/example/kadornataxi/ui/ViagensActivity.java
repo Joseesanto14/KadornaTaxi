@@ -106,13 +106,15 @@ public class ViagensActivity extends AppCompatActivity {
                 String data = v.getData() != null ? v.getData() : "";
                 String motorista = v.getMotorista() != null ? v.getMotorista().toLowerCase() : "";
                 String descricao = v.getDescricao() != null ? v.getDescricao().toLowerCase() : "";
+                String classificacao = v.getClassificacao() != null ? v.getClassificacao().toLowerCase() : "";
 
                 if (destino.contains(textoBusca) ||
                         origem.contains(textoBusca) ||
                         data.contains(textoBusca) ||
                         descricao.contains(textoBusca) ||
                         motorista.contains(textoBusca) ||
-                        v.getClassificacao().contains(textoBusca))
+                        classificacao.contains(textoBusca)
+                )
                 {
                     matchesBusca = true;
                 }
