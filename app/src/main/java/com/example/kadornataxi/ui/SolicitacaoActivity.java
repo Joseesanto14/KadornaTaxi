@@ -31,7 +31,6 @@ import java.util.Locale;
 public class SolicitacaoActivity extends AppCompatActivity {
     EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera, edCliente;
     EditText edValorKm, edValorHoraEspera, edValorTotal, edValorServico;
-    CheckBox checkViagemSeparada;
 
 
     @Override
