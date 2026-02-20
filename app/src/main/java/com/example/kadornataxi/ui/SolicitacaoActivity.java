@@ -129,19 +129,19 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
         float kmsRodados = 0f;
         if (!edKmsRodados.getText().toString().isEmpty()) {
-            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString());
+            kmsRodados = Float.parseFloat(edKmsRodados.getText().toString().replace(",","."));
         }
 
         return new Viagem(
-                edOrigem.getText().toString(),
-                edData.getText().toString(),
-                edHora.getText().toString(),
-                edDestino.getText().toString(),
-                edDescricao.getText().toString(),
+                edOrigem.getText().toString().trim(),
+                edData.getText().toString().trim(),
+                edHora.getText().toString().trim(),
+                edDestino.getText().toString().trim(),
+                edDescricao.getText().toString().trim(),
                 kmsRodados, //calc valor kms
                 horaEspera, //calc valor hora espera
-                edMotorista.getText().toString(),
-                edCliente.getText().toString(),
+                edMotorista.getText().toString().trim(),
+                edCliente.getText().toString().trim(),
                 getApplicationContext(),
                 valorServico
         );
