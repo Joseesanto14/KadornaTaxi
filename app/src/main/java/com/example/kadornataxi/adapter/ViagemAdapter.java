@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder> {
 
-    private List<Viagem> viagens;
+    private final List<Viagem> viagens;
 
     public ViagemAdapter(List<Viagem> viagens) {
         this.viagens = viagens;

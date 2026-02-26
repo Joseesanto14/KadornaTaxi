@@ -120,11 +120,8 @@ public class ConfiguracaoActivity extends AppCompatActivity {
             return false;
         } // verifica se o usuário preencheu os campos com pontos (inválido)
 
-        if ((Float.parseFloat(edValorKmRodado.getText().toString()) == 0f) &&
-                (Float.parseFloat(edValorHoraEsperada.getText().toString()) == 0f)) {
-            return false;
-        } // verifica se o usuário preencheu os campos com zeros
-
-        return true;
+        // verifica se o usuário preencheu os campos com zeros
+        return (Float.parseFloat(edValorKmRodado.getText().toString()) != 0f) ||
+                (Float.parseFloat(edValorHoraEsperada.getText().toString()) != 0f);
     }
 }

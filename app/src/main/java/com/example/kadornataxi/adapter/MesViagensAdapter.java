@@ -22,9 +22,9 @@ import java.util.List;
 
 public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.ViewHolder> {
 
-    private List<MesViagens> meses;
-    private OnGerarRelatorioListener listener;
-    private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+    private final List<MesViagens> meses;
+    private final OnGerarRelatorioListener listener;
+    private final RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
     public MesViagensAdapter(List<MesViagens> meses, OnGerarRelatorioListener listener) {
         this.meses = meses;

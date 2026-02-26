@@ -36,7 +36,7 @@ class RelatorioPdfGenerator(private val context: Context) {
         val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(A4_B, A4_H, 1).create()
         val page = document.startPage(pageInfo)
         val canvas = page.canvas
-        val paint = Paint().apply {
+        Paint().apply {
             color = Color.BLACK
             textAlign = Paint.Align.CENTER
             textSize = 9f

@@ -5,8 +5,8 @@ import com.example.kadornataxi.model.Viagem;
 import java.util.List;
 
 public class MesViagens {
-    private String mesAno;
-    private List<Viagem> viagens;
+    private final String mesAno;
+    private final List<Viagem> viagens;
     private boolean expandido;
 
     public MesViagens(String mesAno, List<Viagem> viagens) {

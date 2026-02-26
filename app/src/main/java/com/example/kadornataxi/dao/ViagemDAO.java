@@ -15,7 +15,7 @@ import java.util.List;
 
 public class ViagemDAO {
     private SQLiteDatabase database;
-    private DbHelper dbHelper;
+    private final DbHelper dbHelper;
 
     private void open() {
         database = dbHelper.getWritableDatabase();
