@@ -139,9 +139,8 @@ public class ViagensActivity extends AppCompatActivity {
     private void atualizarRecyclerView(List<Viagem> listaParaExibir) {
         List<MesViagens> listaMeses = Viagem.gerarListaDeMeses(listaParaExibir);
 
-        adapter = new MesViagensAdapter(listaMeses, (mesAno, viagensDoMes) -> {
-            gerarRelatorioPdf(mesAno, viagensDoMes);
-        });
+        adapter = new MesViagensAdapter(listaMeses, (mesAno, viagens) ->
+                gerarRelatorioPdf(mesAno, viagens));
 
         recyclerMeses.setAdapter(adapter);
     }
@@ -155,10 +154,10 @@ public class ViagensActivity extends AppCompatActivity {
             return;
         }
 
-        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this);
+        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, mesAno, viagensDoMes);
 
         try {
-            gerador.gerarRelatorioMensal(mesAno, viagensDoMes);
+            gerador.test();
             Toast.makeText(this, "PDF salvo em Downloads!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao gerar PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();

@@ -1,34 +1,38 @@
 package com.example.kadornataxi.report
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
 import android.util.Log
+import androidx.core.content.FileProvider
 import com.example.kadornataxi.dao.ViagemDAO
 import com.example.kadornataxi.model.Viagem
 import com.example.kadornataxi.util.ColunasPdf
+import com.example.kadornataxi.util.Meses
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.Locale
 
-class RelatorioPdfGenerator(private val context: Context) {
+class RelatorioPdfGenerator(private val context: Context, val mesAno: String, val viagens : List<Viagem>) {
     private val A4_H = 842
     private val A4_B = 595
 
     val nomePessoa = "Kadorna da Silva Santo Pereira Filho"
     val cnpj = "90.250.089/0001-99"
     val nomeEmpresa = "Kadorna Transportes"
-    val telefone = "(14) 991521402"
+    val telefone = "(10) 991541407"
     val email = "kad.kadorna@hotmail.com"
-    val mesAno = "Fevereiro 2026"
+
+    val mesAnoExtenso = converterMesAnoParaExtenso(mesAno)
+
 
     val linha = 20f
     val nomeArquivo = "relatorio_teste.pdf"
-    val viagens : List<Viagem> = ViagemDAO(context).allOrdenadoPorDataDesc
 
 
     fun test() {
@@ -52,10 +56,15 @@ class RelatorioPdfGenerator(private val context: Context) {
 
         document.finishPage(page)
 
-        salvarDocumento(document)
+        val arquivo = salvarDocumento(document)
+
+        abrirPdf(arquivo)
     }
 
-
+    private fun converterMesAnoParaExtenso(mesAno: String): String {
+        val mesExtenso = Meses.buscarPorNumero(mesAno)
+        return "$mesExtenso de ${mesAno.split("-")[0]}"
+    }
 
     private fun gerarCabecalho(canvas : Canvas) : Float{
         val paint = Paint().apply {
@@ -76,7 +85,7 @@ class RelatorioPdfGenerator(private val context: Context) {
         canvas.drawText("E-mail: $email", centroTela, y, paint)
         y += linha * 1.5f
 
-        canvas.drawText("Relação de Táxi - Mês: $mesAno", centroTela, y, paint)
+        canvas.drawText("Relação de Táxi - Mês: $mesAnoExtenso", centroTela, y, paint)
 
         return y
     }
@@ -131,7 +140,7 @@ class RelatorioPdfGenerator(private val context: Context) {
         }
     }
 
-    private fun salvarDocumento(document : PdfDocument) {
+    private fun salvarDocumento(document : PdfDocument) : File{
         val mediaDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
         val arquivoFinal = File(mediaDir, nomeArquivo)
         try {
@@ -142,6 +151,26 @@ class RelatorioPdfGenerator(private val context: Context) {
             e.printStackTrace()
         } finally {
             document.close()
+        }
+        return arquivoFinal
+    }
+
+    private fun abrirPdf(file : File) {
+        val uri = FileProvider.getUriForFile(
+            context,
+            context.applicationContext.packageName + ".provider",
+            file
+        )
+
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.setDataAndType(uri, "application/pdf")
+
+        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_CLEAR_TOP
+
+        try {
+            context.startActivity(intent)
+        } catch (e : Exception) {
+            e.printStackTrace()
         }
     }
 
