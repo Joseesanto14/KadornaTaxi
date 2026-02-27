@@ -63,7 +63,13 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
 
     private fun converterMesAnoParaExtenso(mesAno: String): String {
         val mesExtenso = Meses.buscarPorNumero(mesAno)
-        return "$mesExtenso de ${mesAno.split("-")[0]}"
+        val ano = mesAno.split("-")[0]
+        val cliente = mesAno.split("-")[2]
+        if (cliente != null) {
+            return "$mesExtenso de $ano - $cliente"
+        } else {
+            return "$mesExtenso de $ano"
+        }
     }
 
     private fun gerarCabecalho(canvas : Canvas) : Float{
