@@ -31,12 +31,12 @@ Projeto para registrar corridas, valores, horários e descrições para controle
 - Criação de relatórios de viagens em pdf (fase inicial).
 - Preenchimento automático de data e hora na criação de solicitações de táxi.
 - Preview dos valores por quilometragem, por hora esperada e total da viagem.
+- Criação de relatórios detalhados em pdf.
+- Filtragem de viagens para exibição.
 
 
 ### Em desenvolvimento:
 - Salvar formulário não finalizado em cache para recuperação.
-- Criação de relatórios detalhados em pdf.
-- Filtragem de viagens para exibição.
 
 ### Fluxo do app:
 [Fluxo de Execução](docs/fluxo-app.md)
