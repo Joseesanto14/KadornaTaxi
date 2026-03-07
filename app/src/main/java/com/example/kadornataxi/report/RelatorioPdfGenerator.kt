@@ -7,9 +7,11 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.Log
 import androidx.core.content.FileProvider
-import com.example.kadornataxi.dao.ViagemDAO
 import com.example.kadornataxi.model.Viagem
 import com.example.kadornataxi.util.ColunasPdf
 import com.example.kadornataxi.util.Meses
@@ -30,7 +32,7 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
 
     val mesAnoExtenso = converterMesAnoParaExtenso(mesAno)
 
-
+    val MARGEM_LINHA = 5f
     val linha = 20f
     val nomeArquivo = "relatorio_teste.pdf"
 
@@ -52,13 +54,13 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
         gerarColunas(y, canvas)
         y += linha
 
-        gerarViagens(y, canvas)
+        gerarViagensStaticLayout(y, canvas)
 
         document.finishPage(page)
 
         val arquivo = salvarDocumento(document)
 
-        abrirPdf(arquivo)
+        abrirDocumento(arquivo)
     }
 
     private fun converterMesAnoParaExtenso(mesAno: String): String {
@@ -106,13 +108,13 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
         var x = 5f
 
         ColunasPdf.entries.forEach { coluna ->
-            val meioColuna = x + (coluna.larguraPt/2f)
+            val meioColuna = x + (coluna.getMetadeLargura())
             canvas.drawText(coluna.nome, meioColuna, y, paint)
             x += coluna.larguraPt
         }
     }
 
-    private fun gerarViagens(y : Float, canvas : Canvas) {
+    private fun gerarViagensAntigo(y : Float, canvas : Canvas) {
         val paint = Paint().apply {
             color = Color.BLACK
             textAlign = Paint.Align.CENTER
@@ -123,6 +125,7 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
 
         viagens.forEach { viagem ->
             var x = 5f
+
             ColunasPdf.entries.forEach { coluna ->
                 val meioColuna = x + (coluna.larguraPt/2f)
 
@@ -132,7 +135,9 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
                     "Origem" -> canvas.drawText(viagem.origem, meioColuna, alturaLinha, paint)
                     "Destino" -> canvas.drawText(viagem.destino, meioColuna, alturaLinha, paint)
                     "Descrição" -> canvas.drawText(viagem.descricao, meioColuna, alturaLinha, paint)
-                    "Valor" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", viagem.valorKms), meioColuna, alturaLinha, paint)
+                    "Kms Rodados" -> canvas.drawText(viagem.kmsRodados.toString(), meioColuna, alturaLinha, paint)
+                    "Valor Serviço" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", 10f), meioColuna, alturaLinha, paint)
+                    "Valor Total" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", viagem.valorKms), meioColuna, alturaLinha, paint)
                     "Motorista" -> canvas.drawText(viagem.motorista, meioColuna, alturaLinha, paint)
                     "h de Espera" -> {
                         val primeiraMetadeCentro = x + (coluna.larguraPt * 0.25f)
@@ -144,6 +149,44 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
                 x += coluna.larguraPt
             }
             alturaLinha += linha
+        }
+    }
+
+    private fun gerarViagensStaticLayout(y: Float, canvas: Canvas) {
+        val textPaint = TextPaint().apply {
+            color = Color.BLACK
+            textAlign = Paint.Align.CENTER
+            textSize = 9f
+        }
+
+        var alturaLinha = y
+
+        viagens.forEach { viagem ->
+            var x = MARGEM_LINHA
+            var maiorAlturaDaLinhaAtual = 0f
+
+            ColunasPdf.entries.forEach { coluna ->
+                val texto = coluna.extrairDado(viagem)
+
+                val staticLayout = StaticLayout.Builder.obtain(" | $texto | ",0,texto.length, textPaint, coluna.larguraPt.toInt())
+                    .setAlignment(Layout.Alignment.ALIGN_NORMAL)
+                    .build()
+
+                canvas.save()
+
+                val meioColunaX = x + (coluna.getMetadeLargura())
+                canvas.translate(meioColunaX, alturaLinha)
+
+                staticLayout.draw(canvas)
+                canvas.restore()
+
+                if (staticLayout.height > maiorAlturaDaLinhaAtual) {
+                    maiorAlturaDaLinhaAtual = staticLayout.height.toFloat()
+                }
+
+                x += coluna.larguraPt
+            }
+            alturaLinha += maiorAlturaDaLinhaAtual + 10f
         }
     }
 
@@ -162,7 +205,11 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
         return arquivoFinal
     }
 
-    private fun abrirPdf(file : File) {
+    private fun abrirDocumento(file : File) {
+        /**
+         * Open the document as a PDF using the system's default PDF reader via intent.
+         */
+
         val uri = FileProvider.getUriForFile(
             context,
             context.applicationContext.packageName + ".provider",
