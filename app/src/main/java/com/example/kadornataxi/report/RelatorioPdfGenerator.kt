@@ -13,7 +13,7 @@ import android.text.TextPaint
 import android.util.Log
 import androidx.core.content.FileProvider
 import com.example.kadornataxi.model.Viagem
-import com.example.kadornataxi.util.ColunasPdf
+import com.example.kadornataxi.enums.ColunasPdf
 import com.example.kadornataxi.util.Meses
 import java.io.File
 import java.io.FileOutputStream

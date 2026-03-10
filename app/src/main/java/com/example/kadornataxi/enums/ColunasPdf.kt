@@ -1,4 +1,4 @@
-package com.example.kadornataxi.util
+package com.example.kadornataxi.enums
 
 import com.example.kadornataxi.model.Viagem
 import java.util.Locale
