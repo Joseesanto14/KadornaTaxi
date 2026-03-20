@@ -1,4 +1,4 @@
-package com.example.kadornataxi.dao;
+package com.example.kadornataxi.data.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.kadornataxi.database.DbHelper;
-import com.example.kadornataxi.model.Configuracao;
+import com.example.kadornataxi.data.sqlite.DbHelper;
+import com.example.kadornataxi.model.entities.Configuracao;
 
 public class ConfiguracaoDAO {
     private SQLiteDatabase db;

@@ -1,10 +1,9 @@
-package com.example.kadornataxi.adapter;
+package com.example.kadornataxi.view.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kadornataxi.R;
-import com.example.kadornataxi.dto.MesViagens;
-import com.example.kadornataxi.interfaces.OnGerarRelatorioListener;
+import com.example.kadornataxi.view.dto.MesViagens;
+import com.example.kadornataxi.view.interfaces.OnGerarRelatorioListener;
 
 import java.util.List;
 

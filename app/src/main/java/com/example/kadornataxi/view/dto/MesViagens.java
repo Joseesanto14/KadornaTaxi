@@ -1,6 +1,6 @@
-package com.example.kadornataxi.dto;
+package com.example.kadornataxi.view.dto;
 
-import com.example.kadornataxi.model.Viagem;
+import com.example.kadornataxi.model.entities.Viagem;
 
 import java.util.List;
 

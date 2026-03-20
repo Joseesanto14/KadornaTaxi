@@ -1,7 +1,7 @@
 package com.example.kadornataxi.util
 
 import android.content.Context
-import com.example.kadornataxi.dao.ConfiguracaoDAO
+import com.example.kadornataxi.data.dao.ConfiguracaoDAO
 import java.util.Locale
 
 class Calculadora (private val context: Context){ //TODO: planned class for refactor and remove calc logic from UI

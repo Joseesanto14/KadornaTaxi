@@ -1,4 +1,4 @@
-package com.example.kadornataxi.dao;
+package com.example.kadornataxi.data.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.kadornataxi.database.DbHelper;
-import com.example.kadornataxi.model.Viagem;
+import com.example.kadornataxi.data.sqlite.DbHelper;
+import com.example.kadornataxi.model.entities.Viagem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +56,8 @@ public class ViagemDAO {
                 viagem.getKmsRodados());
         values.put(DbHelper.Viagem.VALOR_KM,
                 viagem.getValorKms());
+        values.put(DbHelper.Viagem.VALOR_SERVICO,
+                viagem.getValorServico());
         values.put(DbHelper.Viagem.MOTORISTA, 
                 viagem.getMotorista());
         values.put(DbHelper.Viagem.HORA_ESPERA, 
@@ -249,6 +251,7 @@ public class ViagemDAO {
                 cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.DESCRICAO)),
                 cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.KMS_RODADOS)),
                 cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.VALOR_KM)),
+                cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.VALOR_SERVICO)),
                 cursor.getString(cursor.getColumnIndexOrThrow(DbHelper.Viagem.MOTORISTA)),
                 cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.HORA_ESPERA)),
                 cursor.getFloat(cursor.getColumnIndexOrThrow(DbHelper.Viagem.VALOR_HORA_ESPERA)),

@@ -1,6 +1,6 @@
-package com.example.kadornataxi.enums
+package com.example.kadornataxi.model.enums
 
-import com.example.kadornataxi.model.Viagem
+import com.example.kadornataxi.model.entities.Viagem
 import java.util.Locale
 
 enum class ColunasPdf(nome : String, larguraCm: Float) {

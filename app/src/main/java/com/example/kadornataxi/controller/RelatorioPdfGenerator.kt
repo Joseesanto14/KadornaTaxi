@@ -1,4 +1,4 @@
-package com.example.kadornataxi.report
+package com.example.kadornataxi.controller
 
 import android.content.Context
 import android.content.Intent
@@ -12,15 +12,14 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.Log
 import androidx.core.content.FileProvider
-import com.example.kadornataxi.model.Viagem
-import com.example.kadornataxi.enums.ColunasPdf
-import com.example.kadornataxi.util.Meses
+import com.example.kadornataxi.model.entities.Viagem
+import com.example.kadornataxi.model.enums.ColunasPdf
+import com.example.kadornataxi.model.enums.Meses
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.util.Locale
 
-class RelatorioPdfGenerator(private val context: Context, val mesAno: String, val viagens : List<Viagem>) {
+class RelatorioPdfGenerator(private val context: Context, val listaViagens: List<Viagem>, mesAno: String) {
     private val A4_H = 842
     private val A4_B = 595
 
@@ -37,11 +36,13 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
     val nomeArquivo = "relatorio_teste.pdf"
 
 
-    fun test() {
+    fun gerarRelatorio(mesAno: String, viagens: List<Viagem>) {
+        // TODO: rename method and add parameters, remove comments, fix parameters and add logic
         val document = PdfDocument()
         val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(A4_B, A4_H, 1).create()
         val page = document.startPage(pageInfo)
         val canvas = page.canvas
+        val listaViagens = viagens;
         Paint().apply {
             color = Color.BLACK
             textAlign = Paint.Align.CENTER
@@ -114,43 +115,43 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
         }
     }
 
-    private fun gerarViagensAntigo(y : Float, canvas : Canvas) {
-        val paint = Paint().apply {
-            color = Color.BLACK
-            textAlign = Paint.Align.CENTER
-            textSize = 9f
-        }
-
-        var alturaLinha = y
-
-        viagens.forEach { viagem ->
-            var x = 5f
-
-            ColunasPdf.entries.forEach { coluna ->
-                val meioColuna = x + (coluna.larguraPt/2f)
-
-                when (coluna.nome) {
-                    "Dia" -> canvas.drawText(viagem.getDiaMes(), meioColuna, alturaLinha, paint)
-                    "Hora" -> canvas.drawText(viagem.hora, meioColuna, alturaLinha, paint)
-                    "Origem" -> canvas.drawText(viagem.origem, meioColuna, alturaLinha, paint)
-                    "Destino" -> canvas.drawText(viagem.destino, meioColuna, alturaLinha, paint)
-                    "Descrição" -> canvas.drawText(viagem.descricao, meioColuna, alturaLinha, paint)
-                    "Kms Rodados" -> canvas.drawText(viagem.kmsRodados.toString(), meioColuna, alturaLinha, paint)
-                    "Valor Serviço" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", 10f), meioColuna, alturaLinha, paint)
-                    "Valor Total" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", viagem.valorKms), meioColuna, alturaLinha, paint)
-                    "Motorista" -> canvas.drawText(viagem.motorista, meioColuna, alturaLinha, paint)
-                    "h de Espera" -> {
-                        val primeiraMetadeCentro = x + (coluna.larguraPt * 0.25f)
-                        val segundaMetadeCentro = x + (coluna.larguraPt * 0.75f)
-                        canvas.drawText(String.format(Locale.getDefault(), "%.2f",viagem.horaEspera), primeiraMetadeCentro, alturaLinha, paint)
-                        canvas.drawText(String.format(Locale.getDefault(),"R$ %.2f", viagem.valorHoraEspera), segundaMetadeCentro, alturaLinha, paint)
-                    }
-                }
-                x += coluna.larguraPt
-            }
-            alturaLinha += linha
-        }
-    }
+//    private fun gerarViagensAntigo(y : Float, canvas : Canvas) {
+//        val paint = Paint().apply {
+//            color = Color.BLACK
+//            textAlign = Paint.Align.CENTER
+//            textSize = 9f
+//        }
+//
+//        var alturaLinha = y
+//
+//        listaViagens.forEach { viagem ->
+//            var x = 5f
+//
+//            ColunasPdf.entries.forEach { coluna ->
+//                val meioColuna = x + (coluna.larguraPt/2f)
+//
+//                when (coluna.nome) {
+//                    "Dia" -> canvas.drawText(viagem.getDiaMes(), meioColuna, alturaLinha, paint)
+//                    "Hora" -> canvas.drawText(viagem.hora, meioColuna, alturaLinha, paint)
+//                    "Origem" -> canvas.drawText(viagem.origem, meioColuna, alturaLinha, paint)
+//                    "Destino" -> canvas.drawText(viagem.destino, meioColuna, alturaLinha, paint)
+//                    "Descrição" -> canvas.drawText(viagem.descricao, meioColuna, alturaLinha, paint)
+//                    "Kms Rodados" -> canvas.drawText(viagem.kmsRodados.toString(), meioColuna, alturaLinha, paint)
+//                    "Valor Serviço" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", 10f), meioColuna, alturaLinha, paint)
+//                    "Valor Total" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", viagem.valorKms), meioColuna, alturaLinha, paint)
+//                    "Motorista" -> canvas.drawText(viagem.motorista, meioColuna, alturaLinha, paint)
+//                    "h de Espera" -> {
+//                        val primeiraMetadeCentro = x + (coluna.larguraPt * 0.25f)
+//                        val segundaMetadeCentro = x + (coluna.larguraPt * 0.75f)
+//                        canvas.drawText(String.format(Locale.getDefault(), "%.2f",viagem.horaEspera), primeiraMetadeCentro, alturaLinha, paint)
+//                        canvas.drawText(String.format(Locale.getDefault(),"R$ %.2f", viagem.valorHoraEspera), segundaMetadeCentro, alturaLinha, paint)
+//                    }
+//                }
+//                x += coluna.larguraPt
+//            }
+//            alturaLinha += linha
+//        }
+//    }
 
     private fun gerarViagensStaticLayout(y: Float, canvas: Canvas) {
         val textPaint = TextPaint().apply {
@@ -161,14 +162,14 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
 
         var alturaLinha = y
 
-        viagens.forEach { viagem ->
+        listaViagens.forEach { viagem ->
             var x = MARGEM_LINHA
             var maiorAlturaDaLinhaAtual = 0f
 
             ColunasPdf.entries.forEach { coluna ->
                 val texto = coluna.extrairDado(viagem)
 
-                val staticLayout = StaticLayout.Builder.obtain(" | $texto | ",0,texto.length, textPaint, coluna.larguraPt.toInt())
+                val staticLayout = StaticLayout.Builder.obtain(texto,0,texto.length, textPaint, coluna.larguraPt.toInt())
                     .setAlignment(Layout.Alignment.ALIGN_NORMAL)
                     .build()
 
@@ -227,6 +228,4 @@ class RelatorioPdfGenerator(private val context: Context, val mesAno: String, va
             e.printStackTrace()
         }
     }
-
-    fun gerarRelatorioMensal(mesAno: String, viagensDoMes: List<Viagem>) {}
 }

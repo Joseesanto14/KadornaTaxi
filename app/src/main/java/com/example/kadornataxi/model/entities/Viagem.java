@@ -1,10 +1,9 @@
-package com.example.kadornataxi.model;
+package com.example.kadornataxi.model.entities;
 
 import android.content.Context;
-import android.widget.EditText;
 
-import com.example.kadornataxi.dao.ConfiguracaoDAO;
-import com.example.kadornataxi.dto.MesViagens;
+import com.example.kadornataxi.data.dao.ConfiguracaoDAO;
+import com.example.kadornataxi.view.dto.MesViagens;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ public class Viagem implements Serializable {
     private String descricao;
     private float kmsRodados;
     private float valorKms;
+    private float valorServico;
     private String motorista;
     private float horaEspera;
     private float valorHoraEspera;
@@ -31,7 +31,7 @@ public class Viagem implements Serializable {
 
     public Viagem() {}
 
-    public Viagem(long id, String origem, String data, String hora, String destino, String descricao, float kmsRodados, float valorKms, String motorista, float horaEspera, float valorHoraEspera, String classificacao, float valorTotal) {
+    public Viagem(long id, String origem, String data, String hora, String destino, String descricao, float kmsRodados, float valorKms, float valorServico, String motorista, float horaEspera, float valorHoraEspera, String classificacao, float valorTotal) {
         this.id = id;
         this.origem = origem;
         this.data = data;
@@ -40,6 +40,7 @@ public class Viagem implements Serializable {
         this.descricao = descricao;
         this.kmsRodados = kmsRodados;
         this.valorKms = valorKms;
+        this.valorServico = valorServico;
         this.motorista = motorista;
         this.horaEspera = horaEspera;
         this.valorHoraEspera = valorHoraEspera;
@@ -54,14 +55,15 @@ public class Viagem implements Serializable {
         this.destino = destino;
         this.descricao = descricao;
         this.kmsRodados = kmsRodados;
+        this.valorServico = valorServico;
         this.motorista = motorista;
         this.horaEspera = horaEspera;
         this.classificacao = cliente;
 
         Configuracao config = new ConfiguracaoDAO(context).getConfiguracao();
-        valorKms = (kmsRodados * config.getValorKmRodado()) + valorServico;
+        valorKms = (kmsRodados * config.getValorKmRodado());
         valorHoraEspera = horaEspera * config.getValorHoraEspera();
-        valorTotal = valorKms + valorHoraEspera;
+        valorTotal = getValorKms() + getValorHoraEspera() + getValorServico();
     }
 
     // --------------- úteis ---------------
@@ -164,6 +166,14 @@ public class Viagem implements Serializable {
 
     public void setKmsRodados(float kmsRodados) {
         this.kmsRodados = kmsRodados;
+    }
+
+    public float getValorServico() {
+        return valorServico;
+    }
+
+    public void setValorServico(float valorServico) {
+        this.valorServico = valorServico;
     }
 
     public float getValorKms() {

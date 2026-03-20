@@ -1,11 +1,10 @@
-package com.example.kadornataxi.ui;
+package com.example.kadornataxi.view.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,10 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
-import com.example.kadornataxi.dao.ConfiguracaoDAO;
-import com.example.kadornataxi.dao.ViagemDAO;
-import com.example.kadornataxi.model.Configuracao;
-import com.example.kadornataxi.model.Viagem;
+import com.example.kadornataxi.data.dao.ConfiguracaoDAO;
+import com.example.kadornataxi.data.dao.ViagemDAO;
+import com.example.kadornataxi.model.entities.Viagem;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

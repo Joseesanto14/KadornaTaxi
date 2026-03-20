@@ -1,4 +1,4 @@
-package com.example.kadornataxi.ui;
+package com.example.kadornataxi.view.activities;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,8 +14,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kadornataxi.R;
-import com.example.kadornataxi.dao.ConfiguracaoDAO;
-import com.example.kadornataxi.model.Configuracao;
+import com.example.kadornataxi.data.dao.ConfiguracaoDAO;
+import com.example.kadornataxi.model.entities.Configuracao;
 
 public class ConfiguracaoActivity extends AppCompatActivity {
     EditText edValorKmRodado, edValorHoraEsperada, edMotorista, edClassificacaoViagemSeparada;

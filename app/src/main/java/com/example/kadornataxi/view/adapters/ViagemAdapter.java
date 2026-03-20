@@ -1,4 +1,4 @@
-package com.example.kadornataxi.adapter;
+package com.example.kadornataxi.view.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kadornataxi.R;
-import com.example.kadornataxi.model.Viagem;
+import com.example.kadornataxi.model.entities.Viagem;
 
 import java.util.List;
 import java.util.Locale;

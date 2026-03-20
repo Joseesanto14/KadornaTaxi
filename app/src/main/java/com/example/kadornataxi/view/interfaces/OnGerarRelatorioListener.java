@@ -1,6 +1,6 @@
-package com.example.kadornataxi.interfaces;
+package com.example.kadornataxi.view.interfaces;
 
-import com.example.kadornataxi.model.Viagem;
+import com.example.kadornataxi.model.entities.Viagem;
 
 import java.util.List;
 
