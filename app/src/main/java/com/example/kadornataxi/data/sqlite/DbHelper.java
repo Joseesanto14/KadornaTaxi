@@ -1,4 +1,4 @@
-package com.example.kadornataxi.database;
+package com.example.kadornataxi.data.sqlite;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "kadorna_taxi.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public DbHelper(Context context) {
         super(context, DbHelper.DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,9 +20,14 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE " + Viagem.NOME_TABELA + " ADD COLUMN " + Viagem.VALOR_SERVICO + " REAL DEFAULT " + 0f);
+            db.execSQL("ALTER TABLE " + Viagem.NOME_TABELA + " ADD COLUMN " + Viagem.KMS_RODADOS + " REAL DEFAULT " + 0f);
+        }
     }
 
-    // Tabela Viagem
+    // ---------- Tabela Viagem ----------
+
     public static class Viagem {
         public static final String NOME_TABELA = "viagem";
         public static final String ID = "id";
@@ -33,6 +38,7 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String DESCRICAO = "descricao";
         public static final String KMS_RODADOS = "kms_rodados";
         public static final String VALOR_KM = "valor_km";
+        public static final String VALOR_SERVICO = "valor_servico";
         public static final String MOTORISTA = "motorista";
         public static final String HORA_ESPERA = "hora_espera";
         public static final String VALOR_HORA_ESPERA = "valor_hora_espera";
@@ -48,6 +54,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 DESCRICAO + " TEXT, " +
                 KMS_RODADOS + " REAL, " +
                 VALOR_KM + " REAL, " +
+                VALOR_SERVICO + " REAL, " +
                 MOTORISTA + " TEXT, " +
                 HORA_ESPERA + " REAL, " +
                 VALOR_HORA_ESPERA + " REAL, " +
@@ -56,7 +63,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 ");";
     }
 
-    // Sessão das configs
+    // ---------- Tabela das configurações ----------
     public static class Configuracao {
         public static final String NOME_TABELA = "configuracao";
 

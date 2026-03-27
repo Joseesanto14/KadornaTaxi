@@ -11,13 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KadornaTaxi">
         <activity
-            android:name=".ui.ConfiguracaoActivity"
+            android:name=".view.activities.ConfiguracaoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.SolicitacaoActivity"
+            android:name=".view.activities.SolicitacaoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ViagensActivity"
+            android:name=".view.activities.ViagensActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.kadornataxi.util
+package com.example.kadornataxi.model.enums
 
 enum class Meses(val numero: String, val nome: String) {
 

@@ -1,4 +1,4 @@
-package com.example.kadornataxi.ui;
+package com.example.kadornataxi.view.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,13 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kadornataxi.R;
-import com.example.kadornataxi.adapter.MesViagensAdapter;
-import com.example.kadornataxi.dao.ConfiguracaoDAO;
-import com.example.kadornataxi.dao.ViagemDAO;
-import com.example.kadornataxi.dto.MesViagens;
-import com.example.kadornataxi.model.Configuracao;
-import com.example.kadornataxi.model.Viagem;
-import com.example.kadornataxi.report.RelatorioPdfGenerator;
+import com.example.kadornataxi.view.adapters.MesViagensAdapter;
+import com.example.kadornataxi.data.dao.ConfiguracaoDAO;
+import com.example.kadornataxi.data.dao.ViagemDAO;
+import com.example.kadornataxi.view.dto.MesViagens;
+import com.example.kadornataxi.model.entities.Viagem;
+import com.example.kadornataxi.controller.RelatorioPdfGenerator;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -154,10 +153,10 @@ public class ViagensActivity extends AppCompatActivity {
             return;
         }
 
-        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, mesAno, viagensDoMes);
+        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, viagensDoMes, mesAno);
 
         try {
-            gerador.test();
+            gerador.gerarRelatorio(mesAno, viagensDoMes);
             Toast.makeText(this, "PDF salvo em Downloads!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao gerar PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();

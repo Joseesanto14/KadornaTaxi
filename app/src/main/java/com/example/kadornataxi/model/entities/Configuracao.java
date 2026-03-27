@@ -1,4 +1,4 @@
-package com.example.kadornataxi.model;
+package com.example.kadornataxi.model.entities;
 
 public class Configuracao {
 
