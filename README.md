@@ -7,16 +7,15 @@ Projeto para registrar corridas, valores, horários e descrições para controle
 - Motorista (uso individual).
 
 ## Funcionalidades planejadas
-- Registrar solicitação de táxi.
-- Visualizar dados de viagens.
-- Gerar relatórios de viagens mensais.
+- Registrar solicitação de táxi com cálculos automáticos.
+- Visualizar dados de viagens organizados por período.
+- Gerar relatórios de viagens profissionais em PDF.
+- Configurações personalizadas de tarifas e motorista.
 
 ## Tecnologias utilizadas
-- Android.
-- Java.
-- Kotlin.
-- XML.
-- SQLite.
+- Android (Java e Kotlin).
+- XML para Layouts.
+- SQLite para persistência de dados.
 
 ---
 
@@ -24,19 +23,18 @@ Projeto para registrar corridas, valores, horários e descrições para controle
 
 ### Atualmente o projeto conta com: 
 
-- Navegação funcional entre as telas propostas. 
-- Criação de viagens por meio da Tela de Solicitação de Viagens(SolicitacaoActivity).
-- Persistência em Banco de Dados.
-- Exibição de todas as viagens gravadas separadas por mês/ano.
-- Criação de relatórios de viagens em pdf (fase inicial).
-- Preenchimento automático de data e hora na criação de solicitações de táxi.
-- Preview dos valores por quilometragem, por hora esperada e total da viagem.
-- Criação de relatórios detalhados em pdf.
-- Filtragem de viagens para exibição.
-
+- **Configurações Completas:** Personalização dos valores de KM rodado, valor da hora de espera e dados do motorista para cálculos e cabeçalhos de relatórios.
+- **Solicitação de Viagens:** Registro completo com preenchimento automático de data/hora e cálculo em tempo real de KM, espera e total.
+- **Valor de Serviço:** Possibilidade de adicionar taxas ou serviços extras além da quilometragem.
+- **Classificação de Viagens:** Organização inteligente entre viagens "Comuns" e "Separadas" (ideal para controle de convênios ou clientes específicos).
+- **Persistência em Banco de Dados:** Gerenciamento via SQLite com suporte a migrações de versão.
+- **Visualização Organizada:** Exibição das viagens agrupadas por mês/ano e por classificação de cliente.
+- **Relatórios PDF Avançados:** Geração de documentos detalhados com quebra automática de texto, somatória de totais (KM, Espera, Serviço e Geral) e cabeçalho profissional.
+- **Filtragem Dinâmica:** Busca por texto (origem, destino, motorista, etc.) e filtros rápidos via Chips.
 
 ### Em desenvolvimento:
-- Salvar formulário não finalizado em cache para recuperação.
+- Salvar formulário não finalizado em cache para recuperação (rascunho).
+- Suporte a múltiplas páginas nos relatórios PDF.
 
 ### Fluxo do app:
 [Fluxo de Execução](docs/fluxo-app.md)
