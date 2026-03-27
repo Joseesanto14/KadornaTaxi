@@ -6,6 +6,9 @@ import com.example.kadornataxi.data.dao.ConfiguracaoDAO;
 import com.example.kadornataxi.view.dto.MesViagens;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -69,9 +72,25 @@ public class Viagem implements Serializable {
     // --------------- úteis ---------------
 
     public static String formatarDataISO8601(String data) {
-        String[] partes = data.split("/");
+        if (data == null || data.isEmpty()) {
+            return "";
+        }
 
-        return partes[2] + "-" + partes[1] + "-" + partes[0];
+        // Tenta o formato ISO (yyyy-MM-dd) primeiro
+        try {
+            LocalDate.parse(data, DateTimeFormatter.ISO_LOCAL_DATE);
+            return data;
+        } catch (DateTimeParseException ignored) {}
+
+        // Se falhar, tenta o formato brasileiro (dd/MM/yyyy)
+        try {
+            DateTimeFormatter formatterBR = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate localDate = LocalDate.parse(data, formatterBR);
+            return localDate.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        } catch (DateTimeParseException e) {
+            // Se ambos falharem, retorna a string original ou loga um aviso
+            return data;
+        }
     }
 
     public String getDiaMes() {
