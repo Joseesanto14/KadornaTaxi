@@ -18,10 +18,13 @@ import com.example.kadornataxi.model.enums.Meses
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Locale
 
 class RelatorioPdfGenerator(private val context: Context, val listaViagens: List<Viagem>, mesAno: String) {
     private val A4_H = 842
     private val A4_B = 595
+    private val NOVA_LARGURA = 745
+    val centroTela = (NOVA_LARGURA/2).toFloat()
 
     val nomePessoa = "Kadorna da Silva Santo Pereira Filho"
     val cnpj = "90.250.089/0001-99"
@@ -38,8 +41,9 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
 
     fun gerarRelatorio(mesAno: String, viagens: List<Viagem>) {
         // TODO: rename method and add parameters, remove comments, fix parameters and add logic
+        // todo: create logic for documents that have more than 1 page, create smart page break.
         val document = PdfDocument()
-        val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(A4_B, A4_H, 1).create()
+        val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(NOVA_LARGURA, A4_H, 1).create()
         val page = document.startPage(pageInfo)
         val canvas = page.canvas
         val listaViagens = viagens;
@@ -55,7 +59,9 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
         gerarColunas(y, canvas)
         y += linha
 
-        gerarViagensStaticLayout(y, canvas)
+        y += gerarViagensStaticLayout(y, canvas)
+
+        desenharTotalViagens(y, canvas)
 
         document.finishPage(page)
 
@@ -82,7 +88,6 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
             textAlign = Paint.Align.CENTER
             textSize = 10f
         }
-        val centroTela = (A4_B/2).toFloat()
 
         var y = 20f
 
@@ -106,7 +111,7 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
             textAlign = Paint.Align.CENTER
             textSize = 9f
         }
-        var x = 5f
+        var x = MARGEM_LINHA
 
         ColunasPdf.entries.forEach { coluna ->
             val meioColuna = x + (coluna.getMetadeLargura())
@@ -115,45 +120,7 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
         }
     }
 
-//    private fun gerarViagensAntigo(y : Float, canvas : Canvas) {
-//        val paint = Paint().apply {
-//            color = Color.BLACK
-//            textAlign = Paint.Align.CENTER
-//            textSize = 9f
-//        }
-//
-//        var alturaLinha = y
-//
-//        listaViagens.forEach { viagem ->
-//            var x = 5f
-//
-//            ColunasPdf.entries.forEach { coluna ->
-//                val meioColuna = x + (coluna.larguraPt/2f)
-//
-//                when (coluna.nome) {
-//                    "Dia" -> canvas.drawText(viagem.getDiaMes(), meioColuna, alturaLinha, paint)
-//                    "Hora" -> canvas.drawText(viagem.hora, meioColuna, alturaLinha, paint)
-//                    "Origem" -> canvas.drawText(viagem.origem, meioColuna, alturaLinha, paint)
-//                    "Destino" -> canvas.drawText(viagem.destino, meioColuna, alturaLinha, paint)
-//                    "Descrição" -> canvas.drawText(viagem.descricao, meioColuna, alturaLinha, paint)
-//                    "Kms Rodados" -> canvas.drawText(viagem.kmsRodados.toString(), meioColuna, alturaLinha, paint)
-//                    "Valor Serviço" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", 10f), meioColuna, alturaLinha, paint)
-//                    "Valor Total" -> canvas.drawText(String.format(Locale.getDefault(), "R$ %.2f", viagem.valorKms), meioColuna, alturaLinha, paint)
-//                    "Motorista" -> canvas.drawText(viagem.motorista, meioColuna, alturaLinha, paint)
-//                    "h de Espera" -> {
-//                        val primeiraMetadeCentro = x + (coluna.larguraPt * 0.25f)
-//                        val segundaMetadeCentro = x + (coluna.larguraPt * 0.75f)
-//                        canvas.drawText(String.format(Locale.getDefault(), "%.2f",viagem.horaEspera), primeiraMetadeCentro, alturaLinha, paint)
-//                        canvas.drawText(String.format(Locale.getDefault(),"R$ %.2f", viagem.valorHoraEspera), segundaMetadeCentro, alturaLinha, paint)
-//                    }
-//                }
-//                x += coluna.larguraPt
-//            }
-//            alturaLinha += linha
-//        }
-//    }
-
-    private fun gerarViagensStaticLayout(y: Float, canvas: Canvas) {
+    private fun gerarViagensStaticLayout(y: Float, canvas: Canvas) : Float {
         val textPaint = TextPaint().apply {
             color = Color.BLACK
             textAlign = Paint.Align.CENTER
@@ -189,6 +156,37 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
             }
             alturaLinha += maiorAlturaDaLinhaAtual + 10f
         }
+        return alturaLinha
+    }
+
+    private fun desenharTotalViagens(y: Float, canvas: Canvas) {
+        val paint = Paint().apply {
+            color = Color.BLACK
+            textAlign = Paint.Align.LEFT
+            textSize = 12f
+        }
+
+        var x = centroTela
+        var altura = y;
+
+        val somaKms = listaViagens.sumOf { it.valorKms.toDouble()}
+        val somaEspera = listaViagens.sumOf { it.valorHoraEspera.toDouble() }
+        val somaServico = listaViagens.sumOf { it.valorServico.toDouble() }
+        val somaGeral = listaViagens.sumOf { it.valorTotal.toDouble() }
+
+        canvas.drawText("Número de Viagens: ${listaViagens.size}", x, altura, paint)
+        altura += linha
+
+        canvas.drawText(String.format(Locale.getDefault(), "Total valor KM: R$ %.2f", somaKms), x, altura, paint)
+        altura += linha
+
+        canvas.drawText(String.format(Locale.getDefault(), "Total valor Espera: R$ %.2f", somaEspera), x, altura, paint)
+        altura += linha
+
+        canvas.drawText(String.format(Locale.getDefault(), "Total valor Serviço: R$ %.2f", somaServico), x, altura, paint)
+        altura += linha
+
+        canvas.drawText(String.format(Locale.getDefault(), "TOTAL GERAL: R$ %.2f", somaGeral), x, altura, paint)
     }
 
     private fun salvarDocumento(document : PdfDocument) : File{
