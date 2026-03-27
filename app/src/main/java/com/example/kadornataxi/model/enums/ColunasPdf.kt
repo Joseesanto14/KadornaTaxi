@@ -36,13 +36,12 @@ enum class ColunasPdf(nome : String, larguraCm: Float) {
     },
     KMS_RODADOS("Kms Rodados", 2.35f) {
         override fun extrairDado(viagem: Viagem): String {
-            return String.format(Locale.getDefault(), "R$ %.2f", viagem.kmsRodados)
+            return String.format(Locale.getDefault(), "%.1f km", viagem.kmsRodados)
         }
     },
     VALOR_SERVICO("Valor Serviço", 2.35f) {
         override fun extrairDado(viagem: Viagem): String {
-            return String.format(Locale.getDefault(), "R$ %.2f", 20f)
-            //TODO: Criar o campo valor serviço, implementar no banco de dados
+            return String.format(Locale.getDefault(), "R$ %.2f", viagem.valorServico)
         }
     },
     HORAS_ESPERA("Espera (h)",1.76f) {
