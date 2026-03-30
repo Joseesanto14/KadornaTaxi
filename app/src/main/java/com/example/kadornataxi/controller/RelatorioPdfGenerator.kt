@@ -27,10 +27,10 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
     val centroTela = (NOVA_LARGURA/2).toFloat()
 
     val nomePessoa = "Kadorna da Silva Santo Pereira Filho"
-    val cnpj = "90.250.089/0001-99"
+    val cnpj = "X0.XX0.0XX/000X-XX"
     val nomeEmpresa = "Kadorna Transportes"
-    val telefone = "(10) 991541407"
-    val email = "kad.kadorna@hotmail.com"
+    val telefone = "(XX) 99XXXXXXX"
+    val email = "kad.kadorna@mocked.com"
 
     val mesAnoExtenso = converterMesAnoParaExtenso(mesAno)
 
@@ -39,35 +39,47 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
     val nomeArquivo = "relatorio_teste.pdf"
 
 
+    private val MARGEM_INFERIOR = 40f
+    private var pageCount = 1
+    private lateinit var currentPage: PdfDocument.Page
+    private lateinit var currentCanvas: Canvas
+
     fun gerarRelatorio(mesAno: String, viagens: List<Viagem>) {
-        // TODO: rename method and add parameters, remove comments, fix parameters and add logic
-        // todo: create logic for documents that have more than 1 page, create smart page break.
         val document = PdfDocument()
-        val pageInfo: PdfDocument.PageInfo = PdfDocument.PageInfo.Builder(NOVA_LARGURA, A4_H, 1).create()
-        val page = document.startPage(pageInfo)
-        val canvas = page.canvas
-        val listaViagens = viagens;
-        Paint().apply {
-            color = Color.BLACK
-            textAlign = Paint.Align.CENTER
-            textSize = 9f
+        pageCount = 1
+        
+        // Inicializa a primeira página
+        novaPagina(document)
+
+        var y: Float = gerarCabecalho(currentCanvas)
+        y += linha
+
+        gerarColunas(y, currentCanvas)
+        y += linha
+
+        y = gerarViagensStaticLayout(y, document)
+
+        // Verifica se o total cabe na página atual, se não, cria uma nova
+        if (y + (linha * 7) > A4_H - MARGEM_INFERIOR) {
+            document.finishPage(currentPage)
+            novaPagina(document)
+            y = 40f
+        } else {
+            y += linha
         }
 
-        var y : Float = gerarCabecalho(canvas)
-        y += linha
+        desenharTotalViagens(y, currentCanvas)
 
-        gerarColunas(y, canvas)
-        y += linha
-
-        y += gerarViagensStaticLayout(y, canvas)
-
-        desenharTotalViagens(y, canvas)
-
-        document.finishPage(page)
+        document.finishPage(currentPage)
 
         val arquivo = salvarDocumento(document)
-
         abrirDocumento(arquivo)
+    }
+
+    private fun novaPagina(document: PdfDocument) {
+        val pageInfo = PdfDocument.PageInfo.Builder(NOVA_LARGURA, A4_H, pageCount++).create()
+        currentPage = document.startPage(pageInfo)
+        currentCanvas = currentPage.canvas
     }
 
     private fun converterMesAnoParaExtenso(mesAno: String): String {
@@ -120,53 +132,65 @@ class RelatorioPdfGenerator(private val context: Context, val listaViagens: List
         }
     }
 
-    private fun gerarViagensStaticLayout(y: Float, canvas: Canvas) : Float {
+    private fun gerarViagensStaticLayout(yInicial: Float, document: PdfDocument) : Float {
         val textPaint = TextPaint().apply {
             color = Color.BLACK
             textAlign = Paint.Align.CENTER
             textSize = 9f
         }
 
-        var alturaLinha = y
+        var alturaLinha = yInicial
 
         listaViagens.forEach { viagem ->
-            var x = MARGEM_LINHA
             var maiorAlturaDaLinhaAtual = 0f
-
-            ColunasPdf.entries.forEach { coluna ->
+            val layouts = ColunasPdf.entries.map { coluna ->
                 val texto = coluna.extrairDado(viagem)
-
-                val staticLayout = StaticLayout.Builder.obtain(texto,0,texto.length, textPaint, coluna.larguraPt.toInt())
+                val layout = StaticLayout.Builder.obtain(texto, 0, texto.length, textPaint, coluna.larguraPt.toInt())
                     .setAlignment(Layout.Alignment.ALIGN_NORMAL)
                     .build()
-
-                canvas.save()
-
-                val meioColunaX = x + (coluna.getMetadeLargura())
-                canvas.translate(meioColunaX, alturaLinha)
-
-                staticLayout.draw(canvas)
-                canvas.restore()
-
-                if (staticLayout.height > maiorAlturaDaLinhaAtual) {
-                    maiorAlturaDaLinhaAtual = staticLayout.height.toFloat()
+                if (layout.height > maiorAlturaDaLinhaAtual) {
+                    maiorAlturaDaLinhaAtual = layout.height.toFloat()
                 }
+                layout
+            }
+
+            // Verifica se a linha cabe na página atual
+            if (alturaLinha + maiorAlturaDaLinhaAtual > A4_H - MARGEM_INFERIOR) {
+                document.finishPage(currentPage)
+                novaPagina(document)
+                
+                // Redesenha cabeçalho e colunas na nova página
+                alturaLinha = gerarCabecalho(currentCanvas)
+                alturaLinha += linha
+                gerarColunas(alturaLinha, currentCanvas)
+                alturaLinha += linha
+            }
+
+            var x = MARGEM_LINHA
+            ColunasPdf.entries.forEachIndexed { index, coluna ->
+                val staticLayout = layouts[index]
+
+                currentCanvas.save()
+                val meioColunaX = x + (coluna.getMetadeLargura())
+                currentCanvas.translate(meioColunaX, alturaLinha)
+                staticLayout.draw(currentCanvas)
+                currentCanvas.restore()
 
                 x += coluna.larguraPt
             }
-            alturaLinha += maiorAlturaDaLinhaAtual + 10f
+            alturaLinha += maiorAlturaDaLinhaAtual + (linha/2)
         }
         return alturaLinha
     }
 
     private fun desenharTotalViagens(y: Float, canvas: Canvas) {
         val paint = Paint().apply {
-            color = Color.BLACK
-            textAlign = Paint.Align.LEFT
+            color = Color.BLUE
+            textAlign = Paint.Align.RIGHT
             textSize = 12f
         }
 
-        var x = centroTela
+        val x = currentPage.info.pageWidth - (MARGEM_LINHA + 50f)
         var altura = y;
 
         val somaKms = listaViagens.sumOf { it.valorKms.toDouble()}
