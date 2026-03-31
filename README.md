@@ -31,10 +31,10 @@ Projeto para registrar corridas, valores, horários e descrições para controle
 - **Visualização Organizada:** Exibição das viagens agrupadas por mês/ano e por classificação de cliente.
 - **Relatórios PDF Avançados:** Geração de documentos detalhados com quebra automática de texto, somatória de totais (KM, Espera, Serviço e Geral) e cabeçalho profissional.
 - **Filtragem Dinâmica:** Busca por texto (origem, destino, motorista, etc.) e filtros rápidos via Chips.
+- **Suporte a múltiplas páginas nos relatórios PDF:** Caso a lista de viagens seja muito extensa, o relatório quebra páginas automáticamente, criando um documento com mais de uma página
 
 ### Em desenvolvimento:
 - Salvar formulário não finalizado em cache para recuperação (rascunho).
-- Suporte a múltiplas páginas nos relatórios PDF.
 
 ### Fluxo do app:
 [Fluxo de Execução](docs/fluxo-app.md)
