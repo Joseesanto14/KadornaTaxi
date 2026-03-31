@@ -133,7 +133,7 @@ class RelatorioPdfGenerator(
             }
 
             desenharLinhaViagem(yPos, layouts)
-            yPos += alturaNecessaria + (ALTURA_LINHA_PADRAO / 2)
+            yPos += alturaNecessaria + (ALTURA_LINHA_PADRAO/2)
         }
         return yPos
     }
@@ -207,8 +207,8 @@ class RelatorioPdfGenerator(
 
     private fun converterMesAnoParaExtenso(mesAno: String): String {
         val partes = mesAno.split("-")
-        val mesExtenso = Meses.buscarPorNumero(partes[0])
-        val ano = partes[1]
+        val mesExtenso = Meses.buscarPorNumero(partes[1])
+        val ano = partes[0]
         
         return if (partes.size > 2) {
             "$mesExtenso de $ano - ${partes[2]}"

@@ -156,7 +156,7 @@ public class ViagensActivity extends AppCompatActivity {
         RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, viagensDoMes, mesAno);
 
         try {
-            gerador.gerarRelatorio(mesAno, viagensDoMes);
+            gerador.gerarRelatorio();
             Toast.makeText(this, "PDF salvo em Downloads!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao gerar PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();

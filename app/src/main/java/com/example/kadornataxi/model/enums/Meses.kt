@@ -18,10 +18,9 @@ enum class Meses(val numero: String, val nome: String) {
 
     companion object {
         fun buscarPorNumero(mesAno: String) : String {
-            val numeroProcurado = mesAno.split("-")[1]
 
             for (mes in entries) {
-                if (mes.numero == numeroProcurado) {
+                if (mes.numero == mesAno) {
                     return mes.nome
                 }
             }
