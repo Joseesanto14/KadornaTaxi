@@ -32,21 +32,21 @@ class RelatorioPdfGenerator(
 
     companion object {
         private const val A4_HEIGHT = 842f
-        private const val DOCUMENT_WIDTH = 745
+        private const val DOCUMENT_WIDTH = 770
         private const val MARGEM_HORIZONTAL = 5f
         private const val MARGEM_SUPERIOR = 20f
         private const val MARGEM_INFERIOR = 40f
         private const val ALTURA_LINHA_PADRAO = 20f
         
-        private const val FILE_NAME = "relatorio_viagens.pdf"
+        private const val FILE_NAME = "relatorio_viagens"
         private const val TAG = "RelatorioPdfGenerator"
 
         // Mock de dados da empresa (Em um cenário real, viria de ConfiguracaoDAO)
-        private const val NOME_MOTORISTA = "Kadorna da Silva Santo Pereira Filho"
-        private const val CNPJ = "X0.XX0.0XX/000X-XX"
+        private const val NOME_MOTORISTA = "Denilce da Silva Muniz do Espirito Santo"
+        private const val CNPJ = "51.320.583/0001-79"
         private const val EMPRESA = "Kadorna Transportes"
-        private const val TELEFONE = "(XX) 99XXXXXXX"
-        private const val EMAIL = "kad.kadorna@mocked.com"
+        private const val TELEFONE = "(14) 991521402 - 991367695"
+        private const val EMAIL = "maes.adriano@hotmail.com"
     }
 
     private val mesAnoExtenso = converterMesAnoParaExtenso(mesAno)
@@ -78,7 +78,7 @@ class RelatorioPdfGenerator(
 
         yPos = desenharListaViagens(yPos)
 
-        garantirEspacoParaTotais(yPos)
+        yPos = garantirEspacoParaTotais(yPos)
         desenharTotais(yPos)
 
         document.finishPage(currentPage)
@@ -190,12 +190,15 @@ class RelatorioPdfGenerator(
         }
     }
 
-    private fun garantirEspacoParaTotais(y: Float) {
-        val alturaEstimadaTotais = ALTURA_LINHA_PADRAO * 7
-        if (y + alturaEstimadaTotais > A4_HEIGHT - MARGEM_INFERIOR) {
+    private fun garantirEspacoParaTotais(y: Float): Float {
+        val alturaEstimadaTotais = ALTURA_LINHA_PADRAO * 7.5
+
+        if ((y + alturaEstimadaTotais) > (A4_HEIGHT - MARGEM_INFERIOR)) {
             document.finishPage(currentPage)
             iniciarNovaPagina()
+            return MARGEM_SUPERIOR * 2
         }
+        return y + ALTURA_LINHA_PADRAO * 1.5f
     }
 
     private fun calcularResumoFinanceiro() = object {
@@ -220,8 +223,10 @@ class RelatorioPdfGenerator(
     // --- Persistência e Abertura ---
 
     private fun salvarDocumento(): File {
+        val nomeArquivo = "${FILE_NAME}_${mesAnoExtenso}.pdf"
+
         val mediaDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
-        val arquivo = File(mediaDir, FILE_NAME)
+        val arquivo = File(mediaDir, nomeArquivo)
         
         try {
             FileOutputStream(arquivo).use { fos ->
