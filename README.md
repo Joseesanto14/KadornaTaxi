@@ -34,6 +34,8 @@ Projeto para registrar corridas, valores, horários e descrições para controle
 - **Suporte a múltiplas páginas nos relatórios PDF:** Caso a lista de viagens seja muito extensa, o relatório quebra páginas automáticamente, criando um documento com mais de uma página
 
 ### Em desenvolvimento:
+- Deletar e editar viagens.
+- Transferir viagens entre empresas/clientes.
 - Salvar formulário não finalizado em cache para recuperação (rascunho).
 
 ### Fluxo do app:
