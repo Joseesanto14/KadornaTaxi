@@ -19,7 +19,7 @@ enum class ColunasPdf(nome : String, larguraCm: Float) {
             return viagem.hora
         }
     },
-    ORIGEM ("Origem",1.63f) {
+    ORIGEM ("Origem",2.5f) {
         override fun extrairDado(viagem: Viagem): String {
             return viagem.origem
         }
@@ -34,32 +34,37 @@ enum class ColunasPdf(nome : String, larguraCm: Float) {
             return viagem.descricao
         }
     },
-    KMS_RODADOS("Kms Rodados", 2.35f) {
+    KMS_RODADOS("Kms Rodados", 1.8f) {
         override fun extrairDado(viagem: Viagem): String {
             return String.format(Locale.getDefault(), "%.1f km", viagem.kmsRodados)
         }
     },
-    VALOR_SERVICO("Valor Serviço", 2.35f) {
+    VALOR_KMS("Valor Kms", 2f) {
+        override fun extrairDado(viagem: Viagem): String {
+            return String.format(Locale.getDefault(), "R$ %.2f", viagem.valorKms)
+        }
+    },
+    VALOR_SERVICO("Valor Serviço", 2.1f) {
         override fun extrairDado(viagem: Viagem): String {
             return String.format(Locale.getDefault(), "R$ %.2f", viagem.valorServico)
         }
     },
-    HORAS_ESPERA("Espera (h)",1.76f) {
+    HORAS_ESPERA("Espera (h)",1.9f) {
         override fun extrairDado(viagem: Viagem): String {
             return String.format(Locale.getDefault(), "%.2f", viagem.horaEspera)
         }
     },
-    VALOR_ESPERA("Valor Espera", 1.76f) {
+    VALOR_ESPERA("Valor Espera", 1.8f) {
         override fun extrairDado(viagem: Viagem): String {
             return String.format(Locale.getDefault(), "R$ %.2f", viagem.valorHoraEspera)
         }
     },
-    VALOR_TOTAL("Valor Total",2.35f) {
+    VALOR_TOTAL("Valor Total",2.3f) {
         override fun extrairDado(viagem: Viagem): String {
             return String.format(Locale.getDefault(), "R$ %.2f", viagem.valorTotal)
         }
     },
-    MOTORISTA("Motorista",2.40f) {
+    MOTORISTA("Motorista",1.8f) {
         override fun extrairDado(viagem: Viagem): String {
             return  viagem.motorista
         }
