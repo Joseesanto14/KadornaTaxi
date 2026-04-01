@@ -1,37 +1,50 @@
 # Fluxo de execução das telas do app
 
-## Tela Viagens (ViagensActivity)
-Tela principal do app, possui uma lista de viagens salvas e seus respectivos detalhes, separadas por mês.
-Cada item da lista pode ser expandido ao ser clicado, mostrando os detalhes das viagens do mês e um
-botão para gerar relatório do respectivo mês.
+## 1. Tela Viagens (ViagensActivity)
+Esta é a tela principal do aplicativo, onde o motorista gerencia seu histórico de corridas.
 
-Botão flutuante: Presente no canto inferior direito da tela, servindo para enviar o usuário diretamente à tela de criação de viagens.
+### Funcionalidades:
+- **Listagem Agrupada**: As viagens são exibidas em uma lista organizada por Mês/Ano. Cada cabeçalho de mês pode ser clicado para expandir/recolher as viagens daquele período.
+- **Resumo Mensal**: Ao expandir um mês, o app exibe a somatória total de valores (KM, Espera e Serviços) daquele período.
+- **Geração de Relatório**: Cada grupo mensal possui um botão para gerar um relatório profissional em PDF. O app valida se as configurações de tarifas existem antes de permitir a geração.
+- **Filtragem Dinâmica**:
+  - **Barra de Pesquisa**: Filtra em tempo real por Destino, Origem, Data, Motorista, Descrição ou Classificação.
+  - **Filtro por Chip**: Um botão (Chip) "Separadas" permite filtrar rapidamente apenas as viagens que possuem uma classificação diferente de "Comum" (ideal para convênios).
+- **Navegação**:
+  - **Botão Flutuante (FAB)**: Direciona para a criação de nova viagem (valida se o app já foi configurado).
+  - **Ícone de Engrenagem**: Abre a tela de configurações.
 
-Botão de Configuração: Presente no canto superior direito da tela, servindo para abrir a tela de configurações tem ícone de engrenagem.
+---
 
-Barra de pesquisa: Presente no canto superior central da tela, para filtrar viagens.
+## 2. Tela Solicitação de Táxi (SolicitacaoActivity)
+Tela dedicada ao registro de uma nova corrida, com foco em automação para agilizar o trabalho do motorista.
 
-## Tela Solicitação de Táxi (SolicitacaoActivity)
-Tela com campos para o preenchimento de dados para a criação de viagens.
+### Preenchimento Automático:
+- **Data e Hora**: Carregadas automaticamente do sistema no momento da abertura da tela.
+- **Dados Padrão**: Motorista e Classificação de Cliente são carregados das configurações salvas.
 
-Os campos a serem preenchidos para a criação da viagem são:
-- Origem
-- Data
-- Hora
-- Destino
-- Descrição
-- Km rodados
-- Hora Espera
-- Valor Serviço
-- Motorista
-- Viagem Separada (checkbox para separar viagens por tipo de serviço)
+### Cálculos em Tempo Real:
+- **Máscaras Inteligentes**: Campos de Data (DD/MM/AAAA), Hora (HH:MM) e Hora de Espera (HH:MM) possuem formatação automática durante a digitação.
+- **Valor da Viagem**: Calculado instantaneamente multiplicando os KM rodados pela tarifa definida nas configurações.
+- **Valor de Espera**: Calculado convertendo o tempo (HH:MM) em valor monetário com base na tarifa de espera.
+- **Valor de Serviço**: Campo para adicionar taxas extras ou serviços manuais.
+- **Valor Total**: Soma automática de (Viagem + Espera + Serviço).
 
-Os dados inseridos nesses campos são salvos num objeto da classe Viagem após o clique do botão, 
-sendo possível vê-los na tela de viagens.
+### Regras de Validação:
+- Todos os campos básicos (Origem, Destino, Data, Hora, Motorista) são obrigatórios.
+- É necessário informar **ou** a Quilometragem **ou** um Valor de Serviço para que a viagem seja considerada válida.
 
-## Tela de Configurações (ConfiguracaoActiviy)
-Se o usuário tentar criar uma viagem sem configurar o app, ele será enviado para a tela de configurações, onde preencherá informações referentes a:
-- Valor por quilometro rodado
-- Valor por hora de espera
-- Motorista padrão
-- Nome dado as viagens separadas pela checkbox na tela de criação de viagens.
+---
+
+## 3. Tela de Configurações (ConfiguracaoActivity)
+Tela essencial para o funcionamento do app, onde são definidas as bases para todos os cálculos financeiros.
+
+### Parâmetros Configuráveis:
+- **Valor por KM rodado**: Base para o cálculo da viagem.
+- **Valor por Hora de Espera**: Base para o cálculo do tempo parado.
+- **Motorista Padrão**: Nome que aparecerá nos relatórios e será sugerido em novas solicitações.
+- **Nome para Viagens Separadas**: Define o nome da categoria especial (ex: "Convênio X", "Empresa Y"). Se deixado em branco, o sistema assume "Comum".
+
+### Regras de Segurança:
+- O app impede salvar configurações com valores zerados ou campos de texto vazios.
+- Caso o usuário tente usar o app sem essas definições, ele será automaticamente redirecionado para esta tela com um aviso de orientação.
