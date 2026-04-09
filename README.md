@@ -55,7 +55,7 @@ graph LR
 
 1. **Clone o repositório**:
    ```bash
-   git clone [https://github.com/Joseesanto14/KadornaTaxi.git]
+   git clone https://github.com/Joseesanto14/KadornaTaxi.git
    ```
 
 2. **Abra no Android Studio**:
