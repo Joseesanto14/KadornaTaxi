@@ -3,12 +3,14 @@ package com.digitalmuniz.kadornataxi.view.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.digitalmuniz.kadornataxi.R;
 import com.digitalmuniz.kadornataxi.model.entities.Viagem;
+import com.digitalmuniz.kadornataxi.view.interfaces.OnViagemActionListener;
 
 import java.util.List;
 import java.util.Locale;
@@ -16,9 +18,11 @@ import java.util.Locale;
 public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder> {
 
     private final List<Viagem> viagens;
+    private final OnViagemActionListener listener;
 
-    public ViagemAdapter(List<Viagem> viagens) {
+    public ViagemAdapter(List<Viagem> viagens, OnViagemActionListener listener) {
         this.viagens = viagens;
+        this.listener = listener;
     }
 
     @Override
@@ -47,6 +51,9 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
         holder.txtKmsRodados.setText(kmsRodados);
 
         holder.txtDescricao.setText(v.getDescricao());
+
+        holder.btnEditarViagem.setOnClickListener(view -> listener.onEditar(v));
+        holder.btnExcluirViagem.setOnClickListener(view -> listener.onExcluir(v));
     }
 
     @Override
@@ -56,6 +63,7 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtDataHora, txtValorTotal, txtOrigem, txtDestino, txtKmsRodados, txtDescricao;
+        ImageButton btnEditarViagem, btnExcluirViagem;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -65,6 +73,8 @@ public class ViagemAdapter extends RecyclerView.Adapter<ViagemAdapter.ViewHolder
             txtDestino = itemView.findViewById(R.id.txtDestino);
             txtKmsRodados = itemView.findViewById(R.id.txtKmsRodados);
             txtDescricao = itemView.findViewById(R.id.txtDescricao);
+            btnEditarViagem = itemView.findViewById(R.id.btnEditarViagem);
+            btnExcluirViagem = itemView.findViewById(R.id.btnExcluirViagem);
         }
     }
 }
