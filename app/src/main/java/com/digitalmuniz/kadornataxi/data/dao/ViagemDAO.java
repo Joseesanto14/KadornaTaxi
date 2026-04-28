@@ -81,7 +81,7 @@ public class ViagemDAO {
 
         Cursor cursor = database.query(DbHelper.Viagem.NOME_TABELA,
                 null, null, null,
-                null, null, DbHelper.Viagem.DATA + " DESC");
+                null, null, DbHelper.Viagem.DATA + " DESC, " + DbHelper.Viagem.HORA + " DESC");
 
         if (cursor.moveToFirst()) {
             do {

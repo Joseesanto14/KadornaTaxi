@@ -26,6 +26,7 @@ import com.digitalmuniz.kadornataxi.view.interfaces.OnViagemActionListener;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ViagensActivity extends AppCompatActivity {
@@ -176,7 +177,10 @@ public class ViagensActivity extends AppCompatActivity {
             return;
         }
 
-        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, viagensDoMes, mesAno);
+        List<Viagem> viagensOrdenadas = new ArrayList<>(viagensDoMes);
+        viagensOrdenadas.sort(Comparator.comparing(Viagem::getData).thenComparing(Viagem::getHora));
+
+        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, viagensOrdenadas, mesAno);
 
         try {
             gerador.gerarRelatorio();

@@ -166,7 +166,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
         if (!edHoraEspera.getText().toString().isEmpty()) {
             float horas = Float.parseFloat(edHoraEspera.getText().toString().split(":")[0]);
             float minutos = Float.parseFloat(edHoraEspera.getText().toString().split(":")[1]);
-            horaEspera = horas + (minutos / 60f);
+            float minutosEmHoras = Math.round(minutos / 60.0f * 100.0f) / 100.0f;
+            horaEspera = horas + minutosEmHoras;
         }
 
         float valorServico = 0f;
@@ -438,7 +439,8 @@ public class SolicitacaoActivity extends AppCompatActivity {
             float horas = Float.parseFloat(timeClean.substring(0,2));
             float minutos = Float.parseFloat(timeClean.substring(2,4));
 
-            float tempoEmHoras = horas + (minutos / 60.0f);
+            float minutosEmHoras = Math.round(minutos / 60.0f * 100.0f) / 100.0f;
+            float tempoEmHoras = horas + minutosEmHoras;
 
             float total = tempoEmHoras * (new ConfiguracaoDAO(this).getConfiguracao().getValorHoraEspera());
 
