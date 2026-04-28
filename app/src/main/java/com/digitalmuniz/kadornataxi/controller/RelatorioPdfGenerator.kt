@@ -42,11 +42,11 @@ class RelatorioPdfGenerator(
         private const val TAG = "RelatorioPdfGenerator"
 
         // Mock de dados da empresa (Em um cenário real, viria de ConfiguracaoDAO)
-        private const val NOME_MOTORISTA = "Denilce da Silva Muniz do Espirito Santo"
-        private const val CNPJ = "51.320.583/0001-79"
+        private const val NOME_MOTORISTA = "Kadorna kadorna kadorna de kadorna"
+        private const val CNPJ = "01.000.000/0001-09"
         private const val EMPRESA = "Kadorna Transportes"
-        private const val TELEFONE = "(14) 991521402 - 991367695"
-        private const val EMAIL = "maes.adriano@hotmail.com"
+        private const val TELEFONE = "(99) 991599999 - 991399995"
+        private const val EMAIL = "kadorna.kadorna@kadorna.com"
     }
 
     private val mesAnoExtenso = converterMesAnoParaExtenso(mesAno)
