@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Kadorna Táxi</string>
+    <string name="cd_editar_viagem">Editar viagem</string>
+    <string name="cd_excluir_viagem">Excluir viagem</string>
+    <string name="editar_viagem">Editar Viagem</string>
 </resources>

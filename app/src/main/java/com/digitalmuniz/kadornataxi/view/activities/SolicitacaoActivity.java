@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,8 +28,14 @@ import java.util.Locale;
 
 @SuppressLint("SetTextI18n")
 public class SolicitacaoActivity extends AppCompatActivity {
+
+    public static final String EXTRA_VIAGEM = "extra_viagem";
+
     EditText edOrigem, edData, edHora, edDestino, edDescricao, edKmsRodados, edMotorista, edHoraEspera, edCliente;
     EditText edValorKm, edValorHoraEspera, edValorTotal, edValorServico;
+    AppCompatButton btGerarViagem;
+
+    private long viagemEditandoId = -1;
 
 
     @Override
@@ -44,7 +51,15 @@ public class SolicitacaoActivity extends AppCompatActivity {
 
         viewBinding();
         configurarListeners();
-        preencherCampos();
+
+        Viagem viagemParaEditar = (Viagem) getIntent().getSerializableExtra(EXTRA_VIAGEM);
+        if (viagemParaEditar != null) {
+            viagemEditandoId = viagemParaEditar.getId();
+            preencherCamposEdicao(viagemParaEditar);
+            btGerarViagem.setText(getString(R.string.editar_viagem));
+        } else {
+            preencherCampos();
+        }
     }
 
     // --------------- Sessão UI ---------------
@@ -66,6 +81,7 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edCliente = findViewById(R.id.edSeparadoCliente);
         edValorTotal = findViewById(R.id.edValorTotal);
         edValorServico = findViewById(R.id.edValorServico);
+        btGerarViagem = findViewById(R.id.btGerarViagem);
     }
 
     private void preencherCampos() {
@@ -74,6 +90,39 @@ public class SolicitacaoActivity extends AppCompatActivity {
         edHora.setText(dataHora[1]);
         edMotorista.setText(new ConfiguracaoDAO(this).getConfiguracao().getMotorista());
         edCliente.setText(new ConfiguracaoDAO(this).getConfiguracao().getClassificacaoViagemSeparada());
+    }
+
+    private void preencherCamposEdicao(Viagem viagem) {
+        edOrigem.setText(viagem.getOrigem());
+        edDestino.setText(viagem.getDestino());
+        edDescricao.setText(viagem.getDescricao());
+        edMotorista.setText(viagem.getMotorista());
+        edCliente.setText(viagem.getClassificacao());
+
+        // Convert ISO date (yyyy-MM-dd) to ddMMyyyy so the TextWatcher formats it as dd/MM/yyyy
+        String[] partes = viagem.getData().split("-");
+        if (partes.length == 3) {
+            edData.setText(partes[2] + partes[1] + partes[0]);
+        } else {
+            edData.setText(viagem.getData());
+        }
+
+        edHora.setText(viagem.getHora());
+
+        if (viagem.getKmsRodados() > 0) {
+            edKmsRodados.setText(String.format(Locale.getDefault(), "%.2f", viagem.getKmsRodados()));
+        }
+
+        if (viagem.getHoraEspera() > 0) {
+            int horas = (int) viagem.getHoraEspera();
+            int minutos = Math.round((viagem.getHoraEspera() - horas) * 60);
+            edHoraEspera.setText(String.format(Locale.getDefault(), "%02d%02d", horas, minutos));
+        }
+
+        if (viagem.getValorServico() > 0) {
+            long centavos = Math.round(viagem.getValorServico() * 100);
+            edValorServico.setText(String.valueOf(centavos));
+        }
     }
 
     private String[] receberDataHoraDoSistema() {
@@ -421,7 +470,13 @@ public class SolicitacaoActivity extends AppCompatActivity {
     public void salvarViagemDb(View view) {
         if(todosCamposPreenchidos()) {
             Viagem viagem = criarViagemObjeto();
-            new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
+            if (viagemEditandoId != -1) {
+                viagem.setId(viagemEditandoId);
+                new ViagemDAO(this).update(viagem);
+                Toast.makeText(this, "Viagem atualizada com sucesso!", Toast.LENGTH_SHORT).show();
+            } else {
+                new ViagemDAO(this).inserirNoDatabase(viagem, getApplicationContext());
+            }
             finish();
         }
     }

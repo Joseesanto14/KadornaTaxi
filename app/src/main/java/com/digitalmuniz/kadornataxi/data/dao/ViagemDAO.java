@@ -122,8 +122,27 @@ public class ViagemDAO {
 
     public int update(Viagem viagem) {
         open();
+
+        ContentValues values = new ContentValues();
+        values.put(DbHelper.Viagem.ORIGEM, viagem.getOrigem());
+        values.put(DbHelper.Viagem.DATA, Viagem.formatarDataISO8601(viagem.getData()));
+        values.put(DbHelper.Viagem.HORA, viagem.getHora());
+        values.put(DbHelper.Viagem.DESTINO, viagem.getDestino());
+        values.put(DbHelper.Viagem.DESCRICAO, viagem.getDescricao());
+        values.put(DbHelper.Viagem.KMS_RODADOS, viagem.getKmsRodados());
+        values.put(DbHelper.Viagem.VALOR_KM, viagem.getValorKms());
+        values.put(DbHelper.Viagem.VALOR_SERVICO, viagem.getValorServico());
+        values.put(DbHelper.Viagem.MOTORISTA, viagem.getMotorista());
+        values.put(DbHelper.Viagem.HORA_ESPERA, viagem.getHoraEspera());
+        values.put(DbHelper.Viagem.VALOR_HORA_ESPERA, viagem.getValorHoraEspera());
+        values.put(DbHelper.Viagem.CLASSIFICACAO, viagem.getClassificacao());
+        values.put(DbHelper.Viagem.VALOR_TOTAL, viagem.getValorTotal());
+
+        int linhasAfetadas = database.update(DbHelper.Viagem.NOME_TABELA, values,
+                DbHelper.Viagem.ID + " = ?", new String[]{String.valueOf(viagem.getId())});
+
         close();
-        return 0;
+        return linhasAfetadas;
     }
 
     // DELETE - remover um registro do banco de dados

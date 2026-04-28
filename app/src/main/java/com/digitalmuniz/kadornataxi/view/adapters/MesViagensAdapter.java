@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.digitalmuniz.kadornataxi.R;
 import com.digitalmuniz.kadornataxi.view.dto.MesViagens;
 import com.digitalmuniz.kadornataxi.view.interfaces.OnGerarRelatorioListener;
+import com.digitalmuniz.kadornataxi.view.interfaces.OnViagemActionListener;
 
 import java.util.List;
 
@@ -23,11 +24,13 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
 
     private final List<MesViagens> meses;
     private final OnGerarRelatorioListener listener;
+    private final OnViagemActionListener viagemActionListener;
     private final RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
 
-    public MesViagensAdapter(List<MesViagens> meses, OnGerarRelatorioListener listener) {
+    public MesViagensAdapter(List<MesViagens> meses, OnGerarRelatorioListener listener, OnViagemActionListener viagemActionListener) {
         this.meses = meses;
         this.listener = listener;
+        this.viagemActionListener = viagemActionListener;
     }
 
     @NonNull
@@ -51,7 +54,7 @@ public class MesViagensAdapter extends RecyclerView.Adapter<MesViagensAdapter.Vi
                 new LinearLayoutManager(holder.itemView.getContext()));
 
         holder.recyclerViagens.setAdapter(
-                new ViagemAdapter(mes.getViagens()));
+                new ViagemAdapter(mes.getViagens(), viagemActionListener));
 
         holder.recyclerViagens.setRecycledViewPool(viewPool);
 

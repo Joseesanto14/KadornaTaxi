@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
@@ -21,6 +22,7 @@ import com.digitalmuniz.kadornataxi.data.dao.ViagemDAO;
 import com.digitalmuniz.kadornataxi.view.dto.MesViagens;
 import com.digitalmuniz.kadornataxi.model.entities.Viagem;
 import com.digitalmuniz.kadornataxi.controller.RelatorioPdfGenerator;
+import com.digitalmuniz.kadornataxi.view.interfaces.OnViagemActionListener;
 import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
@@ -138,8 +140,29 @@ public class ViagensActivity extends AppCompatActivity {
     private void atualizarRecyclerView(List<Viagem> listaParaExibir) {
         List<MesViagens> listaMeses = Viagem.gerarListaDeMeses(listaParaExibir);
 
-        adapter = new MesViagensAdapter(listaMeses, (mesAno, viagens) ->
-                gerarRelatorioPdf(mesAno, viagens));
+        adapter = new MesViagensAdapter(listaMeses,
+                (mesAno, viagens) -> gerarRelatorioPdf(mesAno, viagens),
+                new OnViagemActionListener() {
+                    @Override
+                    public void onEditar(Viagem viagem) {
+                        Intent intent = new Intent(ViagensActivity.this, SolicitacaoActivity.class);
+                        intent.putExtra(SolicitacaoActivity.EXTRA_VIAGEM, viagem);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onExcluir(Viagem viagem) {
+                        new AlertDialog.Builder(ViagensActivity.this)
+                                .setTitle("Excluir Viagem")
+                                .setMessage("Deseja excluir esta viagem?")
+                                .setPositiveButton("Excluir", (dialog, which) -> {
+                                    new ViagemDAO(ViagensActivity.this).delete(viagem.getId());
+                                    carregarDadosDoBanco();
+                                })
+                                .setNegativeButton("Cancelar", null)
+                                .show();
+                    }
+                });
 
         recyclerMeses.setAdapter(adapter);
     }
