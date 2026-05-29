@@ -37,6 +37,16 @@ public class ConfiguracaoDAO {
                 configuracao.getMotorista());
         values.put(DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA,
                 configuracao.getClassificacaoViagemSeparada());
+        values.put(DbHelper.Configuracao.CNPJ,
+                configuracao.getCnpj());
+        values.put(DbHelper.Configuracao.NOME_FANTASIA,
+                configuracao.getNomeFantasia());
+        values.put(DbHelper.Configuracao.TITULAR_CNPJ,
+                configuracao.getTitularCNPJ());
+        values.put(DbHelper.Configuracao.TELEFONE,
+                configuracao.getTelefone());
+        values.put(DbHelper.Configuracao.EMAIL,
+                configuracao.getEmail());
 
         return values;
     }
@@ -63,7 +73,8 @@ public class ConfiguracaoDAO {
 
         Log.d(TAG, "Configuração padrão gerada com o ID: " + insert(
                 new Configuracao(1, 1.99f, 20f,
-                        "Marcelo", "Trecho 2")));
+                        "Marcelo", "Trecho 2", 
+                        "", "", "", "", "")));
 
         close();
     }
@@ -130,7 +141,17 @@ public class ConfiguracaoDAO {
                 cursor.getString(cursor.getColumnIndexOrThrow(
                         DbHelper.Configuracao.MOTORISTA)),
                 cursor.getString(cursor.getColumnIndexOrThrow(
-                        DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA))
+                        DbHelper.Configuracao.CLASSIFICACAO_VIAGEM_SEPARADA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.CNPJ)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.NOME_FANTASIA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.TITULAR_CNPJ)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.TELEFONE)),
+                cursor.getString(cursor.getColumnIndexOrThrow(
+                        DbHelper.Configuracao.EMAIL))
         );
     }
 

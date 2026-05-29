@@ -12,6 +12,7 @@ import android.text.StaticLayout
 import android.text.TextPaint
 import android.util.Log
 import androidx.core.content.FileProvider
+import com.digitalmuniz.kadornataxi.model.entities.Configuracao
 import com.digitalmuniz.kadornataxi.model.entities.Viagem
 import com.digitalmuniz.kadornataxi.model.enums.ColunasPdf
 import com.digitalmuniz.kadornataxi.model.enums.Meses
@@ -27,6 +28,7 @@ import java.util.Locale
 class RelatorioPdfGenerator(
     private val context: Context,
     private val listaViagens: List<Viagem>,
+    private val config: Configuracao,
     mesAno: String
 ) {
 
@@ -40,13 +42,6 @@ class RelatorioPdfGenerator(
         
         private const val FILE_NAME = "relatorio_viagens"
         private const val TAG = "RelatorioPdfGenerator"
-
-        // Mock de dados da empresa (Em um cenário real, viria de ConfiguracaoDAO)
-        private const val NOME_MOTORISTA = "Kadorna kadorna kadorna de kadorna"
-        private const val CNPJ = "01.000.000/0001-09"
-        private const val EMPRESA = "Kadorna Transportes"
-        private const val TELEFONE = "(99) 991599999 - 991399995"
-        private const val EMAIL = "kadorna.kadorna@kadorna.com"
     }
 
     private val mesAnoExtenso = converterMesAnoParaExtenso(mesAno)
@@ -92,15 +87,43 @@ class RelatorioPdfGenerator(
         var y = MARGEM_SUPERIOR
         val style = painter.headerStyle
 
-        currentCanvas.drawText("$NOME_MOTORISTA - CNPJ $CNPJ", centroPagina, y, style)
-        y += ALTURA_LINHA_PADRAO
+        // Linha 1: Titular e CNPJ
+        val linha1 = StringBuilder()
+        if (!config.titularCNPJ.isNullOrBlank()) {
+            linha1.append(config.titularCNPJ)
+        }
+        if (!config.cnpj.isNullOrBlank()) {
+            if (linha1.isNotEmpty()) linha1.append(" - ")
+            linha1.append("CNPJ: ").append(config.cnpj)
+        }
+        
+        if (linha1.isNotEmpty()) {
+            currentCanvas.drawText(linha1.toString(), centroPagina, y, style)
+            y += ALTURA_LINHA_PADRAO
+        }
 
-        currentCanvas.drawText("$EMPRESA - Tel. $TELEFONE", centroPagina, y, style)
-        y += ALTURA_LINHA_PADRAO
+        // Linha 2: Nome Fantasia e Telefone
+        val linha2 = StringBuilder()
+        if (!config.nomeFantasia.isNullOrBlank()) {
+            linha2.append(config.nomeFantasia)
+        }
+        if (!config.telefone.isNullOrBlank()) {
+            if (linha2.isNotEmpty()) linha2.append(" - ")
+            linha2.append("Tel. ").append(config.telefone)
+        }
 
-        currentCanvas.drawText("E-mail: $EMAIL", centroPagina, y, style)
-        y += ALTURA_LINHA_PADRAO * 1.5f
+        if (linha2.isNotEmpty()) {
+            currentCanvas.drawText(linha2.toString(), centroPagina, y, style)
+            y += ALTURA_LINHA_PADRAO
+        }
 
+        // Linha 3: E-mail
+        if (!config.email.isNullOrBlank()) {
+            currentCanvas.drawText("E-mail: ${config.email}", centroPagina, y, style)
+            y += ALTURA_LINHA_PADRAO
+        }
+
+        y += ALTURA_LINHA_PADRAO * 0.5f
         currentCanvas.drawText("Relação de Táxi - Mês: $mesAnoExtenso", centroPagina, y, style)
         return y
     }

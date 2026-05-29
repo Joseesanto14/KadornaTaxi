@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.digitalmuniz.kadornataxi.R;
+import com.digitalmuniz.kadornataxi.data.mock.ViagensMock;
+import com.digitalmuniz.kadornataxi.model.entities.Configuracao;
 import com.digitalmuniz.kadornataxi.view.adapters.MesViagensAdapter;
 import com.digitalmuniz.kadornataxi.data.dao.ConfiguracaoDAO;
 import com.digitalmuniz.kadornataxi.data.dao.ViagemDAO;
@@ -177,14 +179,16 @@ public class ViagensActivity extends AppCompatActivity {
             return;
         }
 
+        Configuracao config = dao.getConfiguracao();
+
         List<Viagem> viagensOrdenadas = new ArrayList<>(viagensDoMes);
         viagensOrdenadas.sort(Comparator.comparing(Viagem::getData).thenComparing(Viagem::getHora));
 
-        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, viagensOrdenadas, mesAno);
+        RelatorioPdfGenerator gerador = new RelatorioPdfGenerator(this, viagensOrdenadas, config, mesAno);
 
         try {
             gerador.gerarRelatorio();
-            Toast.makeText(this, "PDF salvo em Downloads!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Relatório gerado com sucesso!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, "Erro ao gerar PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();

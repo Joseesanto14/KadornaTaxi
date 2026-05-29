@@ -19,6 +19,7 @@ import com.digitalmuniz.kadornataxi.model.entities.Configuracao;
 
 public class ConfiguracaoActivity extends AppCompatActivity {
     EditText edValorKmRodado, edValorHoraEsperada, edMotorista, edClassificacaoViagemSeparada;
+    EditText edTitularCnpj, edNomeFantasia, edCnpj, edTelefone, edEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,11 @@ public class ConfiguracaoActivity extends AppCompatActivity {
             edValorHoraEsperada.setText(String.valueOf(configuracao.getValorHoraEspera()));
             edMotorista.setText(configuracao.getMotorista());
             edClassificacaoViagemSeparada.setText(configuracao.getClassificacaoViagemSeparada());
+            edTitularCnpj.setText(configuracao.getTitularCNPJ());
+            edNomeFantasia.setText(configuracao.getNomeFantasia());
+            edCnpj.setText(configuracao.getCnpj());
+            edTelefone.setText(configuracao.getTelefone());
+            edEmail.setText(configuracao.getEmail());
         }
     }
 
@@ -58,6 +64,11 @@ public class ConfiguracaoActivity extends AppCompatActivity {
         edValorHoraEsperada = findViewById(R.id.edValorHoraEsperada);
         edMotorista = findViewById(R.id.edMotorista);
         edClassificacaoViagemSeparada = findViewById(R.id.edClassificacaoViagemSeparada);
+        edTitularCnpj = findViewById(R.id.edTitularCnpj);
+        edNomeFantasia = findViewById(R.id.edNomeFantasia);
+        edCnpj = findViewById(R.id.edCnpj);
+        edTelefone = findViewById(R.id.edTelefone);
+        edEmail = findViewById(R.id.edEmail);
     }
 
     //---------- Database ----------
@@ -72,7 +83,13 @@ public class ConfiguracaoActivity extends AppCompatActivity {
                     Float.parseFloat(edValorKmRodado.getText().toString()),
                     Float.parseFloat(edValorHoraEsperada.getText().toString()),
                     edMotorista.getText().toString(),
-                    edClassificacaoViagemSeparada.getText().toString());
+                    edClassificacaoViagemSeparada.getText().toString(),
+                    edCnpj.getText().toString(),
+                    edNomeFantasia.getText().toString(),
+                    edTitularCnpj.getText().toString(),
+                    edTelefone.getText().toString(),
+                    edEmail.getText().toString()
+            );
 
             new ConfiguracaoDAO(getApplicationContext())
                     .configurar(configuracao, this);

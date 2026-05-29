@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "kadorna_taxi.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public DbHelper(Context context) {
         super(context, DbHelper.DATABASE_NAME, null, DATABASE_VERSION);
@@ -23,6 +23,13 @@ public class DbHelper extends SQLiteOpenHelper {
         if (oldVersion < 3) {
             db.execSQL("ALTER TABLE " + Viagem.NOME_TABELA + " ADD COLUMN " + Viagem.VALOR_SERVICO + " REAL DEFAULT " + 0f);
             db.execSQL("ALTER TABLE " + Viagem.NOME_TABELA + " ADD COLUMN " + Viagem.KMS_RODADOS + " REAL DEFAULT " + 0f);
+        }
+        if (oldVersion < 4) {
+            db.execSQL("ALTER TABLE " + Configuracao.NOME_TABELA + " ADD COLUMN " + Configuracao.CNPJ + " TEXT");
+            db.execSQL("ALTER TABLE " + Configuracao.NOME_TABELA + " ADD COLUMN " + Configuracao.NOME_FANTASIA + " TEXT");
+            db.execSQL("ALTER TABLE " + Configuracao.NOME_TABELA + " ADD COLUMN " + Configuracao.TITULAR_CNPJ + " TEXT");
+            db.execSQL("ALTER TABLE " + Configuracao.NOME_TABELA + " ADD COLUMN " + Configuracao.TELEFONE + " TEXT");
+            db.execSQL("ALTER TABLE " + Configuracao.NOME_TABELA + " ADD COLUMN " + Configuracao.EMAIL + " TEXT");
         }
     }
 
@@ -72,13 +79,23 @@ public class DbHelper extends SQLiteOpenHelper {
         public static final String VALOR_HORA_ESPERA = "valor_hora_espera";
         public static final String MOTORISTA = "motorista";
         public static final String CLASSIFICACAO_VIAGEM_SEPARADA = "classificacao_viagem_separada";
+        public static final String CNPJ = "cnpj";
+        public static final String NOME_FANTASIA = "nome_fantasia";
+        public static final String TITULAR_CNPJ = "titular_cnpj";
+        public static final String TELEFONE = "telefone";
+        public static final String EMAIL = "email";
 
         public static final String CRIAR_TABELA = "CREATE TABLE " + NOME_TABELA + "(" +
                 ID + " INTEGER PRIMARY KEY, " +
                 VALOR_KM_RODADO + " REAL NOT NULL, " +
                 VALOR_HORA_ESPERA + " REAL NOT NULL, " +
                 MOTORISTA + " TEXT NOT NULL, " +
-                CLASSIFICACAO_VIAGEM_SEPARADA + " TEXT NOT NULL " +
+                CLASSIFICACAO_VIAGEM_SEPARADA + " TEXT NOT NULL, " +
+                CNPJ + " TEXT, " +
+                NOME_FANTASIA + " TEXT, " +
+                TITULAR_CNPJ + " TEXT, " +
+                TELEFONE + " TEXT, " +
+                EMAIL + " TEXT " +
                 ");";
     }
 }
