@@ -19,6 +19,8 @@ import com.digitalmuniz.kadornataxi.model.enums.Meses
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.Locale
 
 /**
@@ -180,7 +182,10 @@ class RelatorioPdfGenerator(
 
         val totais = calcularResumoFinanceiro()
 
-        val formatarMoeda = { valor: Double -> String.format(Locale.getDefault(), "R$ %.2f", valor) }
+        val formatarMoeda = { valor: Double ->
+            val df = DecimalFormat("#,##0.00", DecimalFormatSymbols(Locale("pt", "BR")))
+            "R$ " + df.format(valor)
+        }
 
         val linhasTotais = listOf(
             "Número de Viagens: ${listaViagens.size}",
